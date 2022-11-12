@@ -2,7 +2,7 @@ package com.paolotti.my.smart.home.model;
 
 import com.paolotti.my.smart.home.enums.OnOffStatusEnum;
 
-public class DeviceBaseElement {
+public class DeviceElementBase {
     private String id;
     private OnOffStatusEnum workingStatus;
 

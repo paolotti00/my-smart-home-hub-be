@@ -1,6 +1,7 @@
 package com.paolotti.my.smart.home.model;
 
-import com.paolotti.my.smart.home.enums.DeviceStatusEnum;
+import com.paolotti.my.smart.home.enums.DeviceInstallationStatusEnum;
+import com.paolotti.my.smart.home.enums.DeviceOperatingStatusEnum;
 import com.paolotti.my.smart.home.enums.DeviceTypeEnum;
 
 import java.time.LocalDateTime;
@@ -12,10 +13,11 @@ public class Device {
     private String macAddress;
     private String name;
     DeviceTypeEnum type;
-    ArrayList<DeviceSensor> sensorList;
-    ArrayList<DeviceLight> lightList;
+    ArrayList<DeviceElementSensor> sensorList;
+    ArrayList<DeviceElementLight> lightList;
     ArrayList<String> groups;
-    DeviceStatusEnum status;
+    DeviceOperatingStatusEnum status;
+    DeviceInstallationStatusEnum installationStatus;
     LocalDateTime registrationDate;
     LocalDateTime creationDate;
 
@@ -67,28 +69,36 @@ public class Device {
         this.groups = groups;
     }
 
-    public ArrayList<DeviceSensor> getSensorList() {
+    public ArrayList<DeviceElementSensor> getSensorList() {
         return sensorList;
     }
 
-    public void setSensorList(ArrayList<DeviceSensor> sensorList) {
+    public void setSensorList(ArrayList<DeviceElementSensor> sensorList) {
         this.sensorList = sensorList;
     }
 
-    public ArrayList<DeviceLight> getLightList() {
+    public ArrayList<DeviceElementLight> getLightList() {
         return lightList;
     }
 
-    public void setLightList(ArrayList<DeviceLight> lightList) {
+    public void setLightList(ArrayList<DeviceElementLight> lightList) {
         this.lightList = lightList;
     }
 
-    public DeviceStatusEnum getStatus() {
+    public DeviceOperatingStatusEnum getStatus() {
         return status;
     }
 
-    public void setStatus(DeviceStatusEnum status) {
+    public void setStatus(DeviceOperatingStatusEnum status) {
         this.status = status;
+    }
+
+    public DeviceInstallationStatusEnum getInstallationStatus() {
+        return installationStatus;
+    }
+
+    public void setInstallationStatus(DeviceInstallationStatusEnum installationStatus) {
+        this.installationStatus = installationStatus;
     }
 
     public LocalDateTime getRegistrationDate() {

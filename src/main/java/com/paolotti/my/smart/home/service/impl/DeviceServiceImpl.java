@@ -1,13 +1,17 @@
 package com.paolotti.my.smart.home.service.impl;
 
 import com.paolotti.my.smart.home.enums.DeviceCreationResultStatusEnum;
+import com.paolotti.my.smart.home.enums.DeviceInstallationStatusEnum;
 import com.paolotti.my.smart.home.exception.DeviceAlreadyRegisteredException;
 import com.paolotti.my.smart.home.exception.DeviceCreationException;
 import com.paolotti.my.smart.home.exception.MissingFieldException;
 import com.paolotti.my.smart.home.mapper.DeviceMapper;
+import com.paolotti.my.smart.home.mapper.IDeviceRegistrationMapper;
 import com.paolotti.my.smart.home.model.Device;
 import com.paolotti.my.smart.home.model.DeviceRegistrationRequest;
 import com.paolotti.my.smart.home.model.DeviceRegistrationResponse;
+import com.paolotti.my.smart.home.rest.dto.DeviceRegistrationRequestDto;
+import com.paolotti.my.smart.home.rest.dto.DeviceRegistrationResponseDto;
 import com.paolotti.my.smart.home.service.IDeviceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,12 +28,16 @@ public class DeviceServiceImpl implements IDeviceService {
     private static final Logger logger = LoggerFactory.getLogger(DeviceServiceImpl.class);
     @Autowired
     DeviceMapper deviceMapper;
+    @Autowired
+    IDeviceRegistrationMapper deviceRegistrationMapper;
 
     @Override
-    public DeviceRegistrationResponse deviceSelfRegisteringHandling(DeviceRegistrationRequest deviceRegistrationRequest){
+    public DeviceRegistrationResponseDto deviceSelfRegisteringHandling(DeviceRegistrationRequestDto deviceRegistrationRequestDto){
         // handling a device self registration request
         String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
-        logger.info("{}: device auto register flow started, deviceRegistrationRequest {}",methodName,deviceRegistrationRequest);
+        logger.info("{}: device auto register flow started, deviceRegistrationRequestDto {}",methodName,deviceRegistrationRequestDto);
+        // convert dto to entity
+        DeviceRegistrationRequest deviceRegistrationRequest = deviceRegistrationMapper.toDeviceRegistrationRequest(deviceRegistrationRequestDto);
         // request validation
         // checking if the device already exist
         Device retrievedDevice = getDeviceByMacAddress(deviceRegistrationRequest.getDeviceMacAddress());
@@ -57,15 +65,16 @@ public class DeviceServiceImpl implements IDeviceService {
         try {
             Device deviceToCreate = deviceMapper.toDevice(deviceRegistrationRequest);
             deviceToCreate.setCreationDate(LocalDateTime.now());
-            deviceRegistrationResponse.setCreatedDevice(create(deviceToCreate));
+            deviceRegistrationResponse.setCreatedDevice(createDeviceInToActivateStatus(deviceToCreate));
             deviceRegistrationResponse.setCreationResult(DeviceCreationResultStatusEnum.CREATED);
         } catch (DeviceCreationException e) {
             logger.error("something went wrong during the device creation. message : {}",e.getMessage());
             deviceRegistrationResponse.setCreationResult(DeviceCreationResultStatusEnum.FAILED);
             deviceRegistrationResponse.setCreationErrorMsg(e.getMessage());
         }
+        DeviceRegistrationResponseDto deviceRegistrationResponseDto = deviceRegistrationMapper.toDeviceRegistrationResponseDto(deviceRegistrationResponse);
         logger.info("{}: device auto register flow finished, device {}",methodName,deviceRegistrationResponse);
-        return  deviceRegistrationResponse;
+        return  deviceRegistrationResponseDto;
 
 
     }
@@ -77,12 +86,13 @@ public class DeviceServiceImpl implements IDeviceService {
         logger.info("{}: getting device with macAddress {} found",methodName,device);
         return device;
     };
-
-    private Device create(Device device) throws DeviceCreationException {
+    private Device createDeviceInToActivateStatus(Device device) throws DeviceCreationException {
+        // this method care to create new device that was discovered
         String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
-        logger.info("{}: device creation started, device to create {}",methodName,device);
+        logger.info("{}: device creation started, device to create in to activate status {}",methodName,device);
+        device.setInstallationStatus(DeviceInstallationStatusEnum.TO_ACTIVATE);
         Device createdDevice = new Device(); // TODO pt
-        logger.info("{}: device creation finished, created device {}",methodName,createdDevice);
+        logger.info("{}: device creation finished, created device in to activate status  {}",methodName,createdDevice);
         return createdDevice;
     }
 }

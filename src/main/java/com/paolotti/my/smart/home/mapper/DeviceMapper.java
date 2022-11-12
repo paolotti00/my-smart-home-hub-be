@@ -42,7 +42,7 @@ public class DeviceMapper {
         if(deviceRegistrationRequest.getNumOfLight()!=null && deviceRegistrationRequest.getNumOfLight()>0){
             deviceToReturn.setLightList(new ArrayList<>());
             for(int i=0; i<deviceRegistrationRequest.getNumOfLight();i++){
-                DeviceLight deviceLight = new DeviceLight();
+                DeviceElementLight deviceLight = new DeviceElementLight();
                 deviceLight.setId(DeviceConst.ID_PREFIX_LIGHT+i);
                 deviceToReturn.getLightList().add(deviceLight);
             }
@@ -55,14 +55,14 @@ public class DeviceMapper {
         return deviceToReturn;
     }
 
-    private ArrayList<DeviceSensor> initializeNewSensor(Integer numOfSensor, DeviceSensorTypeEnum deviceSensorTypeEnum, String SensorIdPrefix, ArrayList<DeviceSensor>currentSensorList){
+    private ArrayList<DeviceElementSensor> initializeNewSensor(Integer numOfSensor, DeviceSensorTypeEnum deviceSensorTypeEnum, String SensorIdPrefix, ArrayList<DeviceElementSensor>currentSensorList){
         int addedSensorCount = 0;
         if(numOfSensor!=null && numOfSensor>0) {
             if (currentSensorList == null) {
                 currentSensorList = new ArrayList<>();
             }
             for(int i=0; i<numOfSensor;i++){
-                DeviceSensor deviceSensor = new DeviceSensor();
+                DeviceElementSensor deviceSensor = new DeviceElementSensor();
                 deviceSensor.setType(deviceSensorTypeEnum);
                 deviceSensor.setId(SensorIdPrefix+i);
                 currentSensorList.add(deviceSensor);

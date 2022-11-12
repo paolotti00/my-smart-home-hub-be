@@ -52,3 +52,31 @@ Comunicazione :
 --
 1 mandare i comandi
 1 l.hub manda un comando (specificando l Id del dispositivo e un numero progressivo (magari un timestamp) oppure un progressivo di comando
+
+discovering :
+usare 
+- mDNS : https://bloggerbrothers.com/2017/01/08/name-your-pis-with-mdns-forget-the-ips-with-zeroconf/
+--flow :
+--- il dispositivo cerca l'hub (che deve avere attivo l'mdns  - il raspebbery ce l ha attivo di default e ci sta la libreria mdns per python)
+--- il dispositivo sa l'indirizzo - può fare la chiamata di preregitrazione  (invia il proprio ip)
+--- l'utente attiva il nuovo dispositivo 
+---- da un nome al dispositivo
+---- verifica che i sensori siano veri ecc ecc 
+---- mette il dispositivo in un gruppo
+--- l'hub fa una chiamata rest al dispositivo dove gli comunica che è stato attivato e l'indirizzo di mqtt
+--- d'ora in poi i due dispositivi comunicano con mqtt
+-- pro/ contro
+- mi pare na cosa custom
+- SSDP : 
+flow :
+-- l'hub cerca fra tutti i dispositivi 
+-- trova un dispositivo nuovo 
+-- lo salva tra i dispositivi da attivare 
+-- l'utente attiva il nuovo dispositivo  
+-- ....
+-- ....
+-- pro/ contro
+--- pro
+---- magari supporta altri sensori (da verificare)
+--- contro 
+---- dos attacc
