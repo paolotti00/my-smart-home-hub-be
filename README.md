@@ -27,3 +27,28 @@ This README would normally document whatever steps are necessary to get your app
 
 * Repo owner or admin
 * Other community or team contact
+
+appunti 
+#my smarthome
+Usare mqtt:
+1 ogni dispositivo deve avere il suo id , quindi scodare o leggere solo i messaggi che sono per lui (o per tutti) - magari una topic per i messaggi personali , una tipica per i messaggi broadcast
+2 accoppiamento :
+1 il dispositivo si collega per la prima volta
+2 dal cell si mettono wifi e pass
+3 il disp manda un messaggio dove dice , ciao sono un dispositivo di tipo (luce , sensore o chissà )
+- dove manda il messaggio?
+-- su coda mqtt? 
+--- come fa a sapere come collegarsi alla topica? 
+-- con chiamata rest? come fa a sapere quale è l'indirizzo da chiamare?
+--- se si riuscisse a fare una chiamata rest sarebbe buono. perchè puoi rispondere in maniera sincrona alla chiamata, non hai bisogno di vericare se funziona.
+- che dati dare in risposta?
+- 
+
+3.1  l hub risponde al messaggio , ciao ti ho registrato questo é il tuo ID . Questi sono alcuni dati che ti possono servire
+3.2 il dispositivo si salva che é registrato e prende nota del suo id .
+Comunicazione :
+1 Il dispositivo ogni 5 minuti (poi si vede ) trasmette il suo stato e i suoi dati , se é un sensore
+2 l hub salva questa lettura su mongo
+--
+1 mandare i comandi
+1 l.hub manda un comando (specificando l Id del dispositivo e un numero progressivo (magari un timestamp) oppure un progressivo di comando

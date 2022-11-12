@@ -1,7 +1,9 @@
 package com.paolotti.my.smart.home.service;
 
-import com.paolotti.my.smart.home.model.Device;
+import com.paolotti.my.smart.home.model.DeviceRegistrationRequest;
+import com.paolotti.my.smart.home.model.DeviceRegistrationResponse;
 
 public interface IDeviceService {
-    <T extends Device> T deviceSelfRegistering(T device);
+
+    DeviceRegistrationResponse deviceSelfRegisteringHandling(DeviceRegistrationRequest deviceRegistrationRequest);
 }

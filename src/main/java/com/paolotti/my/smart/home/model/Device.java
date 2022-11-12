@@ -8,9 +8,12 @@ import java.util.ArrayList;
 
 public class Device {
     private String id;
+    private User user;
     private String macAddress;
     private String name;
     DeviceTypeEnum type;
+    ArrayList<DeviceSensor> sensorList;
+    ArrayList<DeviceLight> lightList;
     ArrayList<String> groups;
     DeviceStatusEnum status;
     LocalDateTime registrationDate;
@@ -18,6 +21,14 @@ public class Device {
 
     public String getId() {
         return id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public void setId(String id) {
@@ -54,6 +65,22 @@ public class Device {
 
     public void setGroups(ArrayList<String> groups) {
         this.groups = groups;
+    }
+
+    public ArrayList<DeviceSensor> getSensorList() {
+        return sensorList;
+    }
+
+    public void setSensorList(ArrayList<DeviceSensor> sensorList) {
+        this.sensorList = sensorList;
+    }
+
+    public ArrayList<DeviceLight> getLightList() {
+        return lightList;
+    }
+
+    public void setLightList(ArrayList<DeviceLight> lightList) {
+        this.lightList = lightList;
     }
 
     public DeviceStatusEnum getStatus() {
