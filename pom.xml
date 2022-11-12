@@ -15,6 +15,7 @@
 	<description>my smart home project</description>
 	<properties>
 		<java.version>1.8</java.version>
+		<spring.cloud.sleuth.version>3.1.5</spring.cloud.sleuth.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -25,7 +26,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-sleuth</artifactId>
+			<version>${spring.cloud.sleuth.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
