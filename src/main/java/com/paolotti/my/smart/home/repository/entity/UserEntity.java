@@ -1,6 +1,13 @@
-package com.paolotti.my.smart.home.model;
+package com.paolotti.my.smart.home.repository.entity;
 
-public class User {
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+
+
+@Document(collection = "")
+public class UserEntity {
+    @Id
     String id;
     String name;
     String surname;

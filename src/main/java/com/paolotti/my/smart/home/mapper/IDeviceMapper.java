@@ -3,18 +3,26 @@ package com.paolotti.my.smart.home.mapper;
 import com.paolotti.my.smart.home.constant.DeviceConst;
 import com.paolotti.my.smart.home.enums.DeviceSensorTypeEnum;
 import com.paolotti.my.smart.home.model.*;
+import com.paolotti.my.smart.home.repository.entity.DeviceEntity;
 import com.paolotti.my.smart.home.service.impl.DeviceServiceImpl;
 import com.paolotti.my.smart.home.utility.CustomStringUtility;
+import org.mapstruct.Mapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 
-@Service
-public class DeviceMapper {
-    private static final Logger logger = LoggerFactory.getLogger(DeviceServiceImpl.class);
-    public Device toDevice(DeviceRegistrationRequest deviceRegistrationRequest){
+@Mapper(componentModel = "spring")
+public interface IDeviceMapper {
+    static final Logger logger = LoggerFactory.getLogger(DeviceServiceImpl.class);
+
+    DeviceEntity toEntity(Device device);
+    ArrayList<DeviceEntity> toEntities (ArrayList<Device> deviceList);
+    Device toModel (DeviceEntity deviceEntity);
+    ArrayList<Device> toModels (ArrayList<DeviceEntity> deviceList);
+
+    default Device toDevice(DeviceRegistrationRequest deviceRegistrationRequest){
         logger.info("mapping registration request to device object");
         Device deviceToReturn = new Device();
         // device name
@@ -55,7 +63,7 @@ public class DeviceMapper {
         return deviceToReturn;
     }
 
-    private ArrayList<DeviceElementSensor> initializeNewSensor(Integer numOfSensor, DeviceSensorTypeEnum deviceSensorTypeEnum, String SensorIdPrefix, ArrayList<DeviceElementSensor>currentSensorList){
+    default ArrayList<DeviceElementSensor> initializeNewSensor(Integer numOfSensor, DeviceSensorTypeEnum deviceSensorTypeEnum, String SensorIdPrefix, ArrayList<DeviceElementSensor>currentSensorList){
         int addedSensorCount = 0;
         if(numOfSensor!=null && numOfSensor>0) {
             if (currentSensorList == null) {

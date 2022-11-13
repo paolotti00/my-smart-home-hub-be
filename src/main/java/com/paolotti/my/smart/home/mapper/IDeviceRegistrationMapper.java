@@ -6,7 +6,7 @@ import com.paolotti.my.smart.home.rest.dto.DeviceRegistrationRequestDto;
 import com.paolotti.my.smart.home.rest.dto.DeviceRegistrationResponseDto;
 import org.mapstruct.Mapper;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface IDeviceRegistrationMapper {
     DeviceRegistrationRequestDto toDeviceRegistrationRequestDto(DeviceRegistrationRequest deviceRegistrationRequest);
     DeviceRegistrationRequest toDeviceRegistrationRequest(DeviceRegistrationRequestDto deviceRegistrationRequest);

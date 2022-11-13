@@ -5,11 +5,13 @@ import com.paolotti.my.smart.home.enums.DeviceInstallationStatusEnum;
 import com.paolotti.my.smart.home.exception.DeviceAlreadyRegisteredException;
 import com.paolotti.my.smart.home.exception.DeviceCreationException;
 import com.paolotti.my.smart.home.exception.MissingFieldException;
-import com.paolotti.my.smart.home.mapper.DeviceMapper;
+import com.paolotti.my.smart.home.mapper.IDeviceMapper;
 import com.paolotti.my.smart.home.mapper.IDeviceRegistrationMapper;
 import com.paolotti.my.smart.home.model.Device;
 import com.paolotti.my.smart.home.model.DeviceRegistrationRequest;
 import com.paolotti.my.smart.home.model.DeviceRegistrationResponse;
+import com.paolotti.my.smart.home.repository.IDeviceCustomRepository;
+import com.paolotti.my.smart.home.repository.entity.DeviceEntity;
 import com.paolotti.my.smart.home.rest.dto.DeviceRegistrationRequestDto;
 import com.paolotti.my.smart.home.rest.dto.DeviceRegistrationResponseDto;
 import com.paolotti.my.smart.home.service.IDeviceService;
@@ -19,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 import static com.paolotti.my.smart.home.constant.AttributeNameConst.*;
 import static com.paolotti.my.smart.home.constant.MessageConst.DEVICE_ALREADY_REGISTERED;
@@ -27,9 +30,11 @@ import static com.paolotti.my.smart.home.constant.MessageConst.DEVICE_ALREADY_RE
 public class DeviceServiceImpl implements IDeviceService {
     private static final Logger logger = LoggerFactory.getLogger(DeviceServiceImpl.class);
     @Autowired
-    DeviceMapper deviceMapper;
+    IDeviceMapper deviceMapper;
     @Autowired
     IDeviceRegistrationMapper deviceRegistrationMapper;
+    @Autowired
+    IDeviceCustomRepository deviceCustomRepository;
 
     @Override
     public DeviceRegistrationResponseDto deviceSelfRegisteringHandling(DeviceRegistrationRequestDto deviceRegistrationRequestDto){
@@ -40,11 +45,11 @@ public class DeviceServiceImpl implements IDeviceService {
         DeviceRegistrationRequest deviceRegistrationRequest = deviceRegistrationMapper.toDeviceRegistrationRequest(deviceRegistrationRequestDto);
         // request validation
         // checking if the device already exist
-        Device retrievedDevice = getDeviceByMacAddress(deviceRegistrationRequest.getDeviceMacAddress());
+        ArrayList<Device> retrievedDevices = getNotDeactivateDeviceByMacAddress(deviceRegistrationRequest.getDeviceMacAddress());
         logger.info("validation of request start");
-        if(retrievedDevice!=null){
+        if(retrievedDevices!=null && retrievedDevices.size()>0){
             // this device is already registered
-            logger.error("the device already exist");
+            logger.error("the device already exist, devices found : {}",retrievedDevices);
             throw new DeviceAlreadyRegisteredException(DEVICE_ALREADY_REGISTERED);
         }
         if(deviceRegistrationRequest.getUserId()==null){
@@ -78,20 +83,25 @@ public class DeviceServiceImpl implements IDeviceService {
 
 
     }
-    private  <T extends Device> T  getDeviceByMacAddress (String macAddress){
+    private  ArrayList<Device> getNotDeactivateDeviceByMacAddress(String macAddress){
         String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
-        T device = null;
         logger.info("{}: getting device with macAddress {}",methodName,macAddress);
-        // todo pt
-        logger.info("{}: getting device with macAddress {} found",methodName,device);
-        return device;
+        ArrayList<DeviceEntity> deviceEntities = deviceCustomRepository.findAllByMacAddressAndNotDeactivated(macAddress);
+        ArrayList<Device> foundDevices = (ArrayList<Device>) deviceMapper.toModels(deviceEntities);
+        logger.info("{}: getting device with macAddress {} found",methodName,foundDevices);
+        return foundDevices;
     };
     private Device createDeviceInToActivateStatus(Device device) throws DeviceCreationException {
         // this method care to create new device that was discovered
         String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         logger.info("{}: device creation started, device to create in to activate status {}",methodName,device);
         device.setInstallationStatus(DeviceInstallationStatusEnum.TO_ACTIVATE);
-        Device createdDevice = new Device(); // TODO pt
+        // to entity
+        DeviceEntity deviceEntity = deviceMapper.toEntity(device);
+        // save
+        DeviceEntity deviceEntityResult = deviceCustomRepository.save(deviceEntity);
+        // to model
+        Device createdDevice = deviceMapper.toModel(deviceEntityResult);
         logger.info("{}: device creation finished, created device in to activate status  {}",methodName,createdDevice);
         return createdDevice;
     }
