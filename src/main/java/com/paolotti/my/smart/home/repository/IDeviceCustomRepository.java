@@ -9,4 +9,6 @@ public interface IDeviceCustomRepository {
     ArrayList<DeviceEntity> findAllByMacAddressAndNotDeactivated(String macAddress);
 
     ArrayList<DeviceEntity> findAllByUserAndToActivate(String userId);
+
+    DeviceEntity findById(String deviceId);
 }

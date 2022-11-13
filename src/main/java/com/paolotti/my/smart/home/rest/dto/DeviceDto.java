@@ -12,14 +12,15 @@ public class DeviceDto {
     private UserDto user;
     private NetworkDataDto networkData;
     private String name;
-    DeviceTypeEnum type;
-    ArrayList<DeviceComponentSensorDto> sensorList;
-    ArrayList<DeviceComponentLightDto> lightList;
-    ArrayList<String> groups;
-    DeviceOperatingStatusEnum status;
-    DeviceInstallationStatusEnum installationStatus;
-    LocalDateTime registrationDate;
-    LocalDateTime creationDate;
+    private DeviceTypeEnum type;
+    private ArrayList<DeviceComponentSensorDto> sensorList;
+    private ArrayList<DeviceComponentLightDto> lightList;
+    private ArrayList<String> groups;
+    private DeviceOperatingStatusEnum status;
+    private DeviceInstallationStatusEnum installationStatus;
+    private LocalDateTime registrationDate;
+    private LocalDateTime creationDate;
+    private LocalDateTime activationDate;
 
     public String getId() {
         return id;

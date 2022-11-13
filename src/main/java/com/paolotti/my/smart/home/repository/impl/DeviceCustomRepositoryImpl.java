@@ -2,6 +2,7 @@ package com.paolotti.my.smart.home.repository.impl;
 
 import com.paolotti.my.smart.home.repository.IDeviceCustomRepository;
 import com.paolotti.my.smart.home.repository.entity.DeviceEntity;
+import com.paolotti.my.smart.home.repository.entity.UserEntity;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -37,5 +38,10 @@ public class DeviceCustomRepositoryImpl implements IDeviceCustomRepository {
         criteria = Criteria.where("user._id").is(new ObjectId(userId)).and("installationStatus").is(DeviceEntity.DeviceInstallationStatusEnum.TO_ACTIVATE);
         query.addCriteria(criteria);
         return new ArrayList<>(mongoTemplate.find(query, DeviceEntity.class));
+    }
+
+    @Override
+    public DeviceEntity findById(String deviceId) {
+        return mongoTemplate.findById(new ObjectId(deviceId), DeviceEntity.class);
     }
 }

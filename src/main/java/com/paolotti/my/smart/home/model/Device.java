@@ -12,14 +12,15 @@ public class Device {
     private User user;
     private NetworkData networkData;
     private String name;
-    DeviceTypeEnum type;
-    ArrayList<DeviceComponentSensor> sensorList;
-    ArrayList<DeviceComponentLight> lightList;
-    ArrayList<String> groups;
-    DeviceOperatingStatusEnum status;
-    DeviceInstallationStatusEnum installationStatus;
-    LocalDateTime registrationDate;
-    LocalDateTime creationDate;
+    private DeviceTypeEnum type;
+    private ArrayList<DeviceComponentSensor> sensorList;
+    private ArrayList<DeviceComponentLight> lightList;
+    private ArrayList<String> groups;
+    private DeviceOperatingStatusEnum status;
+    private DeviceInstallationStatusEnum installationStatus;
+    private LocalDateTime registrationDate;
+    private LocalDateTime creationDate;
+    private LocalDateTime activationDate;
 
     public String getId() {
         return id;
@@ -115,5 +116,13 @@ public class Device {
 
     public void setCreationDate(LocalDateTime creationDate) {
         this.creationDate = creationDate;
+    }
+
+    public LocalDateTime getActivationDate() {
+        return activationDate;
+    }
+
+    public void setActivationDate(LocalDateTime activationDate) {
+        this.activationDate = activationDate;
     }
 }

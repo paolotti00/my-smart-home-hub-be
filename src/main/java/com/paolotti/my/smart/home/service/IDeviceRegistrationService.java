@@ -1,9 +1,7 @@
 package com.paolotti.my.smart.home.service;
 
-import com.paolotti.my.smart.home.exception.DeviceAlreadyRegisteredException;
-import com.paolotti.my.smart.home.exception.DeviceCreationException;
-import com.paolotti.my.smart.home.exception.MissingFieldException;
-import com.paolotti.my.smart.home.exception.UserNotExistException;
+import com.paolotti.my.smart.home.exception.*;
+import com.paolotti.my.smart.home.model.Device;
 import com.paolotti.my.smart.home.rest.dto.DeviceDto;
 import com.paolotti.my.smart.home.rest.dto.DeviceRegistrationRequestDto;
 import com.paolotti.my.smart.home.rest.dto.DeviceRegistrationResponseDto;
@@ -15,4 +13,10 @@ public interface IDeviceRegistrationService {
     DeviceRegistrationResponseDto deviceSelfRegisteringHandling(String userId, DeviceRegistrationRequestDto deviceRegistrationRequestDto) throws DeviceAlreadyRegisteredException, MissingFieldException, DeviceCreationException, UserNotExistException;
 
     ArrayList<DeviceDto> getDeviceToActivate(String userid) throws MissingFieldException, UserNotExistException;
+
+    DeviceDto activate(String userId, String deviceId) throws MissingFieldException, UserNotExistException, DeviceNotExistsException, DeviceAlreadyActivated, DeviceWrongStatusException;
+
+    Device getDeviceById(String deviceId) throws DeviceNotExistsException;
+
+    Device checkIfDeviceExistsAndRetrieve(String deviceId) throws DeviceNotExistsException;
 }

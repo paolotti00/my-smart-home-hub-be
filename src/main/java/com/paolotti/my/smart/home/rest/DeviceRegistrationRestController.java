@@ -2,10 +2,8 @@ package com.paolotti.my.smart.home.rest;
 
 import com.paolotti.my.smart.home.constant.MessageConst;
 import com.paolotti.my.smart.home.constant.RestConst;
-import com.paolotti.my.smart.home.exception.DeviceAlreadyRegisteredException;
-import com.paolotti.my.smart.home.exception.DeviceCreationException;
-import com.paolotti.my.smart.home.exception.MissingFieldException;
-import com.paolotti.my.smart.home.exception.UserNotExistException;
+import com.paolotti.my.smart.home.exception.*;
+import com.paolotti.my.smart.home.model.BaseResponse;
 import com.paolotti.my.smart.home.rest.dto.*;
 import com.paolotti.my.smart.home.service.IDeviceRegistrationService;
 import org.slf4j.Logger;
@@ -18,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 
 @RestController()
-@RequestMapping("device/registration")
+@RequestMapping("registration/device/")
 public class DeviceRegistrationRestController {
     private static final Logger logger = LoggerFactory.getLogger(DeviceRegistrationRestController.class);
     @Autowired
@@ -60,10 +58,10 @@ public class DeviceRegistrationRestController {
     ResponseEntity<GetDevicesToActivateResponseDto> getDevicesToActivate(@RequestHeader(RestConst.HEADER_USER_ID) String userId){
         // todo get the user from the user that is logged in
         String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
+        logger.info("{}: received request , userId {}",methodName,userId);
         ResponseEntity<GetDevicesToActivateResponseDto> getDevicesToActivateResponseDtoResponseEntity;
         GetDevicesToActivateResponseDto getDevicesToActivateResponseDto = new GetDevicesToActivateResponseDto();
         ArrayList<DeviceDto> deviceDtos;
-        logger.info("{}: received request , userId {}",methodName,userId);
         try {
             deviceDtos = deviceService.getDeviceToActivate(userId);
             getDevicesToActivateResponseDto.setDevicesList(deviceDtos);
@@ -90,5 +88,52 @@ public class DeviceRegistrationRestController {
         }
         logger.info("{}: userId {} result : {} ",methodName,userId,getDevicesToActivateResponseDto);
         return getDevicesToActivateResponseDtoResponseEntity;
+    }
+    @PutMapping("/{deviceId}/activate")
+    ResponseEntity<ActivateDeviceResponseDto> deviceActivate(@RequestHeader(RestConst.HEADER_USER_ID) String userId, @PathVariable String deviceId){
+        // todo get the user from the user that is logged in
+        String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
+        logger.info("{}: received request to activate device with id {}, userId {}",methodName,deviceId,userId);
+        ResponseEntity<ActivateDeviceResponseDto> deviceDtoResponseEntity;
+        ActivateDeviceResponseDto activateDeviceResponseDto = new ActivateDeviceResponseDto();
+        DeviceDto deviceDto = new DeviceDto();
+        try {
+            deviceDto = deviceService.activate(userId,deviceId);
+            activateDeviceResponseDto.setDeviceDto(deviceDto);
+            deviceDtoResponseEntity = new ResponseEntity<>(activateDeviceResponseDto,HttpStatus.OK);
+        } catch (MissingFieldException e) {
+            activateDeviceResponseDto.setResultStatus(BaseResponseDto.ResultStatusEnum.FAILED);
+            activateDeviceResponseDto.setMessage(e.getMessage());
+            deviceDtoResponseEntity = new ResponseEntity<>(activateDeviceResponseDto,HttpStatus.BAD_REQUEST);
+            logger.error("{}: activate device with id  {} error {}",methodName,deviceId,e.getMessage());
+            e.printStackTrace();
+        } catch (UserNotExistException e) {
+            activateDeviceResponseDto.setResultStatus(BaseResponseDto.ResultStatusEnum.FAILED);
+            activateDeviceResponseDto.setMessage(e.getMessage());
+            deviceDtoResponseEntity = new ResponseEntity<>(activateDeviceResponseDto,HttpStatus.INTERNAL_SERVER_ERROR);
+            logger.error("{}: activate device with id  {} error {}",methodName,deviceId,e.getMessage());
+            e.printStackTrace();
+        }catch (DeviceAlreadyActivated e){
+            activateDeviceResponseDto.setResultStatus(BaseResponseDto.ResultStatusEnum.FAILED);
+            activateDeviceResponseDto.setMessage(MessageConst.DEVICE_ALREADY_ACTIVATED);
+            deviceDtoResponseEntity = new ResponseEntity<>(activateDeviceResponseDto,HttpStatus.INTERNAL_SERVER_ERROR);
+            logger.error("{}: activate device with id  {} error {}",methodName,deviceId,e.getMessage());
+            e.printStackTrace();
+        }catch (DeviceWrongStatusException e) {
+            activateDeviceResponseDto.setResultStatus(BaseResponseDto.ResultStatusEnum.FAILED);
+            activateDeviceResponseDto.setMessage(MessageConst.DEVICE_NOT_IN_TO_ACTIVATED_STATUS);
+            deviceDtoResponseEntity = new ResponseEntity<>(activateDeviceResponseDto, HttpStatus.INTERNAL_SERVER_ERROR);
+            logger.error("{}: activate device with id  {} error {}", methodName, deviceId, e.getMessage());
+            e.printStackTrace();
+        }catch (Exception e){
+            activateDeviceResponseDto.setResultStatus(BaseResponseDto.ResultStatusEnum.FAILED);
+            activateDeviceResponseDto.setMessage(MessageConst.GENERIC_ERROR);
+            deviceDtoResponseEntity = new ResponseEntity<>(activateDeviceResponseDto,HttpStatus.INTERNAL_SERVER_ERROR);
+            logger.error("{}: activate device with id  {} error {}",methodName,deviceId,e.getMessage());
+            e.printStackTrace();
+        }
+        logger.info("{}:request to activate device with id {}, userId {} done, deviceDtoResponseEntity {}",methodName,deviceId,userId,deviceDtoResponseEntity);
+        return deviceDtoResponseEntity;
+
     }
 }

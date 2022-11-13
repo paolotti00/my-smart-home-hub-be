@@ -20,6 +20,7 @@ public interface IDeviceMapper {
     DeviceEntity toEntity(Device device);
     ArrayList<DeviceEntity> toEntities (ArrayList<Device> deviceList);
     Device toModel (DeviceEntity deviceEntity);
+    DeviceDto toDto (Device device);
     ArrayList<Device> toModels (ArrayList<DeviceEntity> deviceList);
     ArrayList<DeviceDto> toDtos (ArrayList<Device>devices);
     ArrayList<Device> doModels (ArrayList<DeviceDto>devices);

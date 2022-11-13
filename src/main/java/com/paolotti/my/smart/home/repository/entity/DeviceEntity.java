@@ -21,6 +21,7 @@ public class DeviceEntity {
     private DeviceInstallationStatusEnum installationStatus;
     private LocalDateTime registrationDate;
     private LocalDateTime creationDate;
+    private LocalDateTime activationDate;
 
     public String getId() {
         return id;
@@ -117,6 +118,14 @@ public class DeviceEntity {
 
     public void setCreationDate(LocalDateTime creationDate) {
         this.creationDate = creationDate;
+    }
+
+    public LocalDateTime getActivationDate() {
+        return activationDate;
+    }
+
+    public void setActivationDate(LocalDateTime activationDate) {
+        this.activationDate = activationDate;
     }
 
     public enum OnOffStatusEnum{

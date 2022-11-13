@@ -1,10 +1,8 @@
 package com.paolotti.my.smart.home.service.impl;
 
+import com.paolotti.my.smart.home.constant.MessageConst;
 import com.paolotti.my.smart.home.enums.DeviceInstallationStatusEnum;
-import com.paolotti.my.smart.home.exception.DeviceAlreadyRegisteredException;
-import com.paolotti.my.smart.home.exception.DeviceCreationException;
-import com.paolotti.my.smart.home.exception.MissingFieldException;
-import com.paolotti.my.smart.home.exception.UserNotExistException;
+import com.paolotti.my.smart.home.exception.*;
 import com.paolotti.my.smart.home.mapper.IDeviceMapper;
 import com.paolotti.my.smart.home.mapper.IDeviceRegistrationMapper;
 import com.paolotti.my.smart.home.model.Device;
@@ -112,6 +110,60 @@ public class DeviceRegistrationServiceImpl implements IDeviceRegistrationService
         logger.info("{}: found {} devices to activate for the user {}, devices ",methodName,userId,devicesDto);
         return deviceDtos;
     }
+    @Override
+    public DeviceDto activate (String userId,String deviceId) throws MissingFieldException, UserNotExistException, DeviceNotExistsException, DeviceAlreadyActivated, DeviceWrongStatusException {
+        String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
+        logger.info("{}: activation device id {} with userId {} start",methodName,deviceId,userId);
+        // validate request
+        logger.info("validation of request start");
+        if(deviceId==null){
+            logger.error("the field {} is missing", DEVICE_ID_ATTRIBUTE_NAME);
+            throw new MissingFieldException(DEVICE_ID_ATTRIBUTE_NAME);
+        }
+        if(userId==null){
+            logger.error("the field {} is missing", USER_ID_ATTRIBUTE_NAME);
+            throw new MissingFieldException(USER_ID_ATTRIBUTE_NAME);
+        }
+        // check if the user exist
+        userService.checkIfUserExistsAndRetrieve(userId);
+        logger.info("validation of request done");
+        // check if the device exist and retrieving it
+        // retrieving the device
+        Device device = checkIfDeviceExistsAndRetrieve(deviceId);
+        // check if is not already activated
+        if(device.getInstallationStatus()== DeviceInstallationStatusEnum.ACTIVE){
+            logger.error(MessageConst.DEVICE_ALREADY_ACTIVATED);
+            throw new DeviceAlreadyActivated(deviceId);
+        }
+        // check if is in to_activate status
+        if(device.getInstallationStatus() != DeviceInstallationStatusEnum.TO_ACTIVATE){
+            logger.error(MessageConst.DEVICE_NOT_IN_TO_ACTIVATED_STATUS);
+            throw new DeviceWrongStatusException(deviceId,DeviceInstallationStatusEnum.TO_ACTIVATE);
+        }
+        device.setInstallationStatus(DeviceInstallationStatusEnum.ACTIVE);
+        device.setActivationDate(LocalDateTime.now());
+        DeviceEntity deviceEntity = deviceMapper.toEntity(device);
+        deviceEntity = deviceCustomRepository.save(deviceEntity);
+        device = deviceMapper.toModel(deviceEntity);
+        DeviceDto deviceDto = deviceMapper.toDto(device);
+        logger.info("{}: the device with id {} and userId {} was activated - device dto {}",methodName,userId,deviceId,deviceDto);
+        return deviceDto;
+
+    }
+    @Override
+    public Device getDeviceById(String deviceId) throws DeviceNotExistsException {
+        String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
+        logger.info("{}: getting deviceId {}",methodName,deviceId);
+        DeviceEntity deviceEntity = deviceCustomRepository.findById(deviceId);
+        if(deviceEntity==null){
+            logger.error("user userId {} not exist",deviceId);
+            throw new DeviceNotExistsException(deviceId);
+        }
+        Device device = deviceMapper.toModel(deviceEntity);
+        logger.info("{}: userId {} found, user ",methodName,device);
+        return device;
+    }
+
     private  ArrayList<Device> getNotDeactivateDeviceByMacAddress(String macAddress){
         String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         logger.info("{}: getting device with macAddress {}",methodName,macAddress);
@@ -133,5 +185,16 @@ public class DeviceRegistrationServiceImpl implements IDeviceRegistrationService
         Device createdDevice = deviceMapper.toModel(deviceEntityResult);
         logger.info("{}: device creation finished, created device in to activate status  {}",methodName,createdDevice);
         return createdDevice;
+    }
+    @Override
+    public Device checkIfDeviceExistsAndRetrieve(String deviceId) throws DeviceNotExistsException {
+        String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
+        logger.info("{}: checking if the device with deviceId {} exist",methodName,deviceId);
+        Device device = getDeviceById(deviceId);
+        if(device==null){
+            throw new DeviceNotExistsException(deviceId);
+        }
+        logger.info("{}: the device with deviceId {} exist",methodName,deviceId);
+        return device;
     }
 }
