@@ -11,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface IDeviceMapper {
@@ -63,7 +62,7 @@ public interface IDeviceMapper {
         if(deviceRegistrationRequest.getNumOfLight()!=null && deviceRegistrationRequest.getNumOfLight()>0){
             deviceToReturn.setLightList(new ArrayList<>());
             for(int i=0; i<deviceRegistrationRequest.getNumOfLight();i++){
-                DeviceElementLight deviceLight = new DeviceElementLight();
+                DeviceComponentLight deviceLight = new DeviceComponentLight();
                 deviceLight.setId(DeviceConst.ID_PREFIX_LIGHT+i);
                 deviceToReturn.getLightList().add(deviceLight);
             }
@@ -76,14 +75,14 @@ public interface IDeviceMapper {
         return deviceToReturn;
     }
 
-    default ArrayList<DeviceElementSensor> initializeNewSensor(Integer numOfSensor, DeviceSensorTypeEnum deviceSensorTypeEnum, String SensorIdPrefix, ArrayList<DeviceElementSensor>currentSensorList){
+    default ArrayList<DeviceComponentSensor> initializeNewSensor(Integer numOfSensor, DeviceSensorTypeEnum deviceSensorTypeEnum, String SensorIdPrefix, ArrayList<DeviceComponentSensor>currentSensorList){
         int addedSensorCount = 0;
         if(numOfSensor!=null && numOfSensor>0) {
             if (currentSensorList == null) {
                 currentSensorList = new ArrayList<>();
             }
             for(int i=0; i<numOfSensor;i++){
-                DeviceElementSensor deviceSensor = new DeviceElementSensor();
+                DeviceComponentSensor deviceSensor = new DeviceComponentSensor();
                 deviceSensor.setType(deviceSensorTypeEnum);
                 deviceSensor.setId(SensorIdPrefix+i);
                 currentSensorList.add(deviceSensor);

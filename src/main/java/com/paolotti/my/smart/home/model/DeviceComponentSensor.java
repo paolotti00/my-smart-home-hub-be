@@ -2,7 +2,7 @@ package com.paolotti.my.smart.home.model;
 
 import com.paolotti.my.smart.home.enums.DeviceSensorTypeEnum;
 
-public class DeviceElementSensor extends DeviceElementBase {
+public class DeviceComponentSensor extends DeviceComponentBase {
     private DeviceSensorTypeEnum type;
 
 

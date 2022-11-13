@@ -14,8 +14,8 @@ public class DeviceEntity {
     private String name;
     private DeviceTypeEnum type;
     private NetworkData networkData;
-    private ArrayList<DeviceElementSensor> sensorList;
-    private ArrayList<DeviceElementLight> lightList;
+    private ArrayList<DeviceComponentSensor> sensorList;
+    private ArrayList<DeviceComponentLight> lightList;
     private ArrayList<String> groups;
     private DeviceOperatingStatusEnum status;
     private DeviceInstallationStatusEnum installationStatus;
@@ -63,19 +63,19 @@ public class DeviceEntity {
         this.networkData = networkData;
     }
 
-    public ArrayList<DeviceElementSensor> getSensorList() {
+    public ArrayList<DeviceComponentSensor> getSensorList() {
         return sensorList;
     }
 
-    public void setSensorList(ArrayList<DeviceElementSensor> sensorList) {
+    public void setSensorList(ArrayList<DeviceComponentSensor> sensorList) {
         this.sensorList = sensorList;
     }
 
-    public ArrayList<DeviceElementLight> getLightList() {
+    public ArrayList<DeviceComponentLight> getLightList() {
         return lightList;
     }
 
-    public void setLightList(ArrayList<DeviceElementLight> lightList) {
+    public void setLightList(ArrayList<DeviceComponentLight> lightList) {
         this.lightList = lightList;
     }
 
@@ -145,7 +145,7 @@ public class DeviceEntity {
         MIX
     }
 
-    public static class DeviceElementBase{
+    public static class DeviceComponentBase {
         private String id;
         private OnOffStatusEnum workingStatus;
 
@@ -165,7 +165,7 @@ public class DeviceEntity {
             this.workingStatus = workingStatus;
         }
     }
-    public static class DeviceElementSensor extends DeviceElementBase{
+    public static class DeviceComponentSensor extends DeviceComponentBase {
         private DeviceSensorTypeEnum type;
 
         public DeviceSensorTypeEnum getType() {
@@ -176,7 +176,7 @@ public class DeviceEntity {
             this.type = type;
         }
     }
-    public static class DeviceElementLight extends DeviceElementBase{
+    public static class DeviceComponentLight extends DeviceComponentBase {
 
     }
 

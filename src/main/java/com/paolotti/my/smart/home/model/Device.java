@@ -3,7 +3,6 @@ package com.paolotti.my.smart.home.model;
 import com.paolotti.my.smart.home.enums.DeviceInstallationStatusEnum;
 import com.paolotti.my.smart.home.enums.DeviceOperatingStatusEnum;
 import com.paolotti.my.smart.home.enums.DeviceTypeEnum;
-import com.paolotti.my.smart.home.rest.dto.DeviceRegistrationRequestDto;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -14,8 +13,8 @@ public class Device {
     private NetworkData networkData;
     private String name;
     DeviceTypeEnum type;
-    ArrayList<DeviceElementSensor> sensorList;
-    ArrayList<DeviceElementLight> lightList;
+    ArrayList<DeviceComponentSensor> sensorList;
+    ArrayList<DeviceComponentLight> lightList;
     ArrayList<String> groups;
     DeviceOperatingStatusEnum status;
     DeviceInstallationStatusEnum installationStatus;
@@ -70,19 +69,19 @@ public class Device {
         this.groups = groups;
     }
 
-    public ArrayList<DeviceElementSensor> getSensorList() {
+    public ArrayList<DeviceComponentSensor> getSensorList() {
         return sensorList;
     }
 
-    public void setSensorList(ArrayList<DeviceElementSensor> sensorList) {
+    public void setSensorList(ArrayList<DeviceComponentSensor> sensorList) {
         this.sensorList = sensorList;
     }
 
-    public ArrayList<DeviceElementLight> getLightList() {
+    public ArrayList<DeviceComponentLight> getLightList() {
         return lightList;
     }
 
-    public void setLightList(ArrayList<DeviceElementLight> lightList) {
+    public void setLightList(ArrayList<DeviceComponentLight> lightList) {
         this.lightList = lightList;
     }
 
