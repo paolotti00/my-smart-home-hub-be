@@ -4,6 +4,7 @@ import com.paolotti.my.smart.home.enums.DeviceCreationResultStatusEnum;
 import com.paolotti.my.smart.home.exception.DeviceAlreadyRegisteredException;
 import com.paolotti.my.smart.home.exception.DeviceCreationException;
 import com.paolotti.my.smart.home.exception.MissingFieldException;
+import com.paolotti.my.smart.home.rest.dto.BaseResponseDto;
 import com.paolotti.my.smart.home.rest.dto.DeviceRegistrationRequestDto;
 import com.paolotti.my.smart.home.rest.dto.DeviceRegistrationResponseDto;
 import com.paolotti.my.smart.home.service.IDeviceService;
@@ -31,15 +32,17 @@ public class DeviceRestController {
         DeviceRegistrationResponseDto deviceRegistrationResponseDto = new DeviceRegistrationResponseDto();
         try {
             deviceRegistrationResponseDto = deviceService.deviceSelfRegisteringHandling(registrationRequestDto);
-            deviceRegistrationResponseDto.setCreationResult(DeviceCreationResultStatusEnum.CREATED);
+            deviceRegistrationResponseDto.setResultStatus(BaseResponseDto.ResultStatusEnum.SUCCESS);
             registrationResponseDtoResponseEntity = new ResponseEntity<>(deviceRegistrationResponseDto, HttpStatus.OK);
         } catch (MissingFieldException e) {
-            deviceRegistrationResponseDto.setCreationResult(DeviceCreationResultStatusEnum.FAILED);
+            deviceRegistrationResponseDto.setResultStatus(BaseResponseDto.ResultStatusEnum.FAILED);
+            deviceRegistrationResponseDto.setMessage(e.getMessage());
             registrationResponseDtoResponseEntity = new ResponseEntity<>(deviceRegistrationResponseDto, HttpStatus.BAD_REQUEST);
             logger.info("{}: device auto register flow error: {}",methodName,e.getMessage());
             e.printStackTrace();
         } catch (DeviceAlreadyRegisteredException | DeviceCreationException e) {
-            deviceRegistrationResponseDto.setCreationResult(DeviceCreationResultStatusEnum.FAILED);
+            deviceRegistrationResponseDto.setResultStatus(BaseResponseDto.ResultStatusEnum.FAILED);
+            deviceRegistrationResponseDto.setMessage(e.getMessage());
             registrationResponseDtoResponseEntity = new ResponseEntity<>(deviceRegistrationResponseDto, HttpStatus.INTERNAL_SERVER_ERROR);
             logger.info("{}: device auto register flow error: {}",methodName,e.getMessage());
             e.printStackTrace();

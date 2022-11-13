@@ -5,7 +5,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 
 
-@Document(collection = "")
+@Document(collection = "users")
 public class UserEntity {
     @Id
     String id;

@@ -47,7 +47,7 @@ public class DeviceServiceImpl implements IDeviceService {
         // checking if the device already exist
         ArrayList<Device> retrievedDevices = getNotDeactivateDeviceByMacAddress(deviceRegistrationRequest.getDeviceMacAddress());
         logger.info("validation of request start");
-        if(retrievedDevices!=null && retrievedDevices.size()>0){
+        if(retrievedDevices!=null && !retrievedDevices.isEmpty()){
             // this device is already registered
             logger.error("the device already exist, devices found : {}",retrievedDevices);
             throw new DeviceAlreadyRegisteredException(DEVICE_ALREADY_REGISTERED);
@@ -71,7 +71,6 @@ public class DeviceServiceImpl implements IDeviceService {
             Device deviceToCreate = deviceMapper.toDevice(deviceRegistrationRequest);
             deviceToCreate.setCreationDate(LocalDateTime.now());
             deviceRegistrationResponse.setCreatedDevice(createDeviceInToActivateStatus(deviceToCreate));
-            deviceRegistrationResponse.setCreationResult(DeviceCreationResultStatusEnum.CREATED);
         } catch (DeviceCreationException e) {
             logger.error("something went wrong during the device creation. message : {}",e.getMessage());
             throw e;
