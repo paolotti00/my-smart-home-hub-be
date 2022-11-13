@@ -37,7 +37,7 @@ public class DeviceServiceImpl implements IDeviceService {
     IDeviceCustomRepository deviceCustomRepository;
 
     @Override
-    public DeviceRegistrationResponseDto deviceSelfRegisteringHandling(DeviceRegistrationRequestDto deviceRegistrationRequestDto){
+    public DeviceRegistrationResponseDto deviceSelfRegisteringHandling(DeviceRegistrationRequestDto deviceRegistrationRequestDto) throws DeviceAlreadyRegisteredException, MissingFieldException, DeviceCreationException {
         // handling a device self registration request
         String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         logger.info("{}: device auto register flow started, deviceRegistrationRequestDto {}",methodName,deviceRegistrationRequestDto);
@@ -74,8 +74,7 @@ public class DeviceServiceImpl implements IDeviceService {
             deviceRegistrationResponse.setCreationResult(DeviceCreationResultStatusEnum.CREATED);
         } catch (DeviceCreationException e) {
             logger.error("something went wrong during the device creation. message : {}",e.getMessage());
-            deviceRegistrationResponse.setCreationResult(DeviceCreationResultStatusEnum.FAILED);
-            deviceRegistrationResponse.setCreationErrorMsg(e.getMessage());
+            throw e;
         }
         DeviceRegistrationResponseDto deviceRegistrationResponseDto = deviceRegistrationMapper.toDeviceRegistrationResponseDto(deviceRegistrationResponse);
         logger.info("{}: device auto register flow finished, device {}",methodName,deviceRegistrationResponse);
