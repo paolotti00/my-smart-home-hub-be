@@ -20,4 +20,12 @@ public class DeviceComponentBaseDto {
     public void setWorkingStatus(OnOffStatusEnum workingStatus) {
         this.workingStatus = workingStatus;
     }
+
+    @Override
+    public String toString() {
+        return "DeviceComponentBaseDto{" +
+                "id='" + id + '\'' +
+                ", workingStatus=" + workingStatus +
+                '}';
+    }
 }

@@ -68,4 +68,16 @@ public class DeviceRegistrationRequestDto {
         this.numOfHeatSensors = numOfHeatSensors;
     }
 
+    @Override
+    public String toString() {
+        return "DeviceRegistrationRequestDto{" +
+                "deviceName='" + deviceName + '\'' +
+                ", networkData=" + networkData +
+                ", deviceType=" + deviceType +
+                ", deviceFirmwareVersion='" + deviceFirmwareVersion + '\'' +
+                ", numOfHumiditySensors=" + numOfHumiditySensors +
+                ", numOfLight=" + numOfLight +
+                ", numOfHeatSensors=" + numOfHeatSensors +
+                '}';
+    }
 }

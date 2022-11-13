@@ -13,4 +13,13 @@ public class DeviceRegistrationResponseDto extends BaseResponseDto{
     public void setCreatedDevice(DeviceDto createdDevice) {
         this.createdDevice = createdDevice;
     }
+
+    @Override
+    public String toString() {
+        return "DeviceRegistrationResponseDto{" +
+                "resultStatus=" + resultStatus +
+                ", message='" + message + '\'' +
+                ", createdDevice=" + createdDevice +
+                '}';
+    }
 }

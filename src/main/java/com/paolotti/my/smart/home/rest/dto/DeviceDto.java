@@ -116,4 +116,22 @@ public class DeviceDto {
     public void setCreationDate(LocalDateTime creationDate) {
         this.creationDate = creationDate;
     }
+
+    @Override
+    public String toString() {
+        return "DeviceDto{" +
+                "id='" + id + '\'' +
+                ", user=" + user +
+                ", networkData=" + networkData +
+                ", name='" + name + '\'' +
+                ", type=" + type +
+                ", sensorList=" + sensorList +
+                ", lightList=" + lightList +
+                ", groups=" + groups +
+                ", status=" + status +
+                ", installationStatus=" + installationStatus +
+                ", registrationDate=" + registrationDate +
+                ", creationDate=" + creationDate +
+                '}';
+    }
 }

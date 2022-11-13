@@ -12,4 +12,13 @@ public class GetDevicesToActivateResponseDto extends BaseResponseDto{
     public void setDevicesList(ArrayList<DeviceDto> devicesList) {
         this.devicesList = devicesList;
     }
+
+    @Override
+    public String toString() {
+        return "GetDevicesToActivateResponseDto{" +
+                "resultStatus=" + resultStatus +
+                ", message='" + message + '\'' +
+                ", devicesList=" + devicesList +
+                '}';
+    }
 }

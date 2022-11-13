@@ -28,4 +28,13 @@ public class NetworkDataDto {
     public void setName(String name) {
         this.name = name;
     }
+
+    @Override
+    public String toString() {
+        return "NetworkDataDto{" +
+                "ip='" + ip + '\'' +
+                ", macAddress='" + macAddress + '\'' +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

@@ -13,4 +13,11 @@ public class DeviceComponentSensorDto extends DeviceComponentBaseDto {
     public void setType(DeviceSensorTypeEnum type) {
         this.type = type;
     }
+
+    @Override
+    public String toString() {
+        return "DeviceComponentSensorDto{" +
+                "type=" + type +
+                '}';
+    }
 }
