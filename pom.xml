@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.paolotti</groupId>
-	<artifactId>my.smart.home</artifactId>
+	<artifactId>my-smart-home-hub-be</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>my.smart.home</name>
+	<name>my-smart-home-hub-be</name>
 	<description>my smart home project</description>
 	<properties>
 		<java.version>1.8</java.version>

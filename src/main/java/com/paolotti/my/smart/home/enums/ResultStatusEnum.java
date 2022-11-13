@@ -1,4 +1,4 @@
-package com.paolotti.my.smart.home.model;
+package com.paolotti.my.smart.home.enums;
 
 public enum ResultStatusEnum {
     SUCCESS,

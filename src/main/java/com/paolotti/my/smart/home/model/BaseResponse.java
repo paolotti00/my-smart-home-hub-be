@@ -1,5 +1,7 @@
 package com.paolotti.my.smart.home.model;
 
+import com.paolotti.my.smart.home.enums.ResultStatusEnum;
+
 public class BaseResponse {
     ResultStatusEnum resultStatus;
     String message;

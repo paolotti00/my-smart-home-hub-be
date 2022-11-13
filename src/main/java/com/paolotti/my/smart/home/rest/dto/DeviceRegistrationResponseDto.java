@@ -4,12 +4,13 @@ import com.paolotti.my.smart.home.enums.DeviceCreationResultStatusEnum;
 import com.paolotti.my.smart.home.model.Device;
 
 public class DeviceRegistrationResponseDto extends BaseResponseDto{
-    private Device createdDevice;
-    public Device getCreatedDevice() {
+    private DeviceDto createdDevice;
+
+    public DeviceDto getCreatedDevice() {
         return createdDevice;
     }
 
-    public void setCreatedDevice(Device createdDevice) {
+    public void setCreatedDevice(DeviceDto createdDevice) {
         this.createdDevice = createdDevice;
     }
 }
