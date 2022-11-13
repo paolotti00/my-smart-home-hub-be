@@ -7,4 +7,6 @@ import java.util.ArrayList;
 public interface IDeviceCustomRepository {
     DeviceEntity save(DeviceEntity deviceEntity);
     ArrayList<DeviceEntity> findAllByMacAddressAndNotDeactivated(String macAddress);
+
+    ArrayList<DeviceEntity> findAllByUserAndToActivate(String userId);
 }

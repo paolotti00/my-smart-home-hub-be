@@ -6,4 +6,7 @@ public class MissingFieldException extends GenericException{
     public MissingFieldException(String fieldName) {
         super(fieldName + X_FIELD_IS_MISSING);
     }
+    public MissingFieldException(String fieldName,String fieldType) {
+        super(fieldName + X_FIELD_IS_MISSING + " fieldType" + fieldType);
+    }
 }

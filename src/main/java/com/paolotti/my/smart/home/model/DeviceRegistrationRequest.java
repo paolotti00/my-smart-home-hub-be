@@ -3,7 +3,6 @@ package com.paolotti.my.smart.home.model;
 import com.paolotti.my.smart.home.enums.DeviceTypeEnum;
 
 public class DeviceRegistrationRequest {
-    private String userId;
     private String deviceName;
     private NetworkData networkData;
     private DeviceTypeEnum deviceType;
@@ -12,15 +11,6 @@ public class DeviceRegistrationRequest {
     private Integer numOfHumiditySensors;
     private Integer numOfLight;
     private Integer numOfHeatSensors;
-
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
 
     public String getDeviceName() {
         return deviceName;
