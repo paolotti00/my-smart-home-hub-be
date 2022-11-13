@@ -45,7 +45,7 @@ public class DeviceServiceImpl implements IDeviceService {
         DeviceRegistrationRequest deviceRegistrationRequest = deviceRegistrationMapper.toDeviceRegistrationRequest(deviceRegistrationRequestDto);
         // request validation
         // checking if the device already exist
-        ArrayList<Device> retrievedDevices = getNotDeactivateDeviceByMacAddress(deviceRegistrationRequest.getDeviceMacAddress());
+        ArrayList<Device> retrievedDevices = getNotDeactivateDeviceByMacAddress(deviceRegistrationRequest.getNetworkData().getMacAddress());
         logger.info("validation of request start");
         if(retrievedDevices!=null && !retrievedDevices.isEmpty()){
             // this device is already registered
@@ -60,7 +60,7 @@ public class DeviceServiceImpl implements IDeviceService {
             logger.error("the field {} is missing", DEVICE_REG_REQ_TYPE_ATTRIBUTE_NAME);
             throw new MissingFieldException(DEVICE_REG_REQ_TYPE_ATTRIBUTE_NAME);
         }
-        if(deviceRegistrationRequest.getDeviceMacAddress()==null){
+        if(deviceRegistrationRequest.getNetworkData() == null || deviceRegistrationRequest.getNetworkData().getMacAddress()==null){
             logger.error("the field {} is missing", DEVICE_REG_REQ_MAC_ADDRESS_ATTRIBUTE_NAME);
             throw new MissingFieldException(DEVICE_REG_REQ_MAC_ADDRESS_ATTRIBUTE_NAME);
         }

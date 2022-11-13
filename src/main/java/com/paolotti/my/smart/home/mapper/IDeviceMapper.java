@@ -31,9 +31,22 @@ public interface IDeviceMapper {
         } else {
             deviceToReturn.setName(CustomStringUtility.generateRandomString());
         }
-        // mac address
-        if(deviceRegistrationRequest.getDeviceMacAddress()!=null){
-            deviceToReturn.setMacAddress(deviceRegistrationRequest.getDeviceMacAddress());
+        // network data
+        if (deviceRegistrationRequest.getNetworkData()!=null){
+            NetworkData networkData = new NetworkData();
+            // mac address
+            if(deviceRegistrationRequest.getNetworkData().getMacAddress()!=null){
+                networkData.setMacAddress(deviceRegistrationRequest.getNetworkData().getMacAddress());
+            }
+            // ip
+            if(deviceRegistrationRequest.getNetworkData().getIp()!=null){
+                networkData.setIp(deviceRegistrationRequest.getNetworkData().getIp());
+            }
+            // network name
+            if(deviceRegistrationRequest.getNetworkData().getName()!=null){
+                networkData.setName(deviceRegistrationRequest.getNetworkData().getName());
+            }
+            deviceToReturn.setNetworkData(networkData);
         }
         // user
         if(deviceRegistrationRequest.getUserId()!=null){

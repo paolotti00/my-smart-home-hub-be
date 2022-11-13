@@ -80,3 +80,7 @@ flow :
 ---- magari supporta altri sensori (da verificare)
 --- contro 
 ---- dos attacc
+
+--- i comandi in uscita li mandiamo in rest (tipo accendi luci , fai questo fai quello cosi si sa la risposta)
+--- la lettura dei sensori li riceviamo in mqtt
+--- ci sarà un metodo in mqtt che dirà aggiorna i tuoi dati (cosi il dispositivo reinvia i dati , per esempio l'ip. magari lo fa ogni tot da solo)

@@ -5,7 +5,7 @@ import com.paolotti.my.smart.home.enums.DeviceTypeEnum;
 public class DeviceRegistrationRequestDto {
     private String userId;
     private String deviceName;
-    private String deviceMacAddress;
+    private NetworkData networkData;
     private DeviceTypeEnum deviceType;
     private String deviceFirmwareVersion;
     // sensors detail
@@ -28,14 +28,6 @@ public class DeviceRegistrationRequestDto {
 
     public void setDeviceName(String deviceName) {
         this.deviceName = deviceName;
-    }
-
-    public String getDeviceMacAddress() {
-        return deviceMacAddress;
-    }
-
-    public void setDeviceMacAddress(String deviceMacAddress) {
-        this.deviceMacAddress = deviceMacAddress;
     }
 
     public DeviceTypeEnum getDeviceType() {
@@ -76,5 +68,43 @@ public class DeviceRegistrationRequestDto {
 
     public void setNumOfHeatSensors(Integer numOfHeatSensors) {
         this.numOfHeatSensors = numOfHeatSensors;
+    }
+
+    public NetworkData getNetworkData() {
+        return networkData;
+    }
+
+    public void setNetworkData(NetworkData networkData) {
+        this.networkData = networkData;
+    }
+
+    public static class NetworkData {
+        String ip;
+        String macAddress;
+        String name;
+
+        public String getIp() {
+            return ip;
+        }
+
+        public void setIp(String ip) {
+            this.ip = ip;
+        }
+
+        public String getMacAddress() {
+            return macAddress;
+        }
+
+        public void setMacAddress(String macAddress) {
+            this.macAddress = macAddress;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
     }
 }

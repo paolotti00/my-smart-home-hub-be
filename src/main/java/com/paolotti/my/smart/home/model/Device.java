@@ -3,6 +3,7 @@ package com.paolotti.my.smart.home.model;
 import com.paolotti.my.smart.home.enums.DeviceInstallationStatusEnum;
 import com.paolotti.my.smart.home.enums.DeviceOperatingStatusEnum;
 import com.paolotti.my.smart.home.enums.DeviceTypeEnum;
+import com.paolotti.my.smart.home.rest.dto.DeviceRegistrationRequestDto;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 public class Device {
     private String id;
     private User user;
-    private String macAddress;
+    private NetworkData networkData;
     private String name;
     DeviceTypeEnum type;
     ArrayList<DeviceElementSensor> sensorList;
@@ -37,12 +38,12 @@ public class Device {
         this.id = id;
     }
 
-    public String getMacAddress() {
-        return macAddress;
+    public NetworkData getNetworkData() {
+        return networkData;
     }
 
-    public void setMacAddress(String macAddress) {
-        this.macAddress = macAddress;
+    public void setNetworkData(NetworkData networkData) {
+        this.networkData = networkData;
     }
 
     public String getName() {

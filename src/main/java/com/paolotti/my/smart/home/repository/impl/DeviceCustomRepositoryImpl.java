@@ -25,7 +25,7 @@ public class DeviceCustomRepositoryImpl implements IDeviceCustomRepository {
     public ArrayList<DeviceEntity> findAllByMacAddressAndNotDeactivated(String macAddress) {
         Query query = new Query();
         Criteria criteria = new Criteria();
-        criteria = Criteria.where("macAddress").is(macAddress).and("installationStatus").ne(DeviceEntity.DeviceInstallationStatusEnum.DEACTIVATED);
+        criteria = Criteria.where("networkData.macAddress").is(macAddress).and("installationStatus").ne(DeviceEntity.DeviceInstallationStatusEnum.DEACTIVATED);
         query.addCriteria(criteria);
         return new ArrayList<>(mongoTemplate.find(query, DeviceEntity.class));
     }

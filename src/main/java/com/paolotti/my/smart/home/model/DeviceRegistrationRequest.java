@@ -5,7 +5,7 @@ import com.paolotti.my.smart.home.enums.DeviceTypeEnum;
 public class DeviceRegistrationRequest {
     private String userId;
     private String deviceName;
-    private String deviceMacAddress;
+    private NetworkData networkData;
     private DeviceTypeEnum deviceType;
     private String deviceFirmwareVersion;
     // sensors detail
@@ -30,12 +30,12 @@ public class DeviceRegistrationRequest {
         this.deviceName = deviceName;
     }
 
-    public String getDeviceMacAddress() {
-        return deviceMacAddress;
+    public NetworkData getNetworkData() {
+        return networkData;
     }
 
-    public void setDeviceMacAddress(String deviceMacAddress) {
-        this.deviceMacAddress = deviceMacAddress;
+    public void setNetworkData(NetworkData networkData) {
+        this.networkData = networkData;
     }
 
     public DeviceTypeEnum getDeviceType() {

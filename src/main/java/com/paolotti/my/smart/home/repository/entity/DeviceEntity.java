@@ -11,16 +11,16 @@ public class DeviceEntity {
     @Id
     private String id;
     private UserEntity user;
-    private String macAddress;
     private String name;
-    DeviceTypeEnum type;
-    ArrayList<DeviceElementSensor> sensorList;
-    ArrayList<DeviceElementLight> lightList;
-    ArrayList<String> groups;
-    DeviceOperatingStatusEnum status;
-    DeviceInstallationStatusEnum installationStatus;
-    LocalDateTime registrationDate;
-    LocalDateTime creationDate;
+    private DeviceTypeEnum type;
+    private NetworkData networkData;
+    private ArrayList<DeviceElementSensor> sensorList;
+    private ArrayList<DeviceElementLight> lightList;
+    private ArrayList<String> groups;
+    private DeviceOperatingStatusEnum status;
+    private DeviceInstallationStatusEnum installationStatus;
+    private LocalDateTime registrationDate;
+    private LocalDateTime creationDate;
 
     public String getId() {
         return id;
@@ -38,13 +38,6 @@ public class DeviceEntity {
         this.user = user;
     }
 
-    public String getMacAddress() {
-        return macAddress;
-    }
-
-    public void setMacAddress(String macAddress) {
-        this.macAddress = macAddress;
-    }
 
     public String getName() {
         return name;
@@ -60,6 +53,14 @@ public class DeviceEntity {
 
     public void setType(DeviceTypeEnum type) {
         this.type = type;
+    }
+
+    public NetworkData getNetworkData() {
+        return networkData;
+    }
+
+    public void setNetworkData(NetworkData networkData) {
+        this.networkData = networkData;
     }
 
     public ArrayList<DeviceElementSensor> getSensorList() {
@@ -177,6 +178,36 @@ public class DeviceEntity {
     }
     public static class DeviceElementLight extends DeviceElementBase{
 
+    }
+
+    public static class NetworkData {
+        String ip;
+        String macAddress;
+        String name;
+
+        public String getIp() {
+            return ip;
+        }
+
+        public void setIp(String ip) {
+            this.ip = ip;
+        }
+
+        public String getMacAddress() {
+            return macAddress;
+        }
+
+        public void setMacAddress(String macAddress) {
+            this.macAddress = macAddress;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
     }
 
 }
