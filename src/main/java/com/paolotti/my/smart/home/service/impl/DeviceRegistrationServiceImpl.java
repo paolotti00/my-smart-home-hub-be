@@ -57,12 +57,13 @@ public class DeviceRegistrationServiceImpl implements IDeviceRegistrationService
         }
         // user
         User user = null;
-        if(userId==null){
-            logger.error("the field {} is missing", USER_ID_ATTRIBUTE_NAME);
-            throw new MissingFieldException(USER_ID_ATTRIBUTE_NAME);
+        // enough one between user id or email is mandatory on this flow
+        if(userId==null && deviceRegistrationRequest.getUserEmail()==null){
+            logger.error("the fields {} and {} are missing. enough one must be present", USER_ID_ATTRIBUTE_NAME, USER_ID_ATTRIBUTE_USER_EMAIL);
+            throw new MissingFieldException(USER_ID_ATTRIBUTE_NAME + "and" +"USER_ID_ATTRIBUTE_USER_EMAIL");
         } else {
             // checking if user exist and if yes getting it
-            user= userService.checkIfUserExistsAndRetrieve(userId);
+            user= userService.checkIfUserExistsByIdOrEmailAndRetrieve(userId, deviceRegistrationRequest.getUserEmail());
         }
         if(deviceRegistrationRequest.getDeviceType()==null){
             logger.error("the field {} is missing", DEVICE_REG_REQ_TYPE_ATTRIBUTE_NAME);

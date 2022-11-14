@@ -11,6 +11,7 @@ public class DeviceRegistrationRequest {
     private Integer numOfHumiditySensors;
     private Integer numOfLight;
     private Integer numOfHeatSensors;
+    private String userEmail;
 
     public String getDeviceName() {
         return deviceName;
@@ -66,5 +67,13 @@ public class DeviceRegistrationRequest {
 
     public void setNumOfHeatSensors(Integer numOfHeatSensors) {
         this.numOfHeatSensors = numOfHeatSensors;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 }

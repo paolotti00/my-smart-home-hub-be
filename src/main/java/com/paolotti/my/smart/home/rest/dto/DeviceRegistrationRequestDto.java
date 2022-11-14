@@ -11,6 +11,7 @@ public class DeviceRegistrationRequestDto {
     private Integer numOfHumiditySensors;
     private Integer numOfLight;
     private Integer numOfHeatSensors;
+    private String userEmail;
 
     public String getDeviceName() {
         return deviceName;
@@ -68,6 +69,14 @@ public class DeviceRegistrationRequestDto {
         this.numOfHeatSensors = numOfHeatSensors;
     }
 
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
+
     @Override
     public String toString() {
         return "DeviceRegistrationRequestDto{" +
@@ -78,6 +87,7 @@ public class DeviceRegistrationRequestDto {
                 ", numOfHumiditySensors=" + numOfHumiditySensors +
                 ", numOfLight=" + numOfLight +
                 ", numOfHeatSensors=" + numOfHeatSensors +
+                ", userEmail='" + userEmail + '\'' +
                 '}';
     }
 }

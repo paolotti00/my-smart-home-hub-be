@@ -26,16 +26,14 @@ public class DeviceCustomRepositoryImpl implements IDeviceCustomRepository {
     @Override
     public ArrayList<DeviceEntity> findAllByMacAddressAndNotDeactivated(String macAddress) {
         Query query = new Query();
-        Criteria criteria = new Criteria();
-        criteria = Criteria.where("networkData.macAddress").is(macAddress).and("installationStatus").ne(DeviceEntity.DeviceInstallationStatusEnum.DEACTIVATED);
+        Criteria criteria = Criteria.where("networkData.macAddress").is(macAddress).and("installationStatus").ne(DeviceEntity.DeviceInstallationStatusEnum.DEACTIVATED);
         query.addCriteria(criteria);
         return new ArrayList<>(mongoTemplate.find(query, DeviceEntity.class));
     }
     @Override
     public ArrayList<DeviceEntity> findAllByUserAndToActivate(String userId){
         Query query = new Query();
-        Criteria criteria = new Criteria();
-        criteria = Criteria.where("user._id").is(new ObjectId(userId)).and("installationStatus").is(DeviceEntity.DeviceInstallationStatusEnum.TO_ACTIVATE);
+        Criteria criteria = Criteria.where("user._id").is(new ObjectId(userId)).and("installationStatus").is(DeviceEntity.DeviceInstallationStatusEnum.TO_ACTIVATE);
         query.addCriteria(criteria);
         return new ArrayList<>(mongoTemplate.find(query, DeviceEntity.class));
     }

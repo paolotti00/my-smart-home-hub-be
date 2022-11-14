@@ -22,25 +22,61 @@ public class UserServiceImpl implements IUserService {
     @Override
     public User getUserById(String userId) throws UserNotExistException {
         String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
-        logger.info("{}: getting userId {}",methodName,userId);
+        logger.info("{}: getting userId {}", methodName, userId);
         UserEntity userEntity = userCustomRepository.getUserById(userId);
-        if(userEntity==null){
-            logger.error("user userId {} not exist",userId);
-            throw new UserNotExistException(userId);
+        if (userEntity == null) {
+            logger.error("user userId {} not exist", userId);
+            throw new UserNotExistException(userId,null);
         }
         User user = userMapper.toModel(userEntity);
-        logger.info("{}: userId {} found, user ",methodName,user);
+        logger.info("{}: userId {} found, user ", methodName, user);
         return user;
     }
+
+    @Override
+    public User getUserByEmail(String userEmail) throws UserNotExistException {
+        String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
+        logger.info("{}: getting user by mail  {}", methodName, userEmail);
+        UserEntity userEntity = userCustomRepository.getUserByEmail(userEmail);
+        if (userEntity == null) {
+            logger.error("user userId {} not exist", userEmail);
+            throw new UserNotExistException(null, userEmail);
+        }
+        User user = userMapper.toModel(userEntity);
+        logger.info("{}: userId {} found, user ", methodName, user);
+        return user;
+    }
+
     @Override
     public User checkIfUserExistsAndRetrieve(String userId) throws UserNotExistException {
         String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
-        logger.info("{}: checking if user exist userId {}",methodName,userId);
+        logger.info("{}: checking if user exist userId {}", methodName, userId);
         User user = getUserById(userId);
-        if(user==null){
-            throw new UserNotExistException(userId);
+        if (user == null) {
+            throw new UserNotExistException(userId, null);
         }
-        logger.info("{}: user userId {} exist",methodName,userId);
+        logger.info("{}: user userId {} exist", methodName, userId);
+        return user;
+    }
+
+    @Override
+    public User checkIfUserExistsByIdOrEmailAndRetrieve(String userId, String email) throws UserNotExistException {
+        String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
+        logger.info("{}: checking if user exist userId {}", methodName, userId);
+        User user;
+        if (userId == null && email == null) {
+            throw new UserNotExistException(userId, email);
+        }
+        // check first by id
+        user = getUserById(userId);
+        if (user == null) {
+            // check by mail
+            user = getUserByEmail(email);
+            if (user == null) {
+                throw new UserNotExistException(userId, email);
+            }
+        }
+        logger.info("{}: user with userId {} and with userEmail {} exist", methodName, userId, email);
         return user;
     }
 }
