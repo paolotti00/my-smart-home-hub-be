@@ -1,4 +1,6 @@
-package com.paolotti.my.smart.home.rest.dto;
+package com.paolotti.my.smart.home.rest.dto.reqres;
+
+import com.paolotti.my.smart.home.rest.dto.DeviceDto;
 
 import java.util.ArrayList;
 

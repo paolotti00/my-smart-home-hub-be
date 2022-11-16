@@ -1,10 +1,11 @@
-package com.paolotti.my.smart.home.rest;
+package com.paolotti.my.smart.home.rest.impl;
 
 import com.paolotti.my.smart.home.constant.MessageConst;
 import com.paolotti.my.smart.home.constant.RestConst;
 import com.paolotti.my.smart.home.exception.*;
-import com.paolotti.my.smart.home.model.BaseResponse;
+import com.paolotti.my.smart.home.rest.IDeviceRegistrationRestController;
 import com.paolotti.my.smart.home.rest.dto.*;
+import com.paolotti.my.smart.home.rest.dto.reqres.*;
 import com.paolotti.my.smart.home.service.IDeviceRegistrationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,14 +17,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 
 @RestController()
-@RequestMapping("registration/device/")
-public class DeviceRegistrationRestController {
+public class DeviceRegistrationRestController implements IDeviceRegistrationRestController {
     private static final Logger logger = LoggerFactory.getLogger(DeviceRegistrationRestController.class);
     @Autowired
     IDeviceRegistrationService deviceService;
 
-    @PostMapping("")
-    ResponseEntity<DeviceRegistrationResponseDto> handleDeviceRegistrationRequest(@RequestHeader(RestConst.HEADER_USER_ID) String userId,@RequestBody  DeviceRegistrationRequestDto registrationRequestDto) {
+    @Override
+    public ResponseEntity<DeviceRegistrationResponseDto> handleDeviceRegistrationRequest(@RequestHeader(RestConst.HEADER_USER_ID) String userId, @RequestBody DeviceRegistrationRequestDto registrationRequestDto) {
         String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         logger.info("{}: device auto register flow received request dto, deviceRegistrationRequestDto {}",methodName,registrationRequestDto);
         ResponseEntity<DeviceRegistrationResponseDto> registrationResponseDtoResponseEntity;
@@ -54,8 +54,8 @@ public class DeviceRegistrationRestController {
         logger.info("{}: device auto register flow finished  deviceRegistrationResponseDto {}",methodName,deviceRegistrationResponseDto);
         return registrationResponseDtoResponseEntity;
     };
-    @GetMapping("toactivate")
-    ResponseEntity<GetDevicesToActivateResponseDto> getDevicesToActivate(@RequestHeader(RestConst.HEADER_USER_ID) String userId){
+    @Override
+    public ResponseEntity<GetDevicesToActivateResponseDto> getDevicesToActivate(@RequestHeader(RestConst.HEADER_USER_ID) String userId){
         // todo get the user from the user that is logged in
         String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         logger.info("{}: received request , userId {}",methodName,userId);
@@ -89,8 +89,8 @@ public class DeviceRegistrationRestController {
         logger.info("{}: userId {} result : {} ",methodName,userId,getDevicesToActivateResponseDto);
         return getDevicesToActivateResponseDtoResponseEntity;
     }
-    @PutMapping("/{deviceId}/activate")
-    ResponseEntity<ActivateDeviceResponseDto> deviceActivate(@RequestHeader(RestConst.HEADER_USER_ID) String userId, @PathVariable String deviceId){
+    @Override
+    public ResponseEntity<ActivateDeviceResponseDto> deviceActivate(@RequestHeader(RestConst.HEADER_USER_ID) String userId, @PathVariable String deviceId){
         // todo get the user from the user that is logged in
         String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         logger.info("{}: received request to activate device with id {}, userId {}",methodName,deviceId,userId);

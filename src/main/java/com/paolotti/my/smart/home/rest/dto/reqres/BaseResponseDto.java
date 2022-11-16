@@ -1,4 +1,4 @@
-package com.paolotti.my.smart.home.rest.dto;
+package com.paolotti.my.smart.home.rest.dto.reqres;
 
 public class BaseResponseDto {
     ResultStatusEnum resultStatus;

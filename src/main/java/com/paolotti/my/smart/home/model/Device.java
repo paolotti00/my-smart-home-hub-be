@@ -1,5 +1,6 @@
 package com.paolotti.my.smart.home.model;
 
+import com.paolotti.my.smart.home.enums.DeviceBrandEnum;
 import com.paolotti.my.smart.home.enums.DeviceInstallationStatusEnum;
 import com.paolotti.my.smart.home.enums.DeviceOperatingStatusEnum;
 import com.paolotti.my.smart.home.enums.DeviceTypeEnum;
@@ -21,6 +22,9 @@ public class Device {
     private LocalDateTime registrationDate;
     private LocalDateTime creationDate;
     private LocalDateTime activationDate;
+
+    private ArrayList<DeviceComponentActionsSchema> supportedSchemas;
+    private DeviceBrandEnum brand;
 
     public String getId() {
         return id;
@@ -124,5 +128,21 @@ public class Device {
 
     public void setActivationDate(LocalDateTime activationDate) {
         this.activationDate = activationDate;
+    }
+
+    public ArrayList<DeviceComponentActionsSchema> getSupportedSchemas() {
+        return supportedSchemas;
+    }
+
+    public void setSupportedSchemas(ArrayList<DeviceComponentActionsSchema> supportedSchemas) {
+        this.supportedSchemas = supportedSchemas;
+    }
+
+    public DeviceBrandEnum getBrand() {
+        return brand;
+    }
+
+    public void setBrand(DeviceBrandEnum brand) {
+        this.brand = brand;
     }
 }

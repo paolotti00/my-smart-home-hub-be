@@ -3,8 +3,8 @@ package com.paolotti.my.smart.home.service;
 import com.paolotti.my.smart.home.exception.*;
 import com.paolotti.my.smart.home.model.Device;
 import com.paolotti.my.smart.home.rest.dto.DeviceDto;
-import com.paolotti.my.smart.home.rest.dto.DeviceRegistrationRequestDto;
-import com.paolotti.my.smart.home.rest.dto.DeviceRegistrationResponseDto;
+import com.paolotti.my.smart.home.rest.dto.reqres.DeviceRegistrationRequestDto;
+import com.paolotti.my.smart.home.rest.dto.reqres.DeviceRegistrationResponseDto;
 
 import java.util.ArrayList;
 

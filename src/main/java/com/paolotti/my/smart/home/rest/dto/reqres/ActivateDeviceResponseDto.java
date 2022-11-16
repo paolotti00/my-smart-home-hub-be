@@ -1,4 +1,6 @@
-package com.paolotti.my.smart.home.rest.dto;
+package com.paolotti.my.smart.home.rest.dto.reqres;
+
+import com.paolotti.my.smart.home.rest.dto.DeviceDto;
 
 public class ActivateDeviceResponseDto extends BaseResponseDto{
     DeviceDto deviceDto;

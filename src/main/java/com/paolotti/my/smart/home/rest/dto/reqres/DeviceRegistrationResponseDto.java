@@ -1,7 +1,6 @@
-package com.paolotti.my.smart.home.rest.dto;
+package com.paolotti.my.smart.home.rest.dto.reqres;
 
-import com.paolotti.my.smart.home.enums.DeviceCreationResultStatusEnum;
-import com.paolotti.my.smart.home.model.Device;
+import com.paolotti.my.smart.home.rest.dto.DeviceDto;
 
 public class DeviceRegistrationResponseDto extends BaseResponseDto{
     private DeviceDto createdDevice;

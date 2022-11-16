@@ -1,6 +1,7 @@
-package com.paolotti.my.smart.home.rest.dto;
+package com.paolotti.my.smart.home.rest.dto.reqres;
 
 import com.paolotti.my.smart.home.enums.DeviceTypeEnum;
+import com.paolotti.my.smart.home.rest.dto.NetworkDataDto;
 
 public class DeviceRegistrationRequestDto {
     private String deviceName;
