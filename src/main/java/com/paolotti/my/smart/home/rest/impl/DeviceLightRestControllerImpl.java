@@ -6,7 +6,9 @@ import com.paolotti.my.smart.home.rest.dto.reqres.BaseResponseDto;
 import com.paolotti.my.smart.home.service.IDeviceLightService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
 
+@RestController
 public class DeviceLightRestControllerImpl implements IDeviceLightRestController {
     @Autowired
     IDeviceLightService deviceLightService;
