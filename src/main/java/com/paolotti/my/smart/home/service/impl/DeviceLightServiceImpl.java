@@ -13,14 +13,15 @@ public class DeviceLightServiceImpl implements IDeviceLightService {
     @Autowired
     IBeanFactoryService beanFactoryService;
     @Override
-    public void switchOnAllLightsByDevice(String userId, String deviceId) throws BrandNotSupportedException {
+    public <T extends Device> void switchOnAllLightsByDevice(String userId, String deviceId) throws BrandNotSupportedException {
         // todo log
         // todo retrieve the user
         // check if have the permission to do something
         // todo retrieve the device
-        Device device = null;
+        T device = null;
         IDeviceLightByBrandService deviceLightByBrandService = beanFactoryService.getDeviceLightByBrandServiceImpl(device.getBrand());
         deviceLightByBrandService.switchOn(device);
+
 
 
     }

@@ -165,10 +165,10 @@ public class RegistrationDeviceServiceImpl implements IRegistrationDeviceService
         return device;
     }
 
-    private  ArrayList<Device> getNotDeactivateDeviceByMacAddress(String macAddress){
+    private <T extends DeviceEntity> ArrayList<T> getNotDeactivateDeviceByMacAddress(String macAddress){
         String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         logger.info("{}: getting device with macAddress {}",methodName,macAddress);
-        ArrayList<DeviceEntity> deviceEntities = deviceCustomRepository.findAllByMacAddressAndNotDeactivated(macAddress);
+        ArrayList<DeviceEntity> deviceEntities = deviceCustomRepository.findAllByMacAddressAndNotDeactivated(macAddress,T );
         ArrayList<Device> foundDevices = (ArrayList<Device>) deviceMapper.toModels(deviceEntities);
         logger.info("{}: getting device with macAddress {} found",methodName,foundDevices);
         return foundDevices;
