@@ -14,7 +14,7 @@ import com.paolotti.my.smart.home.repository.entity.DeviceEntity;
 import com.paolotti.my.smart.home.rest.dto.DeviceDto;
 import com.paolotti.my.smart.home.rest.dto.reqres.DeviceRegistrationRequestDto;
 import com.paolotti.my.smart.home.rest.dto.reqres.DeviceRegistrationResponseDto;
-import com.paolotti.my.smart.home.service.IDeviceRegistrationService;
+import com.paolotti.my.smart.home.service.IRegistrationDeviceService;
 import com.paolotti.my.smart.home.service.IUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,8 +28,8 @@ import static com.paolotti.my.smart.home.constant.AttributeNameConst.*;
 import static com.paolotti.my.smart.home.constant.MessageConst.DEVICE_ALREADY_REGISTERED;
 
 @Service
-public class DeviceRegistrationServiceImpl implements IDeviceRegistrationService {
-    private static final Logger logger = LoggerFactory.getLogger(DeviceRegistrationServiceImpl.class);
+public class RegistrationDeviceServiceImpl implements IRegistrationDeviceService {
+    private static final Logger logger = LoggerFactory.getLogger(RegistrationDeviceServiceImpl.class);
     @Autowired
     IDeviceMapper deviceMapper;
     @Autowired

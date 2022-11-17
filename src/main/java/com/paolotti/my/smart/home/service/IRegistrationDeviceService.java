@@ -8,7 +8,7 @@ import com.paolotti.my.smart.home.rest.dto.reqres.DeviceRegistrationResponseDto;
 
 import java.util.ArrayList;
 
-public interface IDeviceRegistrationService {
+public interface IRegistrationDeviceService {
 
     DeviceRegistrationResponseDto deviceSelfRegisteringHandling(String userId, DeviceRegistrationRequestDto deviceRegistrationRequestDto) throws DeviceAlreadyRegisteredException, MissingFieldException, DeviceCreationException, UserNotExistException;
 

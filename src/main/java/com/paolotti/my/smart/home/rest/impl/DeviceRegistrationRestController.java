@@ -6,7 +6,7 @@ import com.paolotti.my.smart.home.exception.*;
 import com.paolotti.my.smart.home.rest.IDeviceRegistrationRestController;
 import com.paolotti.my.smart.home.rest.dto.*;
 import com.paolotti.my.smart.home.rest.dto.reqres.*;
-import com.paolotti.my.smart.home.service.IDeviceRegistrationService;
+import com.paolotti.my.smart.home.service.IRegistrationDeviceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ import java.util.ArrayList;
 public class DeviceRegistrationRestController implements IDeviceRegistrationRestController {
     private static final Logger logger = LoggerFactory.getLogger(DeviceRegistrationRestController.class);
     @Autowired
-    IDeviceRegistrationService deviceService;
+    IRegistrationDeviceService deviceService;
 
     @Override
     public ResponseEntity<DeviceRegistrationResponseDto> handleDeviceRegistrationRequest(@RequestHeader(RestConst.HEADER_USER_ID) String userId, @RequestBody DeviceRegistrationRequestDto registrationRequestDto) {

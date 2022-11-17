@@ -5,7 +5,7 @@ import com.paolotti.my.smart.home.enums.DeviceSensorTypeEnum;
 import com.paolotti.my.smart.home.model.*;
 import com.paolotti.my.smart.home.repository.entity.DeviceEntity;
 import com.paolotti.my.smart.home.rest.dto.DeviceDto;
-import com.paolotti.my.smart.home.service.impl.DeviceRegistrationServiceImpl;
+import com.paolotti.my.smart.home.service.impl.RegistrationDeviceServiceImpl;
 import com.paolotti.my.smart.home.utility.CustomStringUtility;
 import org.mapstruct.Mapper;
 import org.slf4j.Logger;
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 @Mapper(componentModel = "spring")
 public interface IDeviceMapper {
-    static final Logger logger = LoggerFactory.getLogger(DeviceRegistrationServiceImpl.class);
+    static final Logger logger = LoggerFactory.getLogger(RegistrationDeviceServiceImpl.class);
 
     DeviceEntity toEntity(Device device);
     ArrayList<DeviceEntity> toEntities (ArrayList<Device> deviceList);
