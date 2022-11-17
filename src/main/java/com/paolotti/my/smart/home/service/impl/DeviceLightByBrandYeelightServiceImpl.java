@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class DeviceLightByBrandYeelightServiceImpl implements IDeviceLightByBrandService {
-    @Override
-    public void switchOn(Device device) {
+    public <T extends Device> void switchOn (T device) {
+
 
     }
 
