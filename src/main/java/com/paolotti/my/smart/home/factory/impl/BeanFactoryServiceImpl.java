@@ -3,6 +3,8 @@ package com.paolotti.my.smart.home.factory.impl;
 import com.paolotti.my.smart.home.enums.DeviceBrandEnum;
 import com.paolotti.my.smart.home.exception.BrandNotSupportedException;
 import com.paolotti.my.smart.home.factory.IBeanFactoryService;
+import com.paolotti.my.smart.home.mapper.IDeviceMapperBase;
+import com.paolotti.my.smart.home.mapper.IDeviceMapperYeelight;
 import com.paolotti.my.smart.home.service.IDeviceLightByBrandService;
 import com.paolotti.my.smart.home.service.impl.DeviceLightByBrandPaolottiServiceImpl;
 import com.paolotti.my.smart.home.service.impl.DeviceLightByBrandYeelightServiceImpl;

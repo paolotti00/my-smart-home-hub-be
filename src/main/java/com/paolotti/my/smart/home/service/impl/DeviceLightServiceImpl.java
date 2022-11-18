@@ -19,6 +19,7 @@ public class DeviceLightServiceImpl implements IDeviceLightService {
         // check if have the permission to do something
         // todo retrieve the device
         T device = null;
+
         IDeviceLightByBrandService deviceLightByBrandService = beanFactoryService.getDeviceLightByBrandServiceImpl(device.getBrand());
         deviceLightByBrandService.switchOn(device);
 

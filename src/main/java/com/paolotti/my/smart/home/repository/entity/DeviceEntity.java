@@ -1,5 +1,6 @@
 package com.paolotti.my.smart.home.repository.entity;
 
+import com.paolotti.my.smart.home.enums.DeviceBrandEnum;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -19,6 +20,7 @@ public class DeviceEntity {
     private ArrayList<String> groups;
     private DeviceOperatingStatusEnum status;
     private DeviceInstallationStatusEnum installationStatus;
+    private DeviceBrandEnum deviceBrandEnum;
     private LocalDateTime registrationDate;
     private LocalDateTime creationDate;
     private LocalDateTime activationDate;
@@ -102,6 +104,14 @@ public class DeviceEntity {
 
     public void setInstallationStatus(DeviceInstallationStatusEnum installationStatus) {
         this.installationStatus = installationStatus;
+    }
+
+    public DeviceBrandEnum getDeviceBrandEnum() {
+        return deviceBrandEnum;
+    }
+
+    public void setDeviceBrandEnum(DeviceBrandEnum deviceBrandEnum) {
+        this.deviceBrandEnum = deviceBrandEnum;
     }
 
     public LocalDateTime getRegistrationDate() {

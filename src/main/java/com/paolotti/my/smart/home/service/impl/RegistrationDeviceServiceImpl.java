@@ -1,9 +1,12 @@
 package com.paolotti.my.smart.home.service.impl;
 
 import com.paolotti.my.smart.home.constant.MessageConst;
+import com.paolotti.my.smart.home.enums.DeviceBrandEnum;
 import com.paolotti.my.smart.home.enums.DeviceInstallationStatusEnum;
 import com.paolotti.my.smart.home.exception.*;
-import com.paolotti.my.smart.home.mapper.IDeviceMapper;
+import com.paolotti.my.smart.home.factory.IBeanFactoryService;
+import com.paolotti.my.smart.home.mapper.IDeviceMapperBase;
+import com.paolotti.my.smart.home.mapper.IDeviceMapperWrapperService;
 import com.paolotti.my.smart.home.mapper.IDeviceRegistrationMapper;
 import com.paolotti.my.smart.home.model.Device;
 import com.paolotti.my.smart.home.model.DeviceRegistrationRequest;
@@ -31,13 +34,15 @@ import static com.paolotti.my.smart.home.constant.MessageConst.DEVICE_ALREADY_RE
 public class RegistrationDeviceServiceImpl implements IRegistrationDeviceService {
     private static final Logger logger = LoggerFactory.getLogger(RegistrationDeviceServiceImpl.class);
     @Autowired
-    IDeviceMapper deviceMapper;
-    @Autowired
     IDeviceRegistrationMapper deviceRegistrationMapper;
     @Autowired
     IDeviceCustomRepository deviceCustomRepository;
     @Autowired
     IUserService userService;
+    @Autowired
+    IBeanFactoryService beanFactoryService;
+    @Autowired
+    IDeviceMapperWrapperService deviceMapperWrapperService;
 
     @Override
     public DeviceRegistrationResponseDto deviceSelfRegisteringHandling(String userId, DeviceRegistrationRequestDto deviceRegistrationRequestDto) throws DeviceAlreadyRegisteredException, MissingFieldException, DeviceCreationException, UserNotExistException {
@@ -106,6 +111,7 @@ public class RegistrationDeviceServiceImpl implements IRegistrationDeviceService
         userService.checkIfUserExistsAndRetrieve(userId);
         logger.info("validation of request done");
         ArrayList<DeviceEntity> devicesEntity = deviceCustomRepository.findAllByUserAndToActivate(userId);
+        IDeviceMapperBase deviceMapper= beanFactoryService.getDeviceMapper(DeviceBrandEnum.YEELIGHT);
         ArrayList<Device> devices = deviceMapper.toModels(devicesEntity);
         ArrayList<DeviceDto> deviceDtos = deviceMapper.toDtos(devices);
         logger.info("{}: found {} devices to activate for the user {}, devices ",methodName,userId,devicesDto);
@@ -143,10 +149,10 @@ public class RegistrationDeviceServiceImpl implements IRegistrationDeviceService
         }
         device.setInstallationStatus(DeviceInstallationStatusEnum.ACTIVE);
         device.setActivationDate(LocalDateTime.now());
-        DeviceEntity deviceEntity = deviceMapper.toEntity(device);
+        DeviceEntity deviceEntity = deviceMapperWrapperService.toEntity(device);
         deviceEntity = deviceCustomRepository.save(deviceEntity);
-        device = deviceMapper.toModel(deviceEntity);
-        DeviceDto deviceDto = deviceMapper.toDto(device);
+        device = deviceMapperWrapperService.toModel(deviceEntity);
+        DeviceDto deviceDto = deviceMapperWrapperService.toDto(device);
         logger.info("{}: the device with id {} and userId {} was activated - device dto {}",methodName,userId,deviceId,deviceDto);
         return deviceDto;
 
@@ -165,11 +171,11 @@ public class RegistrationDeviceServiceImpl implements IRegistrationDeviceService
         return device;
     }
 
-    private <T extends DeviceEntity> ArrayList<T> getNotDeactivateDeviceByMacAddress(String macAddress){
+    private <T extends Device> ArrayList<T> getNotDeactivateDeviceByMacAddress(String macAddress){
         String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         logger.info("{}: getting device with macAddress {}",methodName,macAddress);
         ArrayList<DeviceEntity> deviceEntities = deviceCustomRepository.findAllByMacAddressAndNotDeactivated(macAddress,T );
-        ArrayList<Device> foundDevices = (ArrayList<Device>) deviceMapper.toModels(deviceEntities);
+        ArrayList<T> foundDevices = (ArrayList<T>) deviceMapper.toModels(deviceEntities);
         logger.info("{}: getting device with macAddress {} found",methodName,foundDevices);
         return foundDevices;
     };

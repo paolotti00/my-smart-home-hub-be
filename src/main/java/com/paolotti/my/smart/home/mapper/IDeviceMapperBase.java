@@ -14,12 +14,11 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 
 @Mapper(componentModel = "spring")
-public interface IDeviceMapper {
+public interface IDeviceMapperBase {
     static final Logger logger = LoggerFactory.getLogger(RegistrationDeviceServiceImpl.class);
 
     DeviceEntity toEntity(Device device);
     ArrayList<DeviceEntity> toEntities (ArrayList<Device> deviceList);
-    Device toModel (DeviceEntity deviceEntity);
     DeviceDto toDto (Device device);
     ArrayList<Device> toModels (ArrayList<DeviceEntity> deviceList);
     ArrayList<DeviceDto> toDtos (ArrayList<Device>devices);
