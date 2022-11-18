@@ -42,7 +42,7 @@ public class DeviceLightWrapperServiceImpl implements IDeviceLightService {
         // todo retrieve the device
         Device device = deviceService.retrieveDeviceById(deviceId);
         IDeviceLightByBrandService deviceLightByBrandService = beanFactoryService.getDeviceLightByBrandServiceImpl(device.getBrand());
-        deviceLightByBrandService.switchOn(device);
+        deviceLightByBrandService.switchOff(device);
 
     }
 
