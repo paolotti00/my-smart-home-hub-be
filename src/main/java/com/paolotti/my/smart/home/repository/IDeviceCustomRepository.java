@@ -5,12 +5,11 @@ import com.paolotti.my.smart.home.repository.entity.DeviceEntity;
 import java.util.ArrayList;
 
 public interface IDeviceCustomRepository {
-    <T extends DeviceEntity> T save(T deviceEntity);
+    DeviceEntity save(DeviceEntity deviceEntity);
 
+    ArrayList<DeviceEntity> findAllByMacAddressAndNotDeactivated(String macAddress);
 
-    <T extends DeviceEntity> ArrayList<T> findAllByMacAddressAndNotDeactivated(String macAddress, Class<T> clazz);
+    ArrayList<DeviceEntity>  findAllByUserAndToActivate(String userId);
 
-    <T extends DeviceEntity> ArrayList<T> findAllByUserAndToActivate(String userId);
-
-    <T extends DeviceEntity> T findById(String deviceId);
+    DeviceEntity  findById(String deviceId);
 }

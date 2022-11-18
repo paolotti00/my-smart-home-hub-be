@@ -17,25 +17,25 @@ public class DeviceCustomRepositoryImpl implements IDeviceCustomRepository {
     MongoTemplate mongoTemplate;
 
     @Override
-    public <T extends DeviceEntity> T save(T deviceEntity) {
+    public DeviceEntity save(DeviceEntity deviceEntity) {
         return mongoTemplate.save(deviceEntity);
     }
 
     @Override
-    public <T extends DeviceEntity> ArrayList<T> findAllByMacAddressAndNotDeactivated(String macAddress, Class<T> clazz) {
+    public  ArrayList<DeviceEntity> findAllByMacAddressAndNotDeactivated(String macAddress) {
         Query query = new Query();
         Criteria criteria = Criteria.where("networkData.macAddress").is(macAddress).and("installationStatus").ne(DeviceEntity.DeviceInstallationStatusEnum.DEACTIVATED);
         query.addCriteria(criteria);
-        return new ArrayList<T>(mongoTemplate.find(query, clazz));
+        return new ArrayList<>(mongoTemplate.find(query, DeviceEntity.class));
     }
 
     @Override
-    public <T extends DeviceEntity> ArrayList<T> findAllByUserAndToActivate(String userId) {
+    public ArrayList<DeviceEntity> findAllByUserAndToActivate(String userId) {
         return null;
     }
 
     @Override
-    public <T extends DeviceEntity> T findById(String deviceId) {
+    public DeviceEntity findById(String deviceId) {
         return null;
     }
 
