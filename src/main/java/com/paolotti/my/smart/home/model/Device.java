@@ -23,7 +23,7 @@ public class Device {
     private LocalDateTime creationDate;
     private LocalDateTime activationDate;
 
-    private ArrayList<DeviceComponentActionsSchema> supportedSchemas;
+    private ArrayList<DeviceActionsSchema> supportedSchemas;
     private DeviceBrandEnum brand;
 
     public String getId() {
@@ -130,11 +130,11 @@ public class Device {
         this.activationDate = activationDate;
     }
 
-    public ArrayList<DeviceComponentActionsSchema> getSupportedSchemas() {
+    public ArrayList<DeviceActionsSchema> getSupportedSchemas() {
         return supportedSchemas;
     }
 
-    public void setSupportedSchemas(ArrayList<DeviceComponentActionsSchema> supportedSchemas) {
+    public void setSupportedSchemas(ArrayList<DeviceActionsSchema> supportedSchemas) {
         this.supportedSchemas = supportedSchemas;
     }
 
