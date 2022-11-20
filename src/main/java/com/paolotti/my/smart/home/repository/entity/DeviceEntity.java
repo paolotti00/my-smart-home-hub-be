@@ -11,13 +11,14 @@ import java.util.ArrayList;
 public class DeviceEntity {
     @Id
     private String id;
-    private UserEntity user;
+    private UserEntity userOwner;
+    private ArrayList listUSerGroups;
     private String name;
     private DeviceTypeEnum type;
     private NetworkData networkData;
     private ArrayList<DeviceComponentSensor> sensorList;
     private ArrayList<DeviceComponentLight> lightList;
-    private ArrayList<String> groups;
+    private ArrayList<String> deviceGroup;
     private DeviceOperatingStatusEnum status;
     private DeviceInstallationStatusEnum installationStatus;
     private DeviceBrandEnum deviceBrandEnum;
@@ -33,12 +34,12 @@ public class DeviceEntity {
         this.id = id;
     }
 
-    public UserEntity getUser() {
-        return user;
+    public UserEntity getUserOwner() {
+        return userOwner;
     }
 
-    public void setUser(UserEntity user) {
-        this.user = user;
+    public void setUserOwner(UserEntity userOwner) {
+        this.userOwner = userOwner;
     }
 
 
@@ -82,12 +83,12 @@ public class DeviceEntity {
         this.lightList = lightList;
     }
 
-    public ArrayList<String> getGroups() {
-        return groups;
+    public ArrayList<String> getDeviceGroup() {
+        return deviceGroup;
     }
 
-    public void setGroups(ArrayList<String> groups) {
-        this.groups = groups;
+    public void setDeviceGroup(ArrayList<String> deviceGroup) {
+        this.deviceGroup = deviceGroup;
     }
 
     public DeviceOperatingStatusEnum getStatus() {
@@ -136,6 +137,14 @@ public class DeviceEntity {
 
     public void setActivationDate(LocalDateTime activationDate) {
         this.activationDate = activationDate;
+    }
+
+    public ArrayList getListUSerGroups() {
+        return listUSerGroups;
+    }
+
+    public void setListUSerGroups(ArrayList listUSerGroups) {
+        this.listUSerGroups = listUSerGroups;
     }
 
     public enum OnOffStatusEnum{
