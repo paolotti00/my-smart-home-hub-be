@@ -7,7 +7,6 @@ import com.paolotti.my.smart.home.exception.GroupNotExistsException;
 import com.paolotti.my.smart.home.factory.IBeanFactoryService;
 import com.paolotti.my.smart.home.mapper.IDeviceMapper;
 import com.paolotti.my.smart.home.model.Device;
-import com.paolotti.my.smart.home.repository.IDeviceCustomRepository;
 import com.paolotti.my.smart.home.service.IDeviceLightByBrandService;
 import com.paolotti.my.smart.home.service.IDeviceLightService;
 import com.paolotti.my.smart.home.service.IDeviceService;
@@ -24,8 +23,6 @@ public class DeviceLightWrapperServiceImpl implements IDeviceLightService {
     IBeanFactoryService beanFactoryService;
     @Autowired
     IDeviceService deviceService;
-    @Autowired
-    IDeviceCustomRepository deviceCustomRepository;
     @Autowired
     IDeviceMapper deviceMapper;
 
