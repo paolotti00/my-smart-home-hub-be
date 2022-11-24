@@ -69,6 +69,7 @@ public class DeviceLightWrapperServiceImpl implements IDeviceLightService {
             case OFF:
                 deviceLightByBrandService.switchOff(device);
                 logger.info("device {} switched OFF", device.getId());
+                break;
         }
     }
 }

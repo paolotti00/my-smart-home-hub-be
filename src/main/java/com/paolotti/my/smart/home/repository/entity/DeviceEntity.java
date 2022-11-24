@@ -18,7 +18,7 @@ public class DeviceEntity {
     private NetworkData networkData;
     private ArrayList<DeviceComponentSensor> sensorList;
     private ArrayList<DeviceComponentLight> lightList;
-    private ArrayList<String> deviceGroup;
+    private ArrayList<String> deviceGroupIds;
     private DeviceOperatingStatusEnum status;
     private DeviceInstallationStatusEnum installationStatus;
     private DeviceBrandEnum deviceBrandEnum;
@@ -83,12 +83,12 @@ public class DeviceEntity {
         this.lightList = lightList;
     }
 
-    public ArrayList<String> getDeviceGroup() {
-        return deviceGroup;
+    public ArrayList<String> getDeviceGroupIds() {
+        return deviceGroupIds;
     }
 
-    public void setDeviceGroup(ArrayList<String> deviceGroup) {
-        this.deviceGroup = deviceGroup;
+    public void setDeviceGroupIds(ArrayList<String> deviceGroupIds) {
+        this.deviceGroupIds = deviceGroupIds;
     }
 
     public DeviceOperatingStatusEnum getStatus() {

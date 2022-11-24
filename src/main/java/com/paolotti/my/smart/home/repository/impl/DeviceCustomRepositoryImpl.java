@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 @Repository
 public class DeviceCustomRepositoryImpl implements IDeviceCustomRepository {
+    // all methods, if not differently specified, check silently also if the status is ACTIVE
     @Autowired
     MongoTemplate mongoTemplate;
 
@@ -36,7 +37,18 @@ public class DeviceCustomRepositoryImpl implements IDeviceCustomRepository {
 
     @Override
     public DeviceEntity findById(String deviceId) {
-        return null;
+        Query query = new Query();
+        Criteria criteria = Criteria.where("id").is(deviceId).and("installationStatus").is(DeviceEntity.DeviceInstallationStatusEnum.ACTIVE);
+        query.addCriteria(criteria);
+        return (DeviceEntity) mongoTemplate.find(query, DeviceEntity.class);
+    }
+
+    @Override
+    public ArrayList<DeviceEntity> findByGroupsId(String groupId) {
+        Query query = new Query();
+        Criteria criteria = Criteria.where("deviceGroupIds").is(groupId).and("installationStatus").is(DeviceEntity.DeviceInstallationStatusEnum.ACTIVE);
+        query.addCriteria(criteria);
+        return new ArrayList<>(mongoTemplate.find(query, DeviceEntity.class));
     }
 
 //    @Override

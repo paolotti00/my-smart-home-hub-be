@@ -53,6 +53,9 @@ public class DeviceServiceImpl implements IDeviceService {
 
     @Override
     public ArrayList<Device> retrieveDevicesByGroupId(String groupId) throws GroupNotExistsException {
+        logger.info("retrieving devices of the group with id {}", groupId);
+        ArrayList<DeviceEntity> deviceEntities = deviceCustomRepository.
+
         return null;
     }
 }
