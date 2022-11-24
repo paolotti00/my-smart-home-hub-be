@@ -1,5 +1,6 @@
 package com.paolotti.my.smart.home.service.impl;
 
+import com.paolotti.my.smart.home.enums.OnOffStatusEnum;
 import com.paolotti.my.smart.home.exception.BrandNotSupportedException;
 import com.paolotti.my.smart.home.exception.DeviceNotExistsException;
 import com.paolotti.my.smart.home.exception.GroupNotExistsException;
@@ -29,78 +30,48 @@ public class DeviceLightWrapperServiceImpl implements IDeviceLightService {
     IDeviceMapper deviceMapper;
 
     private static final Logger logger = LoggerFactory.getLogger(DeviceLightWrapperServiceImpl.class);
-    @Override
-    public void switchOnAllLightsByDevice(String userId, String deviceId) throws BrandNotSupportedException, DeviceNotExistsException {
-        // todo log
-        // todo retrieve the user
-        // check if have the permission to do something
-        // todo retrieve the device
-        Device device = deviceService.retrieveDeviceById(deviceId);
-        IDeviceLightByBrandService deviceLightByBrandService = beanFactoryService.getDeviceLightByBrandServiceImpl(device.getBrand());
-        deviceLightByBrandService.switchOn(device);
-    }
 
     @Override
-    public void switchOffAllLightsByDevice(String userId, String deviceId) throws BrandNotSupportedException, DeviceNotExistsException {
-        // todo log
+    public void switchAllLightsByDevice(String userId, String deviceId, OnOffStatusEnum desiredStatus) throws BrandNotSupportedException, DeviceNotExistsException {
+        logger.info("switching device lights by device : userId {} deviceId {} desiredStatus {}", userId, deviceId, desiredStatus);
         // todo retrieve the user
         // check if have the permission to do something
-        // todo retrieve the device
         Device device = null;
         device = deviceService.retrieveDeviceById(deviceId);
-        switchOffAllLightsByDevice(device);
-
-
+        logger.info("device retrieved {}", device);
+        switchAllLightsByDevice(device, desiredStatus);
     }
 
+
     @Override
-    public void switchOnAllLightsByGroup(String userId, String groupId) throws GroupNotExistsException {
-        // todo log
+    public void switchAllLightsByGroup(String userId, String groupId, OnOffStatusEnum desiredStatus) throws GroupNotExistsException {
+        logger.info("switching device lights by group : userId {} groupId {} desiredStatus {}", userId, groupId, desiredStatus);
         // todo retrieve the user
         // check if it have the permission to do something
-        // todo retrieve the device
         ArrayList<Device> devices = deviceService.retrieveDevicesByGroupId(groupId);
-        if(devices!=null && !devices.isEmpty()){
+        if (devices != null && !devices.isEmpty()) {
             devices.forEach(device -> {
                 IDeviceLightByBrandService deviceLightByBrandService = null;
                 try {
-                    switchOnAllLightsByDevice(device);
+                    switchAllLightsByDevice(device, desiredStatus);
                 } catch (BrandNotSupportedException e) {
-                    logger.error("failed to switch on all light of device with id {} because:{}",device.getId(),e.getMessage());
+                    logger.error("failed to switch off all light of device with id {} because:{}", device.getId(), e.getMessage());
                 }
             });
         }
 
     }
 
-    @Override
-    public void switchOffAllLightsByGroup(String userId, String groupId) throws GroupNotExistsException {
-        // todo log
-        // todo retrieve the user
-        // check if it have the permission to do something
-        // todo retrieve the device
-        ArrayList<Device> devices = deviceService.retrieveDevicesByGroupId(groupId);
-        if(devices!=null && !devices.isEmpty()){
-            devices.forEach(device -> {
-                IDeviceLightByBrandService deviceLightByBrandService = null;
-                try {
-                    switchOffAllLightsByDevice(device);
-                } catch (BrandNotSupportedException e) {
-                    logger.error("failed to switch off all light of device with id {} because:{}",device.getId(),e.getMessage());
-                }
-            });
+    private void switchAllLightsByDevice(Device device, OnOffStatusEnum desiredStatus) throws BrandNotSupportedException {
+        IDeviceLightByBrandService deviceLightByBrandService = beanFactoryService.getDeviceLightByBrandServiceImpl(device.getBrand());
+        switch (desiredStatus) {
+            case ON:
+                deviceLightByBrandService.switchOn(device);
+                logger.info("device {} switched ON", device.getId());
+                break;
+            case OFF:
+                deviceLightByBrandService.switchOff(device);
+                logger.info("device {} switched OFF", device.getId());
         }
-
-    }
-
-    private void switchOffAllLightsByDevice(Device device) throws BrandNotSupportedException {
-        logger.info("switch off device with id {}",device.getId());
-        IDeviceLightByBrandService deviceLightByBrandService = beanFactoryService.getDeviceLightByBrandServiceImpl(device.getBrand());
-        deviceLightByBrandService.switchOff(device);
-    }
-    private void switchOnAllLightsByDevice(Device device) throws BrandNotSupportedException {
-        logger.info("switch off device with id {}",device.getId());
-        IDeviceLightByBrandService deviceLightByBrandService = beanFactoryService.getDeviceLightByBrandServiceImpl(device.getBrand());
-        deviceLightByBrandService.switchOn(device);
     }
 }
