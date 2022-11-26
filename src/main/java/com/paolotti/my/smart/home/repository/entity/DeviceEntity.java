@@ -1,38 +1,28 @@
 package com.paolotti.my.smart.home.repository.entity;
 
 import com.paolotti.my.smart.home.enums.DeviceBrandEnum;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 @Document(collection = "devices")
-public class DeviceEntity {
-    @Id
-    private String id;
+public class DeviceEntity extends EntityBase {
     private UserEntity userOwner;
-    private ArrayList listUSerGroups;
     private String name;
     private DeviceTypeEnum type;
-    private NetworkData networkData;
+   // private NetworkData networkData;
     private ArrayList<DeviceComponentSensor> sensorList;
     private ArrayList<DeviceComponentLight> lightList;
-    private ArrayList<String> deviceGroupIds;
+    @DocumentReference(lazy=true)
+    private List<GroupDeviceEntity> deviceGroups;
     private DeviceOperatingStatusEnum status;
     private DeviceInstallationStatusEnum installationStatus;
     private DeviceBrandEnum deviceBrandEnum;
     private LocalDateTime registrationDate;
-    private LocalDateTime creationDate;
     private LocalDateTime activationDate;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public UserEntity getUserOwner() {
         return userOwner;
@@ -59,14 +49,6 @@ public class DeviceEntity {
         this.type = type;
     }
 
-    public NetworkData getNetworkData() {
-        return networkData;
-    }
-
-    public void setNetworkData(NetworkData networkData) {
-        this.networkData = networkData;
-    }
-
     public ArrayList<DeviceComponentSensor> getSensorList() {
         return sensorList;
     }
@@ -83,12 +65,20 @@ public class DeviceEntity {
         this.lightList = lightList;
     }
 
-    public ArrayList<String> getDeviceGroupIds() {
-        return deviceGroupIds;
+    public List<GroupDeviceEntity> getDeviceGroups() {
+        return deviceGroups;
     }
 
-    public void setDeviceGroupIds(ArrayList<String> deviceGroupIds) {
-        this.deviceGroupIds = deviceGroupIds;
+    public void setDeviceGroups(List<GroupDeviceEntity> deviceGroups) {
+        this.deviceGroups = deviceGroups;
+    }
+
+    public LocalDateTime getActivationDate() {
+        return activationDate;
+    }
+
+    public void setActivationDate(LocalDateTime activationDate) {
+        this.activationDate = activationDate;
     }
 
     public DeviceOperatingStatusEnum getStatus() {
@@ -121,30 +111,6 @@ public class DeviceEntity {
 
     public void setRegistrationDate(LocalDateTime registrationDate) {
         this.registrationDate = registrationDate;
-    }
-
-    public LocalDateTime getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(LocalDateTime creationDate) {
-        this.creationDate = creationDate;
-    }
-
-    public LocalDateTime getActivationDate() {
-        return activationDate;
-    }
-
-    public void setActivationDate(LocalDateTime activationDate) {
-        this.activationDate = activationDate;
-    }
-
-    public ArrayList getListUSerGroups() {
-        return listUSerGroups;
-    }
-
-    public void setListUSerGroups(ArrayList listUSerGroups) {
-        this.listUSerGroups = listUSerGroups;
     }
 
     public enum OnOffStatusEnum{

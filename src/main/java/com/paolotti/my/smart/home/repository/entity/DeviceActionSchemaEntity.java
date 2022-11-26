@@ -2,7 +2,7 @@ package com.paolotti.my.smart.home.repository.entity;
 
 import com.paolotti.my.smart.home.enums.DeviceActionSchemaTypeEnum;
 
-public class DeviceActionSchemaEntity {
+public class DeviceActionSchemaEntity extends EntityBase{
     private String name;
     private ColorRgb colorRgb;
     private Long durationMs;

@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface IDeviceMapper {
@@ -21,7 +22,9 @@ public interface IDeviceMapper {
     ArrayList<DeviceEntity> toEntities (ArrayList<Device> deviceList);
     Device toModel (DeviceEntity deviceEntity);
     DeviceDto toDto (Device device);
+    @Deprecated
     ArrayList<Device> toModels (ArrayList<DeviceEntity> deviceList);
+    ArrayList<Device> toModels (List<DeviceEntity> deviceList);
     ArrayList<DeviceDto> toDtos (ArrayList<Device>devices);
 
     default Device toDevice(DeviceRegistrationRequest deviceRegistrationRequest){

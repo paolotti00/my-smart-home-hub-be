@@ -6,7 +6,9 @@ import com.paolotti.my.smart.home.mapper.IDeviceMapper;
 import com.paolotti.my.smart.home.model.Device;
 import com.paolotti.my.smart.home.model.DeviceActionsSchema;
 import com.paolotti.my.smart.home.repository.IDeviceCustomRepository;
+import com.paolotti.my.smart.home.repository.IDeviceGroupCustomRepository;
 import com.paolotti.my.smart.home.repository.entity.DeviceEntity;
+import com.paolotti.my.smart.home.repository.entity.GroupDeviceEntity;
 import com.paolotti.my.smart.home.service.IDeviceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +19,8 @@ import java.util.ArrayList;
 public class DeviceServiceImpl implements IDeviceService {
     @Autowired
     IDeviceCustomRepository deviceCustomRepository;
+    @Autowired
+    IDeviceGroupCustomRepository deviceGroupCustomRepository;
     @Autowired
     IDeviceMapper deviceMapper;
 
@@ -53,9 +57,21 @@ public class DeviceServiceImpl implements IDeviceService {
 
     @Override
     public ArrayList<Device> retrieveDevicesByGroupId(String groupId) throws GroupNotExistsException {
+        // todo pt check if this user is the owner of this group or if can be read it
         logger.info("retrieving devices of the group with id {}", groupId);
-        ArrayList<DeviceEntity> deviceEntities = deviceCustomRepository.
-
-        return null;
+        ArrayList<Device>devices = new ArrayList<>();
+        logger.info("checking if group with id {} exists",groupId);
+        GroupDeviceEntity groupDeviceEntity = deviceGroupCustomRepository.findById(groupId);
+        if(groupDeviceEntity == null){
+            throw new GroupNotExistsException(groupId);
+        }
+        if (groupDeviceEntity.getDevices().isEmpty()) {
+            logger.warn("no device in group id {} found", groupId);
+        } else {
+            logger.debug("converting deviceEntity to device model");
+            devices = deviceMapper.toModels(groupDeviceEntity.getDevices());
+        }
+        logger.info("retrieved {} devices in the group with id {} and name",devices.size(),groupId);
+        return devices;
     }
 }

@@ -43,14 +43,6 @@ public class DeviceCustomRepositoryImpl implements IDeviceCustomRepository {
         return (DeviceEntity) mongoTemplate.find(query, DeviceEntity.class);
     }
 
-    @Override
-    public ArrayList<DeviceEntity> findByGroupsId(String groupId) {
-        Query query = new Query();
-        Criteria criteria = Criteria.where("deviceGroupIds").is(groupId).and("installationStatus").is(DeviceEntity.DeviceInstallationStatusEnum.ACTIVE);
-        query.addCriteria(criteria);
-        return new ArrayList<>(mongoTemplate.find(query, DeviceEntity.class));
-    }
-
 //    @Override
 //    public DeviceEntity save(DeviceEntity deviceEntity) {
 //        return mongoTemplate.save(deviceEntity);
