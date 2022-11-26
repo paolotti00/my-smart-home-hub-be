@@ -5,7 +5,6 @@ import com.paolotti.my.smart.home.enums.DeviceSensorTypeEnum;
 import com.paolotti.my.smart.home.model.*;
 import com.paolotti.my.smart.home.repository.entity.DeviceEntity;
 import com.paolotti.my.smart.home.rest.dto.DeviceDto;
-import com.paolotti.my.smart.home.service.impl.RegistrationDeviceServiceImpl;
 import com.paolotti.my.smart.home.utility.CustomStringUtility;
 import org.mapstruct.Mapper;
 import org.slf4j.Logger;

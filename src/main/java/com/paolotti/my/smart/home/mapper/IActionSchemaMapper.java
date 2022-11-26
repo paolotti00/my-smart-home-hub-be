@@ -1,7 +1,6 @@
 package com.paolotti.my.smart.home.mapper;
 
 import com.paolotti.my.smart.home.model.DeviceActionsSchema;
-import com.paolotti.my.smart.home.model.DeviceGroup;
 import com.paolotti.my.smart.home.repository.entity.DeviceActionSchemaEntity;
 
 import java.util.ArrayList;
