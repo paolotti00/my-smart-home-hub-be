@@ -1,0 +1,12 @@
+package com.paolotti.my.smart.home.rest.impl;
+
+import com.paolotti.my.smart.home.rest.IDeviceRestController;
+import com.paolotti.my.smart.home.rest.dto.DeviceDto;
+
+public class DeviceRestControllerImpl implements IDeviceRestController {
+
+    @Override
+    public DeviceDto create(DeviceDto deviceDto) {
+        return null;
+    }
+}

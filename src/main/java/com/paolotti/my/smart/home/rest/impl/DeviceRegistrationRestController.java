@@ -3,6 +3,11 @@ package com.paolotti.my.smart.home.rest.impl;
 import com.paolotti.my.smart.home.constant.MessageConst;
 import com.paolotti.my.smart.home.constant.RestConst;
 import com.paolotti.my.smart.home.exception.*;
+import com.paolotti.my.smart.home.mapper.IDeviceMapper;
+import com.paolotti.my.smart.home.mapper.IDeviceRegistrationMapper;
+import com.paolotti.my.smart.home.model.Device;
+import com.paolotti.my.smart.home.model.DeviceRegistrationRequest;
+import com.paolotti.my.smart.home.model.DeviceRegistrationResponse;
 import com.paolotti.my.smart.home.rest.IDeviceRegistrationRestController;
 import com.paolotti.my.smart.home.rest.dto.DeviceDto;
 import com.paolotti.my.smart.home.rest.dto.reqres.*;
@@ -24,6 +29,10 @@ public class DeviceRegistrationRestController implements IDeviceRegistrationRest
     private static final Logger logger = LoggerFactory.getLogger(DeviceRegistrationRestController.class);
     @Autowired
     IRegistrationDeviceService deviceService;
+    @Autowired
+    IDeviceMapper deviceMapper;
+    @Autowired
+    IDeviceRegistrationMapper deviceRegistrationMapper;
 
     @Override
     public ResponseEntity<DeviceRegistrationResponseDto> handleDeviceRegistrationRequest(@RequestHeader(RestConst.HEADER_USER_ID) String userId, @RequestBody DeviceRegistrationRequestDto registrationRequestDto) {
@@ -32,7 +41,11 @@ public class DeviceRegistrationRestController implements IDeviceRegistrationRest
         ResponseEntity<DeviceRegistrationResponseDto> registrationResponseDtoResponseEntity;
         DeviceRegistrationResponseDto deviceRegistrationResponseDto = new DeviceRegistrationResponseDto();
         try {
-            deviceRegistrationResponseDto = deviceService.deviceSelfRegisteringHandling(userId,registrationRequestDto);
+            // converting to model
+            DeviceRegistrationRequest deviceRegistrationRequest =  deviceRegistrationMapper.toDeviceRegistrationRequest(registrationRequestDto);
+            DeviceRegistrationResponse deviceRegistrationResponse = deviceService.deviceSelfRegisteringHandling(userId, deviceRegistrationRequest);
+            // converting to dto
+            deviceRegistrationResponseDto = deviceRegistrationMapper.toDeviceRegistrationResponseDto(deviceRegistrationResponse);
             deviceRegistrationResponseDto.setResultStatus(BaseResponseDto.ResultStatusEnum.SUCCESS);
             registrationResponseDtoResponseEntity = new ResponseEntity<>(deviceRegistrationResponseDto, HttpStatus.OK);
         } catch (MissingFieldException e) {
@@ -66,7 +79,8 @@ public class DeviceRegistrationRestController implements IDeviceRegistrationRest
         GetDevicesToActivateResponseDto getDevicesToActivateResponseDto = new GetDevicesToActivateResponseDto();
         ArrayList<DeviceDto> deviceDtos;
         try {
-            deviceDtos = deviceService.getDeviceToActivate(userId);
+            ArrayList<Device> devices = deviceService.getDeviceToActivate(userId);
+            deviceDtos = deviceMapper.toDtos(devices);
             getDevicesToActivateResponseDto.setDevicesList(deviceDtos);
             getDevicesToActivateResponseDto.setResultStatus(BaseResponseDto.ResultStatusEnum.SUCCESS);
             getDevicesToActivateResponseDtoResponseEntity = new ResponseEntity<>(getDevicesToActivateResponseDto,HttpStatus.OK);
@@ -101,7 +115,9 @@ public class DeviceRegistrationRestController implements IDeviceRegistrationRest
         ActivateDeviceResponseDto activateDeviceResponseDto = new ActivateDeviceResponseDto();
         DeviceDto deviceDto = new DeviceDto();
         try {
-            deviceDto = deviceService.activate(userId,deviceId);
+            Device device = deviceService.activate(userId, deviceId);
+            // convert to dto
+            deviceDto = deviceMapper.toDto(device);
             activateDeviceResponseDto.setDeviceDto(deviceDto);
             deviceDtoResponseEntity = new ResponseEntity<>(activateDeviceResponseDto,HttpStatus.OK);
         } catch (MissingFieldException e) {

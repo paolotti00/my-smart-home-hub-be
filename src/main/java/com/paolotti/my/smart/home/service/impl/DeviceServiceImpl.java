@@ -29,6 +29,11 @@ public class DeviceServiceImpl implements IDeviceService {
     private static final Logger logger = LoggerFactory.getLogger(DeviceServiceImpl.class);
 
     @Override
+    public Device create(Device device) {
+        return null;
+    }
+
+    @Override
     public void doFwActionsSchema(String deviceId, DeviceActionsSchema deviceActionsSchema) {
 
     }

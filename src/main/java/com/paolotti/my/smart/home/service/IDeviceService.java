@@ -4,10 +4,12 @@ import com.paolotti.my.smart.home.exception.DeviceNotExistsException;
 import com.paolotti.my.smart.home.exception.GroupNotExistsException;
 import com.paolotti.my.smart.home.model.Device;
 import com.paolotti.my.smart.home.model.DeviceActionsSchema;
+import com.paolotti.my.smart.home.rest.dto.DeviceDto;
 
 import java.util.ArrayList;
 
 public interface IDeviceService {
+    Device create(Device device);
     public void doFwActionsSchema(String deviceId, DeviceActionsSchema deviceActionsSchema);
     public ArrayList<DeviceActionsSchema> getSupportedActionsSchemas(String deviceId);
     public void doCustomActionSchema(String deviceId, DeviceActionsSchema deviceActionsSchema);

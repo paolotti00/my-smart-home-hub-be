@@ -8,6 +8,5 @@ import com.paolotti.my.smart.home.exception.GroupNotExistsException;
 public interface IDeviceLightService {
 
     void switchAllLightsByDevice(String userId, String deviceId, OnOffStatusEnum desiredStatus) throws BrandNotSupportedException, DeviceNotExistsException;
-
     void switchAllLightsByGroup(String userId, String groupId, OnOffStatusEnum desiredStatus) throws GroupNotExistsException;
 }

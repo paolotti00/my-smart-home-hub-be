@@ -43,12 +43,10 @@ public class RegistrationDeviceServiceImpl implements IRegistrationDeviceService
     IDeviceMapper deviceMapper;
 
     @Override
-    public DeviceRegistrationResponseDto deviceSelfRegisteringHandling(String userId, DeviceRegistrationRequestDto deviceRegistrationRequestDto) throws DeviceAlreadyRegisteredException, MissingFieldException, DeviceCreationException, UserNotExistException {
+    public DeviceRegistrationResponse deviceSelfRegisteringHandling(String userId, DeviceRegistrationRequest deviceRegistrationRequest) throws DeviceAlreadyRegisteredException, MissingFieldException, DeviceCreationException, UserNotExistException {
         // handling a device self registration request
         String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
-        logger.info("{}: device auto register flow started, deviceRegistrationRequestDto {}",methodName,deviceRegistrationRequestDto);
-        // convert dto to entity
-        DeviceRegistrationRequest deviceRegistrationRequest = deviceRegistrationMapper.toDeviceRegistrationRequest(deviceRegistrationRequestDto);
+        logger.info("{}: device auto register flow started, deviceRegistrationRequest {}",methodName,deviceRegistrationRequest);
         // request validation
         // checking if the device already exist
         ArrayList<Device> retrievedDevices = getNotDeactivateDeviceByMacAddress(deviceRegistrationRequest.getNetworkData().getMacAddress());
@@ -88,17 +86,15 @@ public class RegistrationDeviceServiceImpl implements IRegistrationDeviceService
             logger.error("something went wrong during the device creation. message : {}",e.getMessage());
             throw e;
         }
-        DeviceRegistrationResponseDto deviceRegistrationResponseDto = deviceRegistrationMapper.toDeviceRegistrationResponseDto(deviceRegistrationResponse);
         logger.info("{}: device auto register flow finished, device {}",methodName,deviceRegistrationResponse);
-        return  deviceRegistrationResponseDto;
+        return  deviceRegistrationResponse;
 
 
     }
     @Override
-    public ArrayList<DeviceDto> getDeviceToActivate(String userId) throws MissingFieldException, UserNotExistException {
+    public ArrayList<Device> getDeviceToActivate(String userId) throws MissingFieldException, UserNotExistException {
         String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         logger.info("{}: getting device to activate for the user {}",methodName,userId);
-        ArrayList<DeviceDto> devicesDto = new ArrayList<DeviceDto>();
         // validation
         logger.info("validation of request start");
         if(userId==null){
@@ -110,12 +106,11 @@ public class RegistrationDeviceServiceImpl implements IRegistrationDeviceService
         logger.info("validation of request done");
         ArrayList<DeviceEntity> devicesEntity = deviceCustomRepository.findAllByUserAndToActivate(userId);
         ArrayList<Device> devices = deviceMapper.toModels(devicesEntity);
-        ArrayList<DeviceDto> deviceDtos = deviceMapper.toDtos(devices);
-        logger.info("{}: found {} devices to activate for the user {}, devices ",methodName,userId,devicesDto);
-        return deviceDtos;
+        logger.info("{}: found {} devices to activate for the user {}, devices ",methodName,userId,devices);
+        return devices;
     }
     @Override
-    public DeviceDto activate (String userId,String deviceId) throws MissingFieldException, UserNotExistException, DeviceNotExistsException, DeviceAlreadyActivated, DeviceWrongStatusException {
+    public Device activate (String userId,String deviceId) throws MissingFieldException, UserNotExistException, DeviceNotExistsException, DeviceAlreadyActivated, DeviceWrongStatusException {
         String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         logger.info("{}: activation device id {} with userId {} start",methodName,deviceId,userId);
         // validate request
@@ -149,9 +144,8 @@ public class RegistrationDeviceServiceImpl implements IRegistrationDeviceService
         DeviceEntity deviceEntity = deviceMapper.toEntity(device);
         deviceEntity = deviceCustomRepository.save(deviceEntity);
         device = deviceMapper.toModel(deviceEntity);
-        DeviceDto deviceDto = deviceMapper.toDto(device);
-        logger.info("{}: the device with id {} and userId {} was activated - device dto {}",methodName,userId,deviceId,deviceDto);
-        return deviceDto;
+        logger.info("{}: the device with id {} and userId {} was activated - device {}",methodName,userId,deviceId,device);
+        return device;
 
     }
     @Override
