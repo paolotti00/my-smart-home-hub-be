@@ -13,7 +13,7 @@ public class DeviceEntity extends EntityBase {
     private UserEntity userOwner;
     private String name;
     private DeviceTypeEnum type;
-   // private NetworkData networkData;
+    private NetworkData networkData;
     private ArrayList<DeviceComponentSensor> sensorList;
     private ArrayList<DeviceComponentLight> lightList;
     @DocumentReference(lazy=true)
@@ -111,6 +111,14 @@ public class DeviceEntity extends EntityBase {
 
     public void setRegistrationDate(LocalDateTime registrationDate) {
         this.registrationDate = registrationDate;
+    }
+
+    public NetworkData getNetworkData() {
+        return networkData;
+    }
+
+    public void setNetworkData(NetworkData networkData) {
+        this.networkData = networkData;
     }
 
     public enum OnOffStatusEnum{
