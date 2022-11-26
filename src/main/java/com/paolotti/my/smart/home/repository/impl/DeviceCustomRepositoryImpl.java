@@ -39,7 +39,7 @@ public class DeviceCustomRepositoryImpl implements IDeviceCustomRepository {
         Query query = new Query();
         Criteria criteria = Criteria.where("id").is(deviceId).and("installationStatus").is(DeviceEntity.DeviceInstallationStatusEnum.ACTIVE);
         query.addCriteria(criteria);
-        return (DeviceEntity) mongoTemplate.find(query, DeviceEntity.class);
+        return (DeviceEntity) mongoTemplate.findOne(query, DeviceEntity.class);
     }
 
 //    @Override
