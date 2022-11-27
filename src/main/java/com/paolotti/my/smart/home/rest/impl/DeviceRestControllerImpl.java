@@ -7,6 +7,7 @@ import com.paolotti.my.smart.home.rest.dto.DeviceDto;
 import com.paolotti.my.smart.home.service.IDeviceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController()
@@ -17,7 +18,7 @@ public class DeviceRestControllerImpl extends AbstractBaseRestController  implem
     IDeviceMapper deviceMapper;
 
     @Override
-    public DeviceDto create(DeviceDto deviceDto) {
+    public DeviceDto create(@RequestBody DeviceDto deviceDto) {
         // fixme pt seems that we can't create a device without group , mybe set one of default
         ResponseEntity<DeviceDto> deviceDtoResponseEntity;
         // TODO PT

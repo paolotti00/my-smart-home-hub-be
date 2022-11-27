@@ -23,7 +23,7 @@ public class DeviceDto extends BaseResponseDto {
     private LocalDateTime registrationDate;
     private LocalDateTime creationDate;
     private LocalDateTime activationDate;
-    private DeviceBrandEnum deviceBrandEnum;
+    private DeviceBrandEnum brand;
 
     public String getId() {
         return id;
@@ -129,13 +129,14 @@ public class DeviceDto extends BaseResponseDto {
         this.activationDate = activationDate;
     }
 
-    public DeviceBrandEnum getDeviceBrandEnum() {
-        return deviceBrandEnum;
+    public DeviceBrandEnum getBrand() {
+        return brand;
     }
 
-    public void setDeviceBrandEnum(DeviceBrandEnum deviceBrandEnum) {
-        this.deviceBrandEnum = deviceBrandEnum;
+    public void setBrand(DeviceBrandEnum brand) {
+        this.brand = brand;
     }
+
 
     @Override
     public String toString() {
@@ -153,7 +154,7 @@ public class DeviceDto extends BaseResponseDto {
                 ", registrationDate=" + registrationDate +
                 ", creationDate=" + creationDate +
                 ", activationDate=" + activationDate +
-                ", deviceBrandEnum=" + deviceBrandEnum +
+                ", deviceBrandEnum=" + brand +
                 '}';
     }
 }

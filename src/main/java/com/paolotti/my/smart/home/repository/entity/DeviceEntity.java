@@ -20,7 +20,7 @@ public class DeviceEntity extends EntityBase {
     private List<GroupDeviceEntity> deviceGroups;
     private DeviceOperatingStatusEnum status;
     private DeviceInstallationStatusEnum installationStatus;
-    private DeviceBrandEnum deviceBrandEnum;
+    private DeviceBrandEnum brand;
     private LocalDateTime registrationDate;
     private LocalDateTime activationDate;
 
@@ -97,12 +97,12 @@ public class DeviceEntity extends EntityBase {
         this.installationStatus = installationStatus;
     }
 
-    public DeviceBrandEnum getDeviceBrandEnum() {
-        return deviceBrandEnum;
+    public DeviceBrandEnum getBrand() {
+        return brand;
     }
 
-    public void setDeviceBrandEnum(DeviceBrandEnum deviceBrandEnum) {
-        this.deviceBrandEnum = deviceBrandEnum;
+    public void setBrand(DeviceBrandEnum brand) {
+        this.brand = brand;
     }
 
     public LocalDateTime getRegistrationDate() {
@@ -211,5 +211,7 @@ public class DeviceEntity extends EntityBase {
             this.name = name;
         }
     }
+
+
 
 }
