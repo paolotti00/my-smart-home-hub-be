@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class DeviceLightRestControllerImpl implements IDeviceLightRestController {
+public class DeviceLightRestControllerImpl extends AbstractBaseRestController implements IDeviceLightRestController {
     @Autowired
     IDeviceLightService deviceLightService;
 

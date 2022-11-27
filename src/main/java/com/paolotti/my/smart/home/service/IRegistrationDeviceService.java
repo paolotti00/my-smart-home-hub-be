@@ -4,15 +4,12 @@ import com.paolotti.my.smart.home.exception.*;
 import com.paolotti.my.smart.home.model.Device;
 import com.paolotti.my.smart.home.model.DeviceRegistrationRequest;
 import com.paolotti.my.smart.home.model.DeviceRegistrationResponse;
-import com.paolotti.my.smart.home.rest.dto.DeviceDto;
-import com.paolotti.my.smart.home.rest.dto.reqres.DeviceRegistrationRequestDto;
-import com.paolotti.my.smart.home.rest.dto.reqres.DeviceRegistrationResponseDto;
 
 import java.util.ArrayList;
 
 public interface IRegistrationDeviceService {
 
-    DeviceRegistrationResponse deviceSelfRegisteringHandling(String userId, DeviceRegistrationRequest deviceRegistrationRequest) throws DeviceAlreadyRegisteredException, MissingFieldException, DeviceCreationException, UserNotExistException;
+    Device deviceSelfRegisteringHandling(String userId, DeviceRegistrationRequest deviceRegistrationRequest) throws DeviceAlreadyRegisteredException, MissingFieldException, DeviceCreationException, UserNotExistException;
     ArrayList<Device> getDeviceToActivate(String userid) throws MissingFieldException, UserNotExistException;
     Device activate(String userId, String deviceId) throws MissingFieldException, UserNotExistException, DeviceNotExistsException, DeviceAlreadyActivated, DeviceWrongStatusException;
     Device getDeviceById(String deviceId) throws DeviceNotExistsException;

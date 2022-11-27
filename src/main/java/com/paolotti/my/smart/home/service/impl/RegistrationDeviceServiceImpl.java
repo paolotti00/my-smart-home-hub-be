@@ -5,16 +5,12 @@ import com.paolotti.my.smart.home.enums.DeviceInstallationStatusEnum;
 import com.paolotti.my.smart.home.exception.*;
 import com.paolotti.my.smart.home.factory.IBeanFactoryService;
 import com.paolotti.my.smart.home.mapper.IDeviceMapper;
-import com.paolotti.my.smart.home.mapper.IDeviceRegistrationMapper;
 import com.paolotti.my.smart.home.model.Device;
 import com.paolotti.my.smart.home.model.DeviceRegistrationRequest;
 import com.paolotti.my.smart.home.model.DeviceRegistrationResponse;
 import com.paolotti.my.smart.home.model.User;
 import com.paolotti.my.smart.home.repository.IDeviceCustomRepository;
 import com.paolotti.my.smart.home.repository.entity.DeviceEntity;
-import com.paolotti.my.smart.home.rest.dto.DeviceDto;
-import com.paolotti.my.smart.home.rest.dto.reqres.DeviceRegistrationRequestDto;
-import com.paolotti.my.smart.home.rest.dto.reqres.DeviceRegistrationResponseDto;
 import com.paolotti.my.smart.home.service.IRegistrationDeviceService;
 import com.paolotti.my.smart.home.service.IUserService;
 import org.slf4j.Logger;
@@ -32,8 +28,6 @@ import static com.paolotti.my.smart.home.constant.MessageConst.DEVICE_ALREADY_RE
 public class RegistrationDeviceServiceImpl implements IRegistrationDeviceService {
     private static final Logger logger = LoggerFactory.getLogger(RegistrationDeviceServiceImpl.class);
     @Autowired
-    IDeviceRegistrationMapper deviceRegistrationMapper;
-    @Autowired
     IDeviceCustomRepository deviceCustomRepository;
     @Autowired
     IUserService userService;
@@ -43,7 +37,7 @@ public class RegistrationDeviceServiceImpl implements IRegistrationDeviceService
     IDeviceMapper deviceMapper;
 
     @Override
-    public DeviceRegistrationResponse deviceSelfRegisteringHandling(String userId, DeviceRegistrationRequest deviceRegistrationRequest) throws DeviceAlreadyRegisteredException, MissingFieldException, DeviceCreationException, UserNotExistException {
+    public Device deviceSelfRegisteringHandling(String userId, DeviceRegistrationRequest deviceRegistrationRequest) throws DeviceAlreadyRegisteredException, MissingFieldException, DeviceCreationException, UserNotExistException {
         // handling a device self registration request
         String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         logger.info("{}: device auto register flow started, deviceRegistrationRequest {}",methodName,deviceRegistrationRequest);
@@ -76,18 +70,17 @@ public class RegistrationDeviceServiceImpl implements IRegistrationDeviceService
         }
         logger.info("validation of request done");
         // create and registering the device
-        DeviceRegistrationResponse deviceRegistrationResponse = new DeviceRegistrationResponse();
+        Device device = deviceMapper.toDevice(deviceRegistrationRequest);
         try {
-            Device deviceToCreate = deviceMapper.toDevice(deviceRegistrationRequest);
-            deviceToCreate.setUser(user);
-            deviceToCreate.setCreationDate(LocalDateTime.now());
-            deviceRegistrationResponse.setCreatedDevice(createDeviceInToActivateStatus(deviceToCreate));
+            device.setUser(user);
+            device.setCreationDate(LocalDateTime.now());
+            device = createDeviceInToActivateStatus(device);
         } catch (DeviceCreationException e) {
             logger.error("something went wrong during the device creation. message : {}",e.getMessage());
             throw e;
         }
-        logger.info("{}: device auto register flow finished, device {}",methodName,deviceRegistrationResponse);
-        return  deviceRegistrationResponse;
+        logger.info("{}: device auto register flow finished, device {}",methodName,device);
+        return  device;
 
 
     }

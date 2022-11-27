@@ -3,11 +3,12 @@ package com.paolotti.my.smart.home.rest.dto;
 import com.paolotti.my.smart.home.enums.DeviceInstallationStatusEnum;
 import com.paolotti.my.smart.home.enums.DeviceOperatingStatusEnum;
 import com.paolotti.my.smart.home.enums.DeviceTypeEnum;
+import com.paolotti.my.smart.home.rest.dto.reqres.BaseResponseDto;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-public class DeviceDto {
+public class DeviceDto extends BaseResponseDto {
     private String id;
     private UserDto user;
     private NetworkDataDto networkData;
