@@ -52,7 +52,7 @@ public class RestControllerExceptionHandlerInterceptor extends ResponseEntityExc
         BaseResponseDto baseResponseDto = new BaseResponseDto();
         baseResponseDto.setErrorCode("XXX");
         baseResponseDto.setMessage("generic error");
-        logger.warn("response {}",baseResponseDto);
+        logger.warn("response {}",baseResponseDto.toString());
         ex.printStackTrace();
         return handleExceptionInternal(ex,baseResponseDto,new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR,request);
     }

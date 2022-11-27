@@ -1,7 +1,9 @@
 package com.paolotti.my.smart.home.repository.entity;
 
 import com.paolotti.my.smart.home.enums.DeviceActionSchemaTypeEnum;
+import lombok.ToString;
 
+@ToString
 public class DeviceActionSchemaEntity extends EntityBase{
     private String name;
     private ColorRgb colorRgb;

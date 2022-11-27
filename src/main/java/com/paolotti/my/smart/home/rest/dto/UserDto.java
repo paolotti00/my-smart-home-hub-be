@@ -1,5 +1,8 @@
 package com.paolotti.my.smart.home.rest.dto;
 
+import lombok.ToString;
+
+@ToString
 public class UserDto {
     String id;
     String name;
@@ -38,13 +41,4 @@ public class UserDto {
         this.email = email;
     }
 
-    @Override
-    public String toString() {
-        return "UserDto{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
-                ", email='" + email + '\'' +
-                '}';
-    }
 }

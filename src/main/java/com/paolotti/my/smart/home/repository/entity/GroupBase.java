@@ -1,5 +1,8 @@
 package com.paolotti.my.smart.home.repository.entity;
 
+import lombok.ToString;
+
+@ToString
 public class GroupBase extends EntityBase{
     private String name;
     private String userOwnerId;

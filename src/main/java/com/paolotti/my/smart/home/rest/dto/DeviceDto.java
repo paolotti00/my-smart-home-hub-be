@@ -5,10 +5,12 @@ import com.paolotti.my.smart.home.enums.DeviceInstallationStatusEnum;
 import com.paolotti.my.smart.home.enums.DeviceOperatingStatusEnum;
 import com.paolotti.my.smart.home.enums.DeviceTypeEnum;
 import com.paolotti.my.smart.home.rest.dto.reqres.BaseResponseDto;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
+@ToString
 public class DeviceDto {
     private String id;
     private UserDto user;
@@ -138,23 +140,4 @@ public class DeviceDto {
     }
 
 
-    @Override
-    public String toString() {
-        return "DeviceDto{" +
-                "id='" + id + '\'' +
-                ", user=" + user +
-                ", networkData=" + networkData +
-                ", name='" + name + '\'' +
-                ", type=" + type +
-                ", sensorList=" + sensorList +
-                ", lightList=" + lightList +
-                ", groups=" + groups +
-                ", status=" + status +
-                ", installationStatus=" + installationStatus +
-                ", registrationDate=" + registrationDate +
-                ", creationDate=" + creationDate +
-                ", activationDate=" + activationDate +
-                ", deviceBrandEnum=" + brand +
-                '}';
-    }
 }

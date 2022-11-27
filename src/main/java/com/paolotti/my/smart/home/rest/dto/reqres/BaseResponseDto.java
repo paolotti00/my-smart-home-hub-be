@@ -1,7 +1,9 @@
 package com.paolotti.my.smart.home.rest.dto.reqres;
 
 import com.paolotti.my.smart.home.enums.ResultStatusEnum;
+import lombok.ToString;
 
+@ToString
 public class BaseResponseDto {
 
     private String errorCode;

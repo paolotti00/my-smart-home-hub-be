@@ -2,7 +2,9 @@ package com.paolotti.my.smart.home.rest.dto.reqres;
 
 import com.paolotti.my.smart.home.enums.DeviceTypeEnum;
 import com.paolotti.my.smart.home.rest.dto.NetworkDataDto;
+import lombok.ToString;
 
+@ToString
 public class DeviceRegistrationRequestDto {
     private String deviceName;
     private NetworkDataDto networkData;
@@ -76,19 +78,5 @@ public class DeviceRegistrationRequestDto {
 
     public void setUserEmail(String userEmail) {
         this.userEmail = userEmail;
-    }
-
-    @Override
-    public String toString() {
-        return "DeviceRegistrationRequestDto{" +
-                "deviceName='" + deviceName + '\'' +
-                ", networkData=" + networkData +
-                ", deviceType=" + deviceType +
-                ", deviceFirmwareVersion='" + deviceFirmwareVersion + '\'' +
-                ", numOfHumiditySensors=" + numOfHumiditySensors +
-                ", numOfLight=" + numOfLight +
-                ", numOfHeatSensors=" + numOfHeatSensors +
-                ", userEmail='" + userEmail + '\'' +
-                '}';
     }
 }

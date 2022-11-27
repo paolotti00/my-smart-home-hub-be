@@ -1,7 +1,9 @@
 package com.paolotti.my.smart.home.rest.dto;
 
 import com.paolotti.my.smart.home.enums.DeviceSensorTypeEnum;
+import lombok.ToString;
 
+@ToString
 public class DeviceComponentSensorDto extends DeviceComponentBaseDto {
     private DeviceSensorTypeEnum type;
 
@@ -14,10 +16,4 @@ public class DeviceComponentSensorDto extends DeviceComponentBaseDto {
         this.type = type;
     }
 
-    @Override
-    public String toString() {
-        return "DeviceComponentSensorDto{" +
-                "type=" + type +
-                '}';
-    }
 }

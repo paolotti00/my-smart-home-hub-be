@@ -1,7 +1,9 @@
 package com.paolotti.my.smart.home.rest.dto;
 
 import com.paolotti.my.smart.home.enums.OnOffStatusEnum;
+import lombok.ToString;
 
+@ToString
 public class DeviceComponentBaseDto {
     private String id;
     private OnOffStatusEnum workingStatus;

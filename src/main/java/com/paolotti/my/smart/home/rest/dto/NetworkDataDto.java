@@ -1,5 +1,8 @@
 package com.paolotti.my.smart.home.rest.dto;
 
+import lombok.ToString;
+
+@ToString
 public class NetworkDataDto {
     String ip;
     String macAddress;
@@ -29,12 +32,4 @@ public class NetworkDataDto {
         this.name = name;
     }
 
-    @Override
-    public String toString() {
-        return "NetworkDataDto{" +
-                "ip='" + ip + '\'' +
-                ", macAddress='" + macAddress + '\'' +
-                ", name='" + name + '\'' +
-                '}';
-    }
 }

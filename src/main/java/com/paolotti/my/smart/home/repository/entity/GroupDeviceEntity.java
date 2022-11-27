@@ -1,11 +1,12 @@
 package com.paolotti.my.smart.home.repository.entity;
 
+import lombok.ToString;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 import java.util.List;
 
-
+@ToString
 @Document(collection = "group_device")
 public class GroupDeviceEntity extends GroupBase{
     @DocumentReference

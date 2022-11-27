@@ -18,6 +18,7 @@
 		<spring.cloud.sleuth.version>3.1.5</spring.cloud.sleuth.version>
 		<map.struct.version>1.5.3.Final</map.struct.version>
 		<swagger.version>3.0.0</swagger.version>
+		<lombok.version>1.18.24</lombok.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -53,6 +54,12 @@
 			<artifactId>springfox-swagger-ui</artifactId>
 			<version>${swagger.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>${lombok.version}</version>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -72,6 +79,11 @@
 							<groupId>org.mapstruct</groupId>
 							<artifactId>mapstruct-processor</artifactId>
 							<version>${map.struct.version}</version>
+						</path>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+							<version>${lombok.version}</version>
 						</path>
 					</annotationProcessorPaths>
 				</configuration>
