@@ -1,6 +1,7 @@
 package com.paolotti.my.smart.home.repository.entity;
 
 import com.paolotti.my.smart.home.enums.DeviceBrandEnum;
+import com.paolotti.my.smart.home.model.ColorRgb;
 import lombok.ToString;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
@@ -151,6 +152,7 @@ public class DeviceEntity extends EntityBase {
 
     public static class DeviceComponentBase {
         private String id;
+        private String name;
         private OnOffStatusEnum workingStatus;
 
         public String getId() {
@@ -159,6 +161,14 @@ public class DeviceEntity extends EntityBase {
 
         public void setId(String id) {
             this.id = id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
         }
 
         public OnOffStatusEnum getWorkingStatus() {
@@ -181,7 +191,24 @@ public class DeviceEntity extends EntityBase {
         }
     }
     public static class DeviceComponentLight extends DeviceComponentBase {
+        private int intensityPercentage; // 0 to 100
+        private ColorRgb color;
 
+        public int getIntensityPercentage() {
+            return intensityPercentage;
+        }
+
+        public void setIntensityPercentage(int intensityPercentage) {
+            this.intensityPercentage = intensityPercentage;
+        }
+
+        public ColorRgb getColor() {
+            return color;
+        }
+
+        public void setColor(ColorRgb color) {
+            this.color = color;
+        }
     }
 
     public static class NetworkData {

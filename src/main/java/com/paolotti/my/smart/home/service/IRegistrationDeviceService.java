@@ -3,7 +3,6 @@ package com.paolotti.my.smart.home.service;
 import com.paolotti.my.smart.home.exception.*;
 import com.paolotti.my.smart.home.model.Device;
 import com.paolotti.my.smart.home.model.DeviceRegistrationRequest;
-import com.paolotti.my.smart.home.model.DeviceRegistrationResponse;
 
 import java.util.ArrayList;
 

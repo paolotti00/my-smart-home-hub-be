@@ -7,7 +7,6 @@ import com.paolotti.my.smart.home.factory.IBeanFactoryService;
 import com.paolotti.my.smart.home.mapper.IDeviceMapper;
 import com.paolotti.my.smart.home.model.Device;
 import com.paolotti.my.smart.home.model.DeviceRegistrationRequest;
-import com.paolotti.my.smart.home.model.DeviceRegistrationResponse;
 import com.paolotti.my.smart.home.model.User;
 import com.paolotti.my.smart.home.repository.IDeviceCustomRepository;
 import com.paolotti.my.smart.home.repository.entity.DeviceEntity;
