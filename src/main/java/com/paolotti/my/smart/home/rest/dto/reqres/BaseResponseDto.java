@@ -1,15 +1,26 @@
 package com.paolotti.my.smart.home.rest.dto.reqres;
 
+import com.paolotti.my.smart.home.enums.ResultStatusEnum;
+
 public class BaseResponseDto {
 
-    BaseResponseDetailDto responseDetail;
+    private String errorCode;
+    private String message;
 
-    public BaseResponseDetailDto getResponseDetail() {
-        return responseDetail;
+    public String getErrorCode() {
+        return errorCode;
     }
 
-    public void setResponseDetail(BaseResponseDetailDto responseDetail) {
-        this.responseDetail = responseDetail;
+    public void setErrorCode(String errorCode) {
+        this.errorCode = errorCode;
     }
 
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 }
+

@@ -9,7 +9,7 @@ import com.paolotti.my.smart.home.rest.dto.reqres.BaseResponseDto;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-public class DeviceDto extends BaseResponseDto {
+public class DeviceDto {
     private String id;
     private UserDto user;
     private NetworkDataDto networkData;
