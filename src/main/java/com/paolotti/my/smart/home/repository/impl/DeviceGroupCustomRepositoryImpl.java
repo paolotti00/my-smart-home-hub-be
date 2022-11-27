@@ -15,6 +15,11 @@ public class DeviceGroupCustomRepositoryImpl implements IDeviceGroupCustomReposi
     MongoTemplate mongoTemplate;
 
     @Override
+    public GroupDeviceEntity save(GroupDeviceEntity groupDeviceEntity) {
+        return mongoTemplate.save(groupDeviceEntity);
+    }
+
+    @Override
     public GroupDeviceEntity findById(String groupId) {
         Query query = new Query();
         Criteria criteria = Criteria.where("id").is(groupId);

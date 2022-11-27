@@ -31,7 +31,10 @@ public class DeviceServiceImpl implements IDeviceService {
     @Override
     public Device create(Device device) {
         // todo pt
-        return null;
+        DeviceEntity deviceEntity = deviceMapper.toEntity(device);
+        DeviceEntity deviceMapped = deviceCustomRepository.save(deviceEntity);
+        device = deviceMapper.toModel(deviceMapped);
+        return device;
     }
 
     @Override

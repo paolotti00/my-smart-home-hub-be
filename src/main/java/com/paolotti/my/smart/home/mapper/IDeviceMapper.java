@@ -23,6 +23,7 @@ public interface IDeviceMapper extends IBaseMapper {
     ArrayList<DeviceEntity> toEntities (ArrayList<Device> deviceList);
     @Mapping(source = "id", target = "id", qualifiedByName = "toStringId")
     Device toModel (DeviceEntity deviceEntity);
+    Device toModel (DeviceDto deviceDto);
     DeviceDto toDto (Device device);
     @Deprecated
     @Mapping(source = "id", target = "id", qualifiedByName = "toStringId")

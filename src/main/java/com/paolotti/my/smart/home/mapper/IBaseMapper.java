@@ -8,7 +8,11 @@ import org.mapstruct.Named;
 public interface IBaseMapper {
     @Named("toObjectId")
     default ObjectId toObjectId(String id) {
-        return new ObjectId(id);
+        ObjectId toReturn = null;
+        if(id!=null){
+            toReturn = new ObjectId(id);
+        }
+        return toReturn;
     }
 
     ;

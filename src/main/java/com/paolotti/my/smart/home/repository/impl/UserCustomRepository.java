@@ -13,6 +13,12 @@ import org.springframework.stereotype.Repository;
 public class UserCustomRepository implements IUserCustomRepository {
     @Autowired
     MongoTemplate mongoTemplate;
+
+    @Override
+    public UserEntity save(UserEntity userEntity) {
+        return mongoTemplate.save(userEntity);
+    }
+
     @Override
     public UserEntity getUserById(String userId) {
         return mongoTemplate.findById(new ObjectId(userId), UserEntity.class);

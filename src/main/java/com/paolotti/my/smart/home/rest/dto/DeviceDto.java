@@ -1,5 +1,6 @@
 package com.paolotti.my.smart.home.rest.dto;
 
+import com.paolotti.my.smart.home.enums.DeviceBrandEnum;
 import com.paolotti.my.smart.home.enums.DeviceInstallationStatusEnum;
 import com.paolotti.my.smart.home.enums.DeviceOperatingStatusEnum;
 import com.paolotti.my.smart.home.enums.DeviceTypeEnum;
@@ -22,6 +23,7 @@ public class DeviceDto extends BaseResponseDto {
     private LocalDateTime registrationDate;
     private LocalDateTime creationDate;
     private LocalDateTime activationDate;
+    private DeviceBrandEnum deviceBrandEnum;
 
     public String getId() {
         return id;
@@ -119,6 +121,22 @@ public class DeviceDto extends BaseResponseDto {
         this.creationDate = creationDate;
     }
 
+    public LocalDateTime getActivationDate() {
+        return activationDate;
+    }
+
+    public void setActivationDate(LocalDateTime activationDate) {
+        this.activationDate = activationDate;
+    }
+
+    public DeviceBrandEnum getDeviceBrandEnum() {
+        return deviceBrandEnum;
+    }
+
+    public void setDeviceBrandEnum(DeviceBrandEnum deviceBrandEnum) {
+        this.deviceBrandEnum = deviceBrandEnum;
+    }
+
     @Override
     public String toString() {
         return "DeviceDto{" +
@@ -134,6 +152,8 @@ public class DeviceDto extends BaseResponseDto {
                 ", installationStatus=" + installationStatus +
                 ", registrationDate=" + registrationDate +
                 ", creationDate=" + creationDate +
+                ", activationDate=" + activationDate +
+                ", deviceBrandEnum=" + deviceBrandEnum +
                 '}';
     }
 }
