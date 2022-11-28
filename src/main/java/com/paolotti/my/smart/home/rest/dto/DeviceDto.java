@@ -1,5 +1,7 @@
 package com.paolotti.my.smart.home.rest.dto;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.paolotti.my.smart.home.config.JsonViewConfig;
 import com.paolotti.my.smart.home.enums.DeviceBrandEnum;
 import com.paolotti.my.smart.home.enums.DeviceInstallationStatusEnum;
 import com.paolotti.my.smart.home.enums.DeviceOperatingStatusEnum;
@@ -12,19 +14,33 @@ import java.util.ArrayList;
 
 @ToString
 public class DeviceDto {
+    @JsonView(JsonViewConfig.AsOutput.class)
     private String id;
+    @JsonView(JsonViewConfig.AsOutput.class)
     private UserDto user;
+    @JsonView(JsonViewConfig.AsOutput.class)
     private NetworkDataDto networkData;
+    @JsonView(JsonViewConfig.AsInput.class)
     private String name;
+    @JsonView(JsonViewConfig.AsInput.class)
     private DeviceTypeEnum type;
+    @JsonView(JsonViewConfig.AsOutput.class)
     private ArrayList<DeviceComponentSensorDto> sensorList;
+    @JsonView(JsonViewConfig.AsInput.class)
     private ArrayList<DeviceComponentLightDto> lightList;
+    @JsonView(JsonViewConfig.AsOutput.class)
     private ArrayList<String> groups;
+    @JsonView(JsonViewConfig.AsOutput.class)
     private DeviceOperatingStatusEnum status;
+    @JsonView(JsonViewConfig.AsOutput.class)
     private DeviceInstallationStatusEnum installationStatus;
+    @JsonView(JsonViewConfig.AsOutput.class)
     private LocalDateTime registrationDate;
+    @JsonView(JsonViewConfig.AsOutput.class)
     private LocalDateTime creationDate;
+    @JsonView(JsonViewConfig.AsOutput.class)
     private LocalDateTime activationDate;
+    @JsonView(JsonViewConfig.AsInput.class)
     private DeviceBrandEnum brand;
 
     public String getId() {
