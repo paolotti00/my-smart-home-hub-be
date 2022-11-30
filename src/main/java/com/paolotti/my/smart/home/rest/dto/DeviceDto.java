@@ -2,31 +2,32 @@ package com.paolotti.my.smart.home.rest.dto;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.paolotti.my.smart.home.config.JsonViewConfig;
-import com.paolotti.my.smart.home.enums.DeviceBrandEnum;
-import com.paolotti.my.smart.home.enums.DeviceInstallationStatusEnum;
-import com.paolotti.my.smart.home.enums.DeviceOperatingStatusEnum;
-import com.paolotti.my.smart.home.enums.DeviceTypeEnum;
+import com.paolotti.my.smart.home.enums.*;
 import com.paolotti.my.smart.home.rest.dto.reqres.BaseResponseDto;
+import io.swagger.models.auth.In;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Map;
 
 @ToString
 public class DeviceDto {
     @JsonView(JsonViewConfig.AsOutput.class)
     private String id;
-    @JsonView(JsonViewConfig.AsOutput.class)
+    @JsonView(JsonViewConfig.AsInput.class)
     private UserDto user;
-    @JsonView(JsonViewConfig.AsOutput.class)
+    @JsonView(JsonViewConfig.AsInput.class)
     private NetworkDataDto networkData;
     @JsonView(JsonViewConfig.AsInput.class)
     private String name;
     @JsonView(JsonViewConfig.AsInput.class)
     private DeviceTypeEnum type;
+    @JsonView(JsonViewConfig.AsInput.class)
+    private Map<Integer, DeviceSensorTypeEnum> numberOfSensors;
     @JsonView(JsonViewConfig.AsOutput.class)
     private ArrayList<DeviceComponentSensorDto> sensorList;
-    @JsonView(JsonViewConfig.AsInput.class)
+    @JsonView(JsonViewConfig.AsOutput.class)
     private ArrayList<DeviceComponentLightDto> lightList;
     @JsonView(JsonViewConfig.AsOutput.class)
     private ArrayList<String> groups;

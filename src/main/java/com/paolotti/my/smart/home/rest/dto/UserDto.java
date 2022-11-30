@@ -1,5 +1,7 @@
 package com.paolotti.my.smart.home.rest.dto;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.paolotti.my.smart.home.config.JsonViewConfig;
 import lombok.ToString;
 
 @ToString
@@ -7,6 +9,7 @@ public class UserDto {
     String id;
     String name;
     String surname;
+    @JsonView(JsonViewConfig.AsInput.class)
     String email;
 
     public String getId() {
