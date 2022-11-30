@@ -1,16 +1,16 @@
 package com.paolotti.my.smart.home.model;
 
-import com.paolotti.my.smart.home.enums.DeviceSensorTypeEnum;
+import com.paolotti.my.smart.home.enums.DeviceComponentTypeEnum;
 
 public class DeviceComponentSensor extends DeviceComponentBase {
-    private DeviceSensorTypeEnum type;
+    private DeviceComponentTypeEnum type;
 
 
-    public DeviceSensorTypeEnum getType() {
+    public DeviceComponentTypeEnum getType() {
         return type;
     }
 
-    public void setType(DeviceSensorTypeEnum type) {
+    public void setType(DeviceComponentTypeEnum type) {
         this.type = type;
     }
 }

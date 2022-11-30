@@ -1,7 +1,7 @@
 package com.paolotti.my.smart.home.mapper;
 
 import com.paolotti.my.smart.home.constant.DeviceConst;
-import com.paolotti.my.smart.home.enums.DeviceSensorTypeEnum;
+import com.paolotti.my.smart.home.enums.DeviceComponentTypeEnum;
 import com.paolotti.my.smart.home.model.*;
 import com.paolotti.my.smart.home.repository.entity.DeviceEntity;
 import com.paolotti.my.smart.home.rest.dto.DeviceDto;
@@ -73,14 +73,14 @@ public interface IDeviceMapper extends IBaseMapper {
             }
         }
         // humidity sensors
-        deviceToReturn.setSensorList(initializeNewSensor(deviceRegistrationRequest.getNumOfHumiditySensors(),DeviceSensorTypeEnum.HUMIDITY,DeviceConst.ID_PREFIX_SENSOR_HUMIDITY,deviceToReturn.getSensorList()));
+        deviceToReturn.setSensorList(initializeNewSensor(deviceRegistrationRequest.getNumOfHumiditySensors(), DeviceComponentTypeEnum.SENSOR_HUMIDITY,DeviceConst.ID_PREFIX_SENSOR_HUMIDITY,deviceToReturn.getSensorList()));
         // heat sensors
-        deviceToReturn.setSensorList(initializeNewSensor(deviceRegistrationRequest.getNumOfHumiditySensors(),DeviceSensorTypeEnum.HEAT,DeviceConst.ID_PREFIX_SENSOR_HEATH,deviceToReturn.getSensorList()));
+        deviceToReturn.setSensorList(initializeNewSensor(deviceRegistrationRequest.getNumOfHumiditySensors(), DeviceComponentTypeEnum.SENSOR_HEAT,DeviceConst.ID_PREFIX_SENSOR_HEATH,deviceToReturn.getSensorList()));
         logger.info("registration request mapped to device object {}",deviceToReturn);
         return deviceToReturn;
     }
 
-    default ArrayList<DeviceComponentSensor> initializeNewSensor(Integer numOfSensor, DeviceSensorTypeEnum deviceSensorTypeEnum, String SensorIdPrefix, ArrayList<DeviceComponentSensor>currentSensorList){
+    default ArrayList<DeviceComponentSensor> initializeNewSensor(Integer numOfSensor, DeviceComponentTypeEnum deviceComponentTypeEnum, String SensorIdPrefix, ArrayList<DeviceComponentSensor>currentSensorList){
         int addedSensorCount = 0;
         if(numOfSensor!=null && numOfSensor>0) {
             if (currentSensorList == null) {
@@ -88,12 +88,12 @@ public interface IDeviceMapper extends IBaseMapper {
             }
             for(int i=0; i<numOfSensor;i++){
                 DeviceComponentSensor deviceSensor = new DeviceComponentSensor();
-                deviceSensor.setType(deviceSensorTypeEnum);
+                deviceSensor.setType(deviceComponentTypeEnum);
                 deviceSensor.setId(SensorIdPrefix+i);
                 currentSensorList.add(deviceSensor);
             }
         }
-        logger.info("created {} sensor of type {}. {} sensor expected",addedSensorCount,deviceSensorTypeEnum,numOfSensor);
+        logger.info("created {} sensor of type {}. {} sensor expected",addedSensorCount, deviceComponentTypeEnum,numOfSensor);
         return currentSensorList;
     }
 }

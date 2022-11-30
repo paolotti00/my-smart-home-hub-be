@@ -1,12 +1,10 @@
 package com.paolotti.my.smart.home.model;
 
-import com.paolotti.my.smart.home.enums.DeviceBrandEnum;
-import com.paolotti.my.smart.home.enums.DeviceInstallationStatusEnum;
-import com.paolotti.my.smart.home.enums.DeviceOperatingStatusEnum;
-import com.paolotti.my.smart.home.enums.DeviceTypeEnum;
+import com.paolotti.my.smart.home.enums.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class Device {
     private String id;
@@ -14,6 +12,7 @@ public class Device {
     private NetworkData networkData;
     private String name;
     private DeviceTypeEnum type;
+    private Map<Integer, DeviceComponentTypeEnum> numberOfComponents;
     private ArrayList<DeviceComponentSensor> sensorList;
     private ArrayList<DeviceComponentLight> lightList;
     private ArrayList<String> groups;

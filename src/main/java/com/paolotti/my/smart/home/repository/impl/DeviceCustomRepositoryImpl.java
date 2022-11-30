@@ -1,5 +1,6 @@
 package com.paolotti.my.smart.home.repository.impl;
 
+import com.paolotti.my.smart.home.enums.DeviceInstallationStatusEnum;
 import com.paolotti.my.smart.home.repository.IDeviceCustomRepository;
 import com.paolotti.my.smart.home.repository.entity.DeviceEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class DeviceCustomRepositoryImpl implements IDeviceCustomRepository {
     @Override
     public  ArrayList<DeviceEntity> findAllByMacAddressAndNotDeactivated(String macAddress) {
         Query query = new Query();
-        Criteria criteria = Criteria.where("networkData.macAddress").is(macAddress).and("installationStatus").ne(DeviceEntity.DeviceInstallationStatusEnum.DEACTIVATED);
+        Criteria criteria = Criteria.where("networkData.macAddress").is(macAddress).and("installationStatus").ne(DeviceInstallationStatusEnum.DEACTIVATED);
         query.addCriteria(criteria);
         return new ArrayList<>(mongoTemplate.find(query, DeviceEntity.class));
     }
@@ -37,7 +38,7 @@ public class DeviceCustomRepositoryImpl implements IDeviceCustomRepository {
     @Override
     public DeviceEntity findById(String deviceId) {
         Query query = new Query();
-        Criteria criteria = Criteria.where("id").is(deviceId).and("installationStatus").is(DeviceEntity.DeviceInstallationStatusEnum.ACTIVE);
+        Criteria criteria = Criteria.where("id").is(deviceId).and("installationStatus").is(DeviceInstallationStatusEnum.ACTIVE);
         query.addCriteria(criteria);
         return (DeviceEntity) mongoTemplate.findOne(query, DeviceEntity.class);
     }
@@ -50,14 +51,14 @@ public class DeviceCustomRepositoryImpl implements IDeviceCustomRepository {
 //    @Override
 //    public ArrayList<DeviceEntity> findAllByMacAddressAndNotDeactivated(String macAddress) {
 //        Query query = new Query();
-//        Criteria criteria = Criteria.where("networkData.macAddress").is(macAddress).and("installationStatus").ne(DeviceEntity.DeviceInstallationStatusEnum.DEACTIVATED);
+//        Criteria criteria = Criteria.where("networkData.macAddress").is(macAddress).and("installationStatus").ne(DeviceInstallationStatusEnum.DEACTIVATED);
 //        query.addCriteria(criteria);
 //        return new ArrayList<>(mongoTemplate.find(query, DeviceEntity.class));
 //    }
 //    @Override
 //    public ArrayList<DeviceEntity> findAllByUserAndToActivate(String userId){
 //        Query query = new Query();
-//        Criteria criteria = Criteria.where("user._id").is(new ObjectId(userId)).and("installationStatus").is(DeviceEntity.DeviceInstallationStatusEnum.TO_ACTIVATE);
+//        Criteria criteria = Criteria.where("user._id").is(new ObjectId(userId)).and("installationStatus").is(DeviceInstallationStatusEnum.TO_ACTIVATE);
 //        query.addCriteria(criteria);
 //        return new ArrayList<>(mongoTemplate.find(query, DeviceEntity.class));
 //    }

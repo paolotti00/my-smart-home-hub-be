@@ -161,3 +161,5 @@ $RECYCLE.BIN/
 
 # End of https://www.toptal.com/developers/gitignore/api/windows,intellij,maven
 /my.smart.home.iml
+/my.smart.home.ipr
+/my-smart-home-hub-be.iml

@@ -3,8 +3,6 @@ package com.paolotti.my.smart.home.rest.dto;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.paolotti.my.smart.home.config.JsonViewConfig;
 import com.paolotti.my.smart.home.enums.*;
-import com.paolotti.my.smart.home.rest.dto.reqres.BaseResponseDto;
-import io.swagger.models.auth.In;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
@@ -24,7 +22,7 @@ public class DeviceDto {
     @JsonView(JsonViewConfig.AsInput.class)
     private DeviceTypeEnum type;
     @JsonView(JsonViewConfig.AsInput.class)
-    private Map<Integer, DeviceSensorTypeEnum> numberOfSensors;
+    private Map<Integer, DeviceComponentTypeEnum> numberOfComponents;
     @JsonView(JsonViewConfig.AsOutput.class)
     private ArrayList<DeviceComponentSensorDto> sensorList;
     @JsonView(JsonViewConfig.AsOutput.class)
@@ -156,5 +154,11 @@ public class DeviceDto {
         this.brand = brand;
     }
 
+    public Map<Integer, DeviceComponentTypeEnum> getNumberOfComponents() {
+        return numberOfComponents;
+    }
 
+    public void setNumberOfComponents(Map<Integer, DeviceComponentTypeEnum> numberOfComponents) {
+        this.numberOfComponents = numberOfComponents;
+    }
 }

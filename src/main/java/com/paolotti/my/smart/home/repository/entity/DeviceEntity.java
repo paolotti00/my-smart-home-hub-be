@@ -1,6 +1,6 @@
 package com.paolotti.my.smart.home.repository.entity;
 
-import com.paolotti.my.smart.home.enums.DeviceBrandEnum;
+import com.paolotti.my.smart.home.enums.*;
 import com.paolotti.my.smart.home.model.ColorRgb;
 import lombok.ToString;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.mapping.DocumentReference;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @ToString
 @Document(collection = "devices")
@@ -19,6 +20,7 @@ public class DeviceEntity extends EntityBase {
     private NetworkData networkData;
     private ArrayList<DeviceComponentSensor> sensorList;
     private ArrayList<DeviceComponentLight> lightList;
+    private Map<Integer, DeviceComponentTypeEnum> numberOfComponents;
     @DocumentReference(lazy=true)
     private List<GroupDeviceEntity> deviceGroups;
     private DeviceOperatingStatusEnum status;
@@ -124,31 +126,15 @@ public class DeviceEntity extends EntityBase {
         this.networkData = networkData;
     }
 
-    public enum OnOffStatusEnum{
-        ON,
-        OFF
+    public Map<Integer, DeviceComponentTypeEnum> getNumberOfComponents() {
+        return numberOfComponents;
     }
-    public enum DeviceOperatingStatusEnum{
-        ONLINE, // the device was discovered and activated and is online
-        OFFLINE, // the device was discovered and activated and is offline
 
+    public void setNumberOfComponents(Map<Integer, DeviceComponentTypeEnum> numberOfComponents) {
+        this.numberOfComponents = numberOfComponents;
     }
-    public enum DeviceInstallationStatusEnum{
-        TO_ACTIVATE, // the device was discovered but not activated yet
-        ACTIVE, // the device was discovered and activated
-        DEACTIVATED, // the device was discovered and activated then was deactivated
-        BLACKLISTED, // the device was discovered and blacklisted (so it will not discover anymore)
-    }
-    public enum DeviceTypeEnum{
-        SENSOR,
-        LIGHT,
-        MIX
-    }
-    public enum DeviceSensorTypeEnum{
-        HEAT,
-        HUMIDITY,
-        MIX
-    }
+
+
 
     public static class DeviceComponentBase {
         private String id;
@@ -180,13 +166,13 @@ public class DeviceEntity extends EntityBase {
         }
     }
     public static class DeviceComponentSensor extends DeviceComponentBase {
-        private DeviceSensorTypeEnum type;
+        private DeviceComponentTypeEnum type;
 
-        public DeviceSensorTypeEnum getType() {
+        public DeviceComponentTypeEnum getType() {
             return type;
         }
 
-        public void setType(DeviceSensorTypeEnum type) {
+        public void setType(DeviceComponentTypeEnum type) {
             this.type = type;
         }
     }
