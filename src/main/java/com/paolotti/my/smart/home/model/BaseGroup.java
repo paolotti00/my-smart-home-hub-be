@@ -1,8 +1,11 @@
 package com.paolotti.my.smart.home.model;
 
+import lombok.ToString;
+
 import java.time.LocalDateTime;
 
-public class Group {
+@ToString
+public class BaseGroup {
     private String id;
     private LocalDateTime creationDate;
     private String userOwnerId;

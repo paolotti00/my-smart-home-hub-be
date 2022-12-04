@@ -1,7 +1,9 @@
 package com.paolotti.my.smart.home.model;
 
 import com.paolotti.my.smart.home.enums.DeviceActionSchemaTypeEnum;
+import lombok.ToString;
 
+@ToString
 public class DeviceActionsSchema {
     // the action schema is a set of action that the device can do
     // for example we can send to device the schema "blink" and if is supported the device has , defined in the fw, the steps that it have to do the action

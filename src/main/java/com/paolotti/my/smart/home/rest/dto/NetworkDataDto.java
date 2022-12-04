@@ -6,11 +6,11 @@ import lombok.ToString;
 
 @ToString
 public class NetworkDataDto {
-    @JsonView(JsonViewConfig.HighDetail.class)
+    @JsonView(JsonViewConfig.LowDetail.class)
     String ip;
-    @JsonView(JsonViewConfig.HighDetail.class)
+    @JsonView(JsonViewConfig.LowDetail.class)
     String macAddress;
-    @JsonView(JsonViewConfig.HighDetail.class)
+    @JsonView(JsonViewConfig.LowDetail.class)
     String name;
 
     public String getIp() {
