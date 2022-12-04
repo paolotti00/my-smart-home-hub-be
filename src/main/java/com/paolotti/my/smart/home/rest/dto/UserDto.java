@@ -1,15 +1,18 @@
 package com.paolotti.my.smart.home.rest.dto;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.paolotti.my.smart.home.config.JsonViewConfig;
+import com.paolotti.my.smart.home.rest.dto.view.JsonViewConfig;
 import lombok.ToString;
 
 @ToString
 public class UserDto {
+    @JsonView(JsonViewConfig.MediumDetail.class)
     String id;
+    @JsonView(JsonViewConfig.MediumDetail.class)
     String name;
+    @JsonView(JsonViewConfig.MediumDetail.class)
     String surname;
-    @JsonView(JsonViewConfig.AsInput.class)
+    @JsonView(JsonViewConfig.LowDetail.class)
     String email;
 
     public String getId() {

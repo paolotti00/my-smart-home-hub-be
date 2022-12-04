@@ -1,49 +1,46 @@
 package com.paolotti.my.smart.home.rest.dto;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.paolotti.my.smart.home.config.JsonViewConfig;
 import com.paolotti.my.smart.home.enums.*;
+import com.paolotti.my.smart.home.rest.dto.view.JsonViewConfig;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Map;
 
 @ToString
 public class DeviceDto {
-    @JsonView(JsonViewConfig.AsOutput.class)
+    @JsonView(JsonViewConfig.HighDetail.class)
     private String id;
-    @JsonView(JsonViewConfig.AsInput.class)
+    @JsonView(JsonViewConfig.LowDetail.class)
     private UserDto user;
-    @JsonView(JsonViewConfig.AsInput.class)
+    @JsonView(JsonViewConfig.LowDetail.class)
     private NetworkDataDto networkData;
-    @JsonView(JsonViewConfig.AsInput.class)
+    @JsonView(JsonViewConfig.LowDetail.class)
     private String name;
-    @JsonView(JsonViewConfig.AsInput.class)
-    private DeviceTypeEnum type;
-    @JsonView(JsonViewConfig.AsInput.class)
-    private Map<Integer, DeviceComponentTypeEnum> numberOfComponents;
-    @JsonView(JsonViewConfig.AsOutput.class)
-    private ArrayList<DeviceComponentSensorDto> sensorList;
-    @JsonView(JsonViewConfig.AsOutput.class)
-    private ArrayList<DeviceComponentLightDto> lightList;
-    @JsonView(JsonViewConfig.AsOutput.class)
+    @JsonView(JsonViewConfig.LowDetail.class)
+    private DeviceComponentsWrapperDto components;
+    @JsonView(JsonViewConfig.HighDetail.class)
     private ArrayList<String> groups;
-    @JsonView(JsonViewConfig.AsOutput.class)
+    @JsonView(JsonViewConfig.HighDetail.class)
     private DeviceOperatingStatusEnum status;
-    @JsonView(JsonViewConfig.AsOutput.class)
+    @JsonView(JsonViewConfig.HighDetail.class)
     private DeviceInstallationStatusEnum installationStatus;
-    @JsonView(JsonViewConfig.AsOutput.class)
+    @JsonView(JsonViewConfig.HighDetail.class)
     private LocalDateTime registrationDate;
-    @JsonView(JsonViewConfig.AsOutput.class)
+    @JsonView(JsonViewConfig.HighDetail.class)
     private LocalDateTime creationDate;
-    @JsonView(JsonViewConfig.AsOutput.class)
+    @JsonView(JsonViewConfig.HighDetail.class)
     private LocalDateTime activationDate;
-    @JsonView(JsonViewConfig.AsInput.class)
+    @JsonView(JsonViewConfig.LowDetail.class)
     private DeviceBrandEnum brand;
 
     public String getId() {
         return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public UserDto getUser() {
@@ -52,10 +49,6 @@ public class DeviceDto {
 
     public void setUser(UserDto user) {
         this.user = user;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public NetworkDataDto getNetworkData() {
@@ -74,12 +67,12 @@ public class DeviceDto {
         this.name = name;
     }
 
-    public DeviceTypeEnum getType() {
-        return type;
+    public DeviceComponentsWrapperDto getComponents() {
+        return components;
     }
 
-    public void setType(DeviceTypeEnum type) {
-        this.type = type;
+    public void setComponents(DeviceComponentsWrapperDto components) {
+        this.components = components;
     }
 
     public ArrayList<String> getGroups() {
@@ -88,22 +81,6 @@ public class DeviceDto {
 
     public void setGroups(ArrayList<String> groups) {
         this.groups = groups;
-    }
-
-    public ArrayList<DeviceComponentSensorDto> getSensorList() {
-        return sensorList;
-    }
-
-    public void setSensorList(ArrayList<DeviceComponentSensorDto> sensorList) {
-        this.sensorList = sensorList;
-    }
-
-    public ArrayList<DeviceComponentLightDto> getLightList() {
-        return lightList;
-    }
-
-    public void setLightList(ArrayList<DeviceComponentLightDto> lightList) {
-        this.lightList = lightList;
     }
 
     public DeviceOperatingStatusEnum getStatus() {
@@ -152,13 +129,5 @@ public class DeviceDto {
 
     public void setBrand(DeviceBrandEnum brand) {
         this.brand = brand;
-    }
-
-    public Map<Integer, DeviceComponentTypeEnum> getNumberOfComponents() {
-        return numberOfComponents;
-    }
-
-    public void setNumberOfComponents(Map<Integer, DeviceComponentTypeEnum> numberOfComponents) {
-        this.numberOfComponents = numberOfComponents;
     }
 }
