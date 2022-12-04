@@ -1,32 +1,34 @@
 package com.paolotti.my.smart.home.model;
 
 import com.paolotti.my.smart.home.enums.*;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Map;
 
+@ToString
 public class Device {
+
     private String id;
     private User user;
     private NetworkData networkData;
     private String name;
-    private DeviceTypeEnum type;
-    private Map<Integer, DeviceComponentTypeEnum> numberOfComponents;
-    private ArrayList<DeviceComponentSensor> sensorList;
-    private ArrayList<DeviceComponentLight> lightList;
-    private ArrayList<String> groups;
+    private DeviceComponentWrapper components;
+    private ArrayList<Group> groups;
     private DeviceOperatingStatusEnum status;
     private DeviceInstallationStatusEnum installationStatus;
     private LocalDateTime registrationDate;
     private LocalDateTime creationDate;
     private LocalDateTime activationDate;
-
-    private ArrayList<DeviceActionsSchema> supportedSchemas;
     private DeviceBrandEnum brand;
+    private String firmwareVersion;
 
     public String getId() {
         return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public User getUser() {
@@ -35,10 +37,6 @@ public class Device {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public NetworkData getNetworkData() {
@@ -57,36 +55,20 @@ public class Device {
         this.name = name;
     }
 
-    public DeviceTypeEnum getType() {
-        return type;
+    public DeviceComponentWrapper getComponents() {
+        return components;
     }
 
-    public void setType(DeviceTypeEnum type) {
-        this.type = type;
+    public void setComponents(DeviceComponentWrapper components) {
+        this.components = components;
     }
 
-    public ArrayList<String> getGroups() {
+    public ArrayList<Group> getGroups() {
         return groups;
     }
 
-    public void setGroups(ArrayList<String> groups) {
+    public void setGroups(ArrayList<Group> groups) {
         this.groups = groups;
-    }
-
-    public ArrayList<DeviceComponentSensor> getSensorList() {
-        return sensorList;
-    }
-
-    public void setSensorList(ArrayList<DeviceComponentSensor> sensorList) {
-        this.sensorList = sensorList;
-    }
-
-    public ArrayList<DeviceComponentLight> getLightList() {
-        return lightList;
-    }
-
-    public void setLightList(ArrayList<DeviceComponentLight> lightList) {
-        this.lightList = lightList;
     }
 
     public DeviceOperatingStatusEnum getStatus() {
@@ -129,19 +111,19 @@ public class Device {
         this.activationDate = activationDate;
     }
 
-    public ArrayList<DeviceActionsSchema> getSupportedSchemas() {
-        return supportedSchemas;
-    }
-
-    public void setSupportedSchemas(ArrayList<DeviceActionsSchema> supportedSchemas) {
-        this.supportedSchemas = supportedSchemas;
-    }
-
     public DeviceBrandEnum getBrand() {
         return brand;
     }
 
     public void setBrand(DeviceBrandEnum brand) {
         this.brand = brand;
+    }
+
+    public String getFirmwareVersion() {
+        return firmwareVersion;
+    }
+
+    public void setFirmwareVersion(String firmwareVersion) {
+        this.firmwareVersion = firmwareVersion;
     }
 }

@@ -1,5 +1,8 @@
 package com.paolotti.my.smart.home.model;
 
+import lombok.ToString;
+
+@ToString
 public class NetworkData {
     String ip;
     String macAddress;

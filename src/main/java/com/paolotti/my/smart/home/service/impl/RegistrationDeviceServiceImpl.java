@@ -6,7 +6,6 @@ import com.paolotti.my.smart.home.exception.*;
 import com.paolotti.my.smart.home.factory.IBeanFactoryService;
 import com.paolotti.my.smart.home.mapper.IDeviceMapper;
 import com.paolotti.my.smart.home.model.Device;
-import com.paolotti.my.smart.home.model.DeviceRegistrationRequest;
 import com.paolotti.my.smart.home.model.User;
 import com.paolotti.my.smart.home.repository.IDeviceCustomRepository;
 import com.paolotti.my.smart.home.repository.entity.DeviceEntity;
@@ -36,13 +35,13 @@ public class RegistrationDeviceServiceImpl implements IRegistrationDeviceService
     IDeviceMapper deviceMapper;
 
     @Override
-    public Device deviceSelfRegisteringHandling(String userId, DeviceRegistrationRequest deviceRegistrationRequest) throws DeviceAlreadyRegisteredException, MissingFieldException, DeviceCreationException, UserNotExistException {
+    public Device deviceSelfRegisteringHandling(String userId, Device device) throws DeviceAlreadyRegisteredException, MissingFieldException, DeviceCreationException, UserNotExistException {
         // handling a device self registration request
         String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
-        logger.info("{}: device auto register flow started, deviceRegistrationRequest {}",methodName,deviceRegistrationRequest);
+        logger.info("{}: device auto register flow started, device to register {}",methodName,device);
         // request validation
         // checking if the device already exist
-        ArrayList<Device> retrievedDevices = getNotDeactivateDeviceByMacAddress(deviceRegistrationRequest.getNetworkData().getMacAddress());
+        ArrayList<Device> retrievedDevices = getNotDeactivateDeviceByMacAddress(device.getNetworkData().getMacAddress());
         logger.info("validation of request start");
         if(retrievedDevices!=null && !retrievedDevices.isEmpty()){
             // this device is already registered
@@ -52,24 +51,19 @@ public class RegistrationDeviceServiceImpl implements IRegistrationDeviceService
         // user
         User user = null;
         // enough one between user id or email is mandatory on this flow
-        if(userId==null && deviceRegistrationRequest.getUserEmail()==null){
+        if(userId==null && (device.getUser()==null || device.getUser().getEmail()==null) ){
             logger.error("the fields {} and {} are missing. enough one must be present", USER_ID_ATTRIBUTE_NAME, USER_ID_ATTRIBUTE_USER_EMAIL);
             throw new MissingFieldException(USER_ID_ATTRIBUTE_NAME + "and" +"USER_ID_ATTRIBUTE_USER_EMAIL");
         } else {
             // checking if user exist and if yes getting it
-            user= userService.checkIfUserExistsByIdOrEmailAndRetrieve(userId, deviceRegistrationRequest.getUserEmail());
+            user= userService.checkIfUserExistsByIdOrEmailAndRetrieve(userId, device.getUser().getEmail());
         }
-        if(deviceRegistrationRequest.getDeviceType()==null){
-            logger.error("the field {} is missing", DEVICE_REG_REQ_TYPE_ATTRIBUTE_NAME);
-            throw new MissingFieldException(DEVICE_REG_REQ_TYPE_ATTRIBUTE_NAME);
-        }
-        if(deviceRegistrationRequest.getNetworkData() == null || deviceRegistrationRequest.getNetworkData().getMacAddress()==null){
+        if(device.getNetworkData() == null || device.getNetworkData().getMacAddress()==null){
             logger.error("the field {} is missing", DEVICE_REG_REQ_MAC_ADDRESS_ATTRIBUTE_NAME);
             throw new MissingFieldException(DEVICE_REG_REQ_MAC_ADDRESS_ATTRIBUTE_NAME);
         }
         logger.info("validation of request done");
         // create and registering the device
-        Device device = deviceMapper.toDevice(deviceRegistrationRequest);
         try {
             device.setUser(user);
             device.setCreationDate(LocalDateTime.now());

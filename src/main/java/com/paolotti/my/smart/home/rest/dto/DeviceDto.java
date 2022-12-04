@@ -21,7 +21,7 @@ public class DeviceDto {
     @JsonView(JsonViewConfig.LowDetail.class)
     private DeviceComponentsWrapperDto components;
     @JsonView(JsonViewConfig.HighDetail.class)
-    private ArrayList<String> groups;
+    private ArrayList<GroupDto> groups;
     @JsonView(JsonViewConfig.HighDetail.class)
     private DeviceOperatingStatusEnum status;
     @JsonView(JsonViewConfig.HighDetail.class)
@@ -34,6 +34,8 @@ public class DeviceDto {
     private LocalDateTime activationDate;
     @JsonView(JsonViewConfig.LowDetail.class)
     private DeviceBrandEnum brand;
+    @JsonView(JsonViewConfig.MediumDetail.class)
+    private String firmwareVersion;
 
     public String getId() {
         return id;
@@ -75,11 +77,11 @@ public class DeviceDto {
         this.components = components;
     }
 
-    public ArrayList<String> getGroups() {
+    public ArrayList<GroupDto> getGroups() {
         return groups;
     }
 
-    public void setGroups(ArrayList<String> groups) {
+    public void setGroups(ArrayList<GroupDto> groups) {
         this.groups = groups;
     }
 
@@ -129,5 +131,13 @@ public class DeviceDto {
 
     public void setBrand(DeviceBrandEnum brand) {
         this.brand = brand;
+    }
+
+    public String getFirmwareVersion() {
+        return firmwareVersion;
+    }
+
+    public void setFirmwareVersion(String firmwareVersion) {
+        this.firmwareVersion = firmwareVersion;
     }
 }

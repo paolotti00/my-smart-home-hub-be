@@ -10,6 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("device")
 public interface IDeviceRestController {
     @PostMapping("")
-    @JsonView(JsonViewConfig.MediumDetail.class)
+    @JsonView(JsonViewConfig.HighDetail.class)
     DeviceDto create (@JsonView(JsonViewConfig.LowDetail.class) @RequestBody DeviceDto deviceDto);
 }

@@ -3,7 +3,7 @@ package com.paolotti.my.smart.home.rest.dto;
 import lombok.ToString;
 
 @ToString
-public class ColorRgbDto {
+public class ColorRgb {
     int r;
     int g;
     int b;

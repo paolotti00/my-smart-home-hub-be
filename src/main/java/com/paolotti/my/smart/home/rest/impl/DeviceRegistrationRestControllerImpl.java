@@ -3,12 +3,9 @@ package com.paolotti.my.smart.home.rest.impl;
 import com.paolotti.my.smart.home.constant.RestConst;
 import com.paolotti.my.smart.home.exception.*;
 import com.paolotti.my.smart.home.mapper.IDeviceMapper;
-import com.paolotti.my.smart.home.mapper.IDeviceRegistrationMapper;
 import com.paolotti.my.smart.home.model.Device;
-import com.paolotti.my.smart.home.model.DeviceRegistrationRequest;
 import com.paolotti.my.smart.home.rest.IDeviceRegistrationRestController;
 import com.paolotti.my.smart.home.rest.dto.DeviceDto;
-import com.paolotti.my.smart.home.rest.dto.reqres.*;
 import com.paolotti.my.smart.home.service.IRegistrationDeviceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,21 +25,19 @@ public class DeviceRegistrationRestControllerImpl implements IDeviceRegistration
     IRegistrationDeviceService deviceService;
     @Autowired
     IDeviceMapper deviceMapper;
-    @Autowired
-    IDeviceRegistrationMapper deviceRegistrationMapper;
+
     private static final Logger logger = LoggerFactory.getLogger(DeviceRegistrationRestControllerImpl.class);
 
     @Override
-    public ResponseEntity<DeviceDto> handleDeviceRegistrationRequest(@RequestHeader(RestConst.HEADER_USER_ID) String userId, @RequestBody DeviceRegistrationRequestDto registrationRequestDto) throws DeviceAlreadyRegisteredException, MissingFieldException, DeviceCreationException, UserNotExistException {
+    public ResponseEntity<DeviceDto> handleDeviceRegistrationRequest(@RequestHeader(RestConst.HEADER_USER_ID) String userId, @RequestBody DeviceDto deviceDto) throws DeviceAlreadyRegisteredException, MissingFieldException, DeviceCreationException, UserNotExistException {
         String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
-        logger.info("{}: device auto register flow received request dto, deviceRegistrationRequestDto {}",methodName,registrationRequestDto);
+        logger.info("{}: device auto register flow received request dto, deviceRegistrationRequestDto {}",methodName,deviceDto);
         ResponseEntity<DeviceDto> deviceDtoResponseEntity;
-        DeviceDto deviceDto = new DeviceDto();
         try {
             // converting to model
-            DeviceRegistrationRequest deviceRegistrationRequest =  deviceRegistrationMapper.toDeviceRegistrationRequest(registrationRequestDto);
+            Device device =  deviceMapper.toModel(deviceDto);
             // calling service
-            Device device = deviceService.deviceSelfRegisteringHandling(userId, deviceRegistrationRequest);
+            device = deviceService.deviceSelfRegisteringHandling(userId, device);
             // converting to dto
             deviceDto = deviceMapper.toDto(device);
             deviceDtoResponseEntity = new ResponseEntity<>(deviceDto, HttpStatus.OK);

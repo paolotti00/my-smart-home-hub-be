@@ -1,18 +1,13 @@
-package com.paolotti.my.smart.home.rest.dto;
+package com.paolotti.my.smart.home.model;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import com.paolotti.my.smart.home.enums.OnOffStatusEnum;
-import com.paolotti.my.smart.home.rest.dto.view.JsonViewConfig;
+import com.paolotti.my.smart.home.rest.dto.ColorRgb;
 import lombok.ToString;
 
 @ToString
-public class DeviceWorkingStatusDto {
-
-    @JsonView(JsonViewConfig.LowDetail.class)
+public class DeviceWorkingStatus {
     private DeviceWorkingStatusOut out;
-    @JsonView(JsonViewConfig.LowDetail.class)
     private DeviceWorkingStatusIn in;
-    @JsonView(JsonViewConfig.LowDetail.class)
     private OnOffStatusEnum powerStatus;
 
     public DeviceWorkingStatusOut getOut() {
@@ -41,11 +36,8 @@ public class DeviceWorkingStatusDto {
 
     @ToString
     public static class DeviceWorkingStatusOut {
-        @JsonView(JsonViewConfig.LowDetail.class)
         private int intensity;
-        @JsonView(JsonViewConfig.LowDetail.class)
         private OnOffStatusEnum powerStatus;
-        @JsonView(JsonViewConfig.LowDetail.class)
         private ColorRgb colorRgb;
 
         public int getIntensity() {
@@ -75,7 +67,6 @@ public class DeviceWorkingStatusDto {
 
     @ToString
     public static class DeviceWorkingStatusIn {
-        @JsonView(JsonViewConfig.LowDetail.class)
         private double temperature;
 
         public double getTemperature() {

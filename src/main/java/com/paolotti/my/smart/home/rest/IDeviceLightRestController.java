@@ -3,7 +3,7 @@ package com.paolotti.my.smart.home.rest;
 import com.paolotti.my.smart.home.exception.BrandNotSupportedException;
 import com.paolotti.my.smart.home.exception.DeviceNotExistsException;
 import com.paolotti.my.smart.home.exception.GroupNotExistsException;
-import com.paolotti.my.smart.home.rest.dto.reqres.BaseResponseDto;
+import com.paolotti.my.smart.home.rest.dto.BaseResponseDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
