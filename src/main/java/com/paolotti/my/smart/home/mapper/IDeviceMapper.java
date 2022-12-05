@@ -16,7 +16,7 @@ import java.util.List;
 
 @Mapper( componentModel = "spring",
         injectionStrategy = InjectionStrategy.CONSTRUCTOR,
-        uses = {IBaseMapper.class,IUserMapper.class, IDeviceGroupMapper.class})
+        uses = {IBaseMapper.class,IUserMapper.class})
 public interface IDeviceMapper {
     Logger logger = LoggerFactory.getLogger(IDeviceMapper.class);
 

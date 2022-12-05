@@ -18,11 +18,9 @@ public class DeviceEntity extends EntityBase {
     private NetworkData networkData;
     private String name;
     private DeviceComponentWrapper components;
-    private ArrayList<DeviceGroupEntity> groups;
     private DeviceOperatingStatusEnum status;
     private DeviceInstallationStatusEnum installationStatus;
     private LocalDateTime registrationDate;
-    private LocalDateTime creationDate;
     private LocalDateTime activationDate;
     private DeviceBrandEnum brand;
     private String firmwareVersion;
@@ -59,14 +57,6 @@ public class DeviceEntity extends EntityBase {
         this.components = components;
     }
 
-    public ArrayList<DeviceGroupEntity> getGroups() {
-        return groups;
-    }
-
-    public void setGroups(ArrayList<DeviceGroupEntity> groups) {
-        this.groups = groups;
-    }
-
     public DeviceOperatingStatusEnum getStatus() {
         return status;
     }
@@ -89,16 +79,6 @@ public class DeviceEntity extends EntityBase {
 
     public void setRegistrationDate(LocalDateTime registrationDate) {
         this.registrationDate = registrationDate;
-    }
-
-    @Override
-    public LocalDateTime getCreationDate() {
-        return creationDate;
-    }
-
-    @Override
-    public void setCreationDate(LocalDateTime creationDate) {
-        this.creationDate = creationDate;
     }
 
     public LocalDateTime getActivationDate() {

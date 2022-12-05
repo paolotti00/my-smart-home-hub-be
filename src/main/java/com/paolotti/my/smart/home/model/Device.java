@@ -14,7 +14,6 @@ public class Device {
     private NetworkData networkData;
     private String name;
     private DeviceComponentWrapper components;
-    private ArrayList<DeviceGroup> groups;
     private DeviceOperatingStatusEnum status;
     private DeviceInstallationStatusEnum installationStatus;
     private LocalDateTime registrationDate;
@@ -61,14 +60,6 @@ public class Device {
 
     public void setComponents(DeviceComponentWrapper components) {
         this.components = components;
-    }
-
-    public ArrayList<DeviceGroup> getGroups() {
-        return groups;
-    }
-
-    public void setGroups(ArrayList<DeviceGroup> groups) {
-        this.groups = groups;
     }
 
     public DeviceOperatingStatusEnum getStatus() {

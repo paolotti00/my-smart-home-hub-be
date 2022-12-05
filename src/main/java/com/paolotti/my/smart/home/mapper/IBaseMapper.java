@@ -4,7 +4,7 @@ import org.bson.types.ObjectId;
 import org.mapstruct.Mapper;
 import org.mapstruct.Named;
 
-@Mapper
+@Mapper( componentModel = "spring")
 public interface IBaseMapper {
     @Named("toObjectId")
     default ObjectId toObjectId(String id) {
