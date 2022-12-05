@@ -1,8 +1,7 @@
 package com.paolotti.my.smart.home.repository.impl;
 
 import com.paolotti.my.smart.home.repository.IDeviceGroupCustomRepository;
-import com.paolotti.my.smart.home.repository.entity.DeviceEntity;
-import com.paolotti.my.smart.home.repository.entity.GroupDeviceEntity;
+import com.paolotti.my.smart.home.repository.entity.DeviceGroupEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -15,15 +14,15 @@ public class DeviceGroupCustomRepositoryImpl implements IDeviceGroupCustomReposi
     MongoTemplate mongoTemplate;
 
     @Override
-    public GroupDeviceEntity save(GroupDeviceEntity groupDeviceEntity) {
-        return mongoTemplate.save(groupDeviceEntity);
+    public DeviceGroupEntity save(DeviceGroupEntity deviceGroupEntity) {
+        return mongoTemplate.save(deviceGroupEntity);
     }
 
     @Override
-    public GroupDeviceEntity findById(String groupId) {
+    public DeviceGroupEntity findById(String groupId) {
         Query query = new Query();
         Criteria criteria = Criteria.where("id").is(groupId);
         query.addCriteria(criteria);
-        return (GroupDeviceEntity) mongoTemplate.findById(groupId, GroupDeviceEntity.class);
+        return (DeviceGroupEntity) mongoTemplate.findById(groupId, DeviceGroupEntity.class);
     }
 }

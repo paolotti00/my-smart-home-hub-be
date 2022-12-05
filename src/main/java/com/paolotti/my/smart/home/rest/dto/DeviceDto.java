@@ -21,7 +21,7 @@ public class DeviceDto {
     @JsonView(JsonViewConfig.LowDetail.class)
     private DeviceComponentsWrapperDto components;
     @JsonView(JsonViewConfig.HighDetail.class)
-    private ArrayList<GroupDto> groups;
+    private ArrayList<GroupBaseDto> groups;
     @JsonView(JsonViewConfig.HighDetail.class)
     private DeviceOperatingStatusEnum status;
     @JsonView(JsonViewConfig.HighDetail.class)
@@ -77,11 +77,11 @@ public class DeviceDto {
         this.components = components;
     }
 
-    public ArrayList<GroupDto> getGroups() {
+    public ArrayList<GroupBaseDto> getGroups() {
         return groups;
     }
 
-    public void setGroups(ArrayList<GroupDto> groups) {
+    public void setGroups(ArrayList<GroupBaseDto> groups) {
         this.groups = groups;
     }
 

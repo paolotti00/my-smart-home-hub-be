@@ -7,7 +7,7 @@ import lombok.ToString;
 import java.time.LocalDateTime;
 
 @ToString
-public class GroupDto {
+public class GroupBaseDto {
     @JsonView(JsonViewConfig.HighDetail.class)
     private String id;
     @JsonView(JsonViewConfig.LowDetail.class)

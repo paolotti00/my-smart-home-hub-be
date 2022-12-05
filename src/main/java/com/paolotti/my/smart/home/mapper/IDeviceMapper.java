@@ -1,21 +1,23 @@
 package com.paolotti.my.smart.home.mapper;
 
-import com.paolotti.my.smart.home.constant.DeviceConst;
-import com.paolotti.my.smart.home.enums.DeviceComponentTypeEnum;
-import com.paolotti.my.smart.home.model.*;
+import com.paolotti.my.smart.home.model.Device;
 import com.paolotti.my.smart.home.repository.entity.DeviceEntity;
 import com.paolotti.my.smart.home.rest.dto.DeviceDto;
-import com.paolotti.my.smart.home.utility.CustomStringUtility;
+import org.bson.types.ObjectId;
+import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Mapper(componentModel = "spring")
-public interface IDeviceMapper extends IBaseMapper {
+@Mapper( componentModel = "spring",
+        injectionStrategy = InjectionStrategy.CONSTRUCTOR,
+        uses = {IBaseMapper.class,IUserMapper.class, IDeviceGroupMapper.class})
+public interface IDeviceMapper {
     Logger logger = LoggerFactory.getLogger(IDeviceMapper.class);
 
     @Mapping(source = "id", target = "id", qualifiedByName = "toObjectId")

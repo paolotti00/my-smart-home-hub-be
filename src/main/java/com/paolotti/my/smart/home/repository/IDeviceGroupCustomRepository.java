@@ -1,9 +1,9 @@
 package com.paolotti.my.smart.home.repository;
 
 
-import com.paolotti.my.smart.home.repository.entity.GroupDeviceEntity;
+import com.paolotti.my.smart.home.repository.entity.DeviceGroupEntity;
 
 public interface IDeviceGroupCustomRepository {
-    GroupDeviceEntity save(GroupDeviceEntity groupDeviceEntity);
-    GroupDeviceEntity findById(String groupId);
+    DeviceGroupEntity save(DeviceGroupEntity deviceGroupEntity);
+    DeviceGroupEntity findById(String groupId);
 }

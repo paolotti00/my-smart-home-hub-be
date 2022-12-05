@@ -8,7 +8,7 @@ import com.paolotti.my.smart.home.model.DeviceActionsSchema;
 import com.paolotti.my.smart.home.repository.IDeviceCustomRepository;
 import com.paolotti.my.smart.home.repository.IDeviceGroupCustomRepository;
 import com.paolotti.my.smart.home.repository.entity.DeviceEntity;
-import com.paolotti.my.smart.home.repository.entity.GroupDeviceEntity;
+import com.paolotti.my.smart.home.repository.entity.DeviceGroupEntity;
 import com.paolotti.my.smart.home.service.IDeviceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -72,15 +72,15 @@ public class DeviceServiceImpl implements IDeviceService {
         logger.info("retrieving devices of the group with id {}", groupId);
         ArrayList<Device>devices = new ArrayList<>();
         logger.info("checking if group with id {} exists",groupId);
-        GroupDeviceEntity groupDeviceEntity = deviceGroupCustomRepository.findById(groupId);
-        if(groupDeviceEntity == null){
+        DeviceGroupEntity deviceGroupEntity = deviceGroupCustomRepository.findById(groupId);
+        if(deviceGroupEntity == null){
             throw new GroupNotExistsException(groupId);
         }
-        if (groupDeviceEntity.getDevices().isEmpty()) {
+        if (deviceGroupEntity.getDevices().isEmpty()) {
             logger.warn("no device in group id {} found", groupId);
         } else {
             logger.debug("converting deviceEntity to device model");
-            devices = deviceMapper.toModels(groupDeviceEntity.getDevices());
+            devices = deviceMapper.toModels(deviceGroupEntity.getDevices());
         }
         logger.info("retrieved {} devices in the group with id {} and name",devices.size(),groupId);
         return devices;

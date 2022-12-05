@@ -1,42 +1,47 @@
 package com.paolotti.my.smart.home.repository.entity;
 
-import com.paolotti.my.smart.home.enums.*;
-import com.paolotti.my.smart.home.model.ColorRgb;
+import com.paolotti.my.smart.home.enums.DeviceBrandEnum;
+import com.paolotti.my.smart.home.enums.DeviceComponentTypeEnum;
+import com.paolotti.my.smart.home.enums.DeviceInstallationStatusEnum;
+import com.paolotti.my.smart.home.enums.DeviceOperatingStatusEnum;
+import com.paolotti.my.smart.home.model.*;
 import lombok.ToString;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
-@ToString
 @Document(collection = "devices")
 public class DeviceEntity extends EntityBase {
-    private UserEntity userOwner;
-    private String name;
-    private DeviceTypeEnum type;
+    private UserEntity user;
     private NetworkData networkData;
-    private ArrayList<DeviceComponentSensor> sensorList;
-    private ArrayList<DeviceComponentLight> lightList;
-    private Map<Integer, DeviceComponentTypeEnum> numberOfComponents;
-    @DocumentReference(lazy=true)
-    private List<GroupDeviceEntity> deviceGroups;
+    private String name;
+    private DeviceComponentWrapper components;
+    private ArrayList<DeviceGroupEntity> groups;
     private DeviceOperatingStatusEnum status;
     private DeviceInstallationStatusEnum installationStatus;
-    private DeviceBrandEnum brand;
     private LocalDateTime registrationDate;
+    private LocalDateTime creationDate;
     private LocalDateTime activationDate;
+    private DeviceBrandEnum brand;
+    private String firmwareVersion;
 
-    public UserEntity getUserOwner() {
-        return userOwner;
+    public UserEntity getUser() {
+        return user;
     }
 
-    public void setUserOwner(UserEntity userOwner) {
-        this.userOwner = userOwner;
+    public void setUser(UserEntity user) {
+        this.user = user;
     }
 
+    public NetworkData getNetworkData() {
+        return networkData;
+    }
+
+    public void setNetworkData(NetworkData networkData) {
+        this.networkData = networkData;
+    }
 
     public String getName() {
         return name;
@@ -46,44 +51,20 @@ public class DeviceEntity extends EntityBase {
         this.name = name;
     }
 
-    public DeviceTypeEnum getType() {
-        return type;
+    public DeviceComponentWrapper getComponents() {
+        return components;
     }
 
-    public void setType(DeviceTypeEnum type) {
-        this.type = type;
+    public void setComponents(DeviceComponentWrapper components) {
+        this.components = components;
     }
 
-    public ArrayList<DeviceComponentSensor> getSensorList() {
-        return sensorList;
+    public ArrayList<DeviceGroupEntity> getGroups() {
+        return groups;
     }
 
-    public void setSensorList(ArrayList<DeviceComponentSensor> sensorList) {
-        this.sensorList = sensorList;
-    }
-
-    public ArrayList<DeviceComponentLight> getLightList() {
-        return lightList;
-    }
-
-    public void setLightList(ArrayList<DeviceComponentLight> lightList) {
-        this.lightList = lightList;
-    }
-
-    public List<GroupDeviceEntity> getDeviceGroups() {
-        return deviceGroups;
-    }
-
-    public void setDeviceGroups(List<GroupDeviceEntity> deviceGroups) {
-        this.deviceGroups = deviceGroups;
-    }
-
-    public LocalDateTime getActivationDate() {
-        return activationDate;
-    }
-
-    public void setActivationDate(LocalDateTime activationDate) {
-        this.activationDate = activationDate;
+    public void setGroups(ArrayList<DeviceGroupEntity> groups) {
+        this.groups = groups;
     }
 
     public DeviceOperatingStatusEnum getStatus() {
@@ -102,14 +83,6 @@ public class DeviceEntity extends EntityBase {
         this.installationStatus = installationStatus;
     }
 
-    public DeviceBrandEnum getBrand() {
-        return brand;
-    }
-
-    public void setBrand(DeviceBrandEnum brand) {
-        this.brand = brand;
-    }
-
     public LocalDateTime getRegistrationDate() {
         return registrationDate;
     }
@@ -118,85 +91,62 @@ public class DeviceEntity extends EntityBase {
         this.registrationDate = registrationDate;
     }
 
-    public NetworkData getNetworkData() {
-        return networkData;
+    @Override
+    public LocalDateTime getCreationDate() {
+        return creationDate;
     }
 
-    public void setNetworkData(NetworkData networkData) {
-        this.networkData = networkData;
+    @Override
+    public void setCreationDate(LocalDateTime creationDate) {
+        this.creationDate = creationDate;
     }
 
-    public Map<Integer, DeviceComponentTypeEnum> getNumberOfComponents() {
-        return numberOfComponents;
+    public LocalDateTime getActivationDate() {
+        return activationDate;
     }
 
-    public void setNumberOfComponents(Map<Integer, DeviceComponentTypeEnum> numberOfComponents) {
-        this.numberOfComponents = numberOfComponents;
+    public void setActivationDate(LocalDateTime activationDate) {
+        this.activationDate = activationDate;
     }
 
-
-
-    public static class DeviceComponentBase {
-        private String id;
-        private String name;
-        private OnOffStatusEnum workingStatus;
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public OnOffStatusEnum getWorkingStatus() {
-            return workingStatus;
-        }
-
-        public void setWorkingStatus(OnOffStatusEnum workingStatus) {
-            this.workingStatus = workingStatus;
-        }
-    }
-    public static class DeviceComponentSensor extends DeviceComponentBase {
-        private DeviceComponentTypeEnum type;
-
-        public DeviceComponentTypeEnum getType() {
-            return type;
-        }
-
-        public void setType(DeviceComponentTypeEnum type) {
-            this.type = type;
-        }
-    }
-    public static class DeviceComponentLight extends DeviceComponentBase {
-        private int intensityPercentage; // 0 to 100
-        private ColorRgb color;
-
-        public int getIntensityPercentage() {
-            return intensityPercentage;
-        }
-
-        public void setIntensityPercentage(int intensityPercentage) {
-            this.intensityPercentage = intensityPercentage;
-        }
-
-        public ColorRgb getColor() {
-            return color;
-        }
-
-        public void setColor(ColorRgb color) {
-            this.color = color;
-        }
+    public DeviceBrandEnum getBrand() {
+        return brand;
     }
 
+    public void setBrand(DeviceBrandEnum brand) {
+        this.brand = brand;
+    }
+
+    public String getFirmwareVersion() {
+        return firmwareVersion;
+    }
+
+    public void setFirmwareVersion(String firmwareVersion) {
+        this.firmwareVersion = firmwareVersion;
+    }
+
+    @ToString
+    public static class DeviceComponentWrapper {
+        private ArrayList<Map<Integer, DeviceComponentTypeEnum>> numberOfComponents;
+        private ArrayList<DeviceComponent> componentsList;
+
+        public ArrayList<Map<Integer, DeviceComponentTypeEnum>> getNumberOfComponents() {
+            return numberOfComponents;
+        }
+
+        public void setNumberOfComponents(ArrayList<Map<Integer, DeviceComponentTypeEnum>> numberOfComponents) {
+            this.numberOfComponents = numberOfComponents;
+        }
+
+        public ArrayList<DeviceComponent> getComponentsList() {
+            return componentsList;
+        }
+
+        public void setComponentsList(ArrayList<DeviceComponent> componentsList) {
+            this.componentsList = componentsList;
+        }
+    }
+    @ToString
     public static class NetworkData {
         String ip;
         String macAddress;
@@ -226,7 +176,4 @@ public class DeviceEntity extends EntityBase {
             this.name = name;
         }
     }
-
-
-
 }
