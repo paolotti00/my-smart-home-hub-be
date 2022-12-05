@@ -1,5 +1,6 @@
 package com.paolotti.my.smart.home.rest.impl;
 
+import com.paolotti.my.smart.home.exception.MissingFieldException;
 import com.paolotti.my.smart.home.mapper.IDeviceMapper;
 import com.paolotti.my.smart.home.model.Device;
 import com.paolotti.my.smart.home.rest.IDeviceRestController;
@@ -21,7 +22,7 @@ public class DeviceRestControllerImpl implements IDeviceRestController {
     private static final Logger logger = LoggerFactory.getLogger(DeviceRestControllerImpl.class);
 
     @Override
-    public DeviceDto create(@RequestBody DeviceDto deviceDto) {
+    public DeviceDto create(@RequestBody DeviceDto deviceDto) throws MissingFieldException {
         String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         logger.info("{}: device creation request received, deviceDto {}",methodName,deviceDto);
         ResponseEntity<DeviceDto> deviceDtoResponseEntity;

@@ -2,20 +2,25 @@ package com.paolotti.my.smart.home.service.impl;
 
 import com.paolotti.my.smart.home.exception.DeviceNotExistsException;
 import com.paolotti.my.smart.home.exception.GroupNotExistsException;
+import com.paolotti.my.smart.home.exception.MissingFieldException;
+import com.paolotti.my.smart.home.exception.ValidationException;
 import com.paolotti.my.smart.home.mapper.IDeviceMapper;
 import com.paolotti.my.smart.home.model.Device;
 import com.paolotti.my.smart.home.model.DeviceActionsSchema;
+import com.paolotti.my.smart.home.model.ValidationHelperObject;
 import com.paolotti.my.smart.home.repository.IDeviceCustomRepository;
 import com.paolotti.my.smart.home.repository.IDeviceGroupCustomRepository;
 import com.paolotti.my.smart.home.repository.entity.DeviceEntity;
 import com.paolotti.my.smart.home.repository.entity.DeviceGroupEntity;
 import com.paolotti.my.smart.home.service.IDeviceService;
+import com.paolotti.my.smart.home.service.IValidationHelperService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 @Service
 public class DeviceServiceImpl implements IDeviceService {
@@ -24,12 +29,21 @@ public class DeviceServiceImpl implements IDeviceService {
     @Autowired
     IDeviceGroupCustomRepository deviceGroupCustomRepository;
     @Autowired
+    IValidationHelperService validationHelperService;
+    @Autowired
     IDeviceMapper deviceMapper;
 
     private static final Logger logger = LoggerFactory.getLogger(DeviceServiceImpl.class);
 
     @Override
-    public Device create(Device device) {
+    public Device create(Device device) throws  MissingFieldException {
+        String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
+        logger.info("{}: creation device started, device to create {}",methodName,device);
+        Device finalDevice = device;
+        ArrayList<ValidationHelperObject> toValidateItems = new ArrayList<>();
+        toValidateItems.add(new ValidationHelperObject<String>("name", finalDevice.getName(), ValidationHelperObject.ValidationType.NOT_NULL));
+        validationHelperService.validate(toValidateItems);
+
         // todo pt
         DeviceEntity deviceEntity = deviceMapper.toEntity(device);
         DeviceEntity deviceMapped = deviceCustomRepository.save(deviceEntity);

@@ -2,6 +2,8 @@ package com.paolotti.my.smart.home.service;
 
 import com.paolotti.my.smart.home.exception.DeviceNotExistsException;
 import com.paolotti.my.smart.home.exception.GroupNotExistsException;
+import com.paolotti.my.smart.home.exception.MissingFieldException;
+import com.paolotti.my.smart.home.exception.ValidationException;
 import com.paolotti.my.smart.home.model.Device;
 import com.paolotti.my.smart.home.model.DeviceActionsSchema;
 import com.paolotti.my.smart.home.rest.dto.DeviceDto;
@@ -9,7 +11,7 @@ import com.paolotti.my.smart.home.rest.dto.DeviceDto;
 import java.util.ArrayList;
 
 public interface IDeviceService {
-    Device create(Device device);
+    Device create(Device device) throws  MissingFieldException;
     public void doFwActionsSchema(String deviceId, DeviceActionsSchema deviceActionsSchema);
     public ArrayList<DeviceActionsSchema> getSupportedActionsSchemas(String deviceId);
     public void doCustomActionSchema(String deviceId, DeviceActionsSchema deviceActionsSchema);
