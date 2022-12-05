@@ -19,7 +19,11 @@ public interface IBaseMapper {
 
     @Named("toStringId")
     default String toStringId(ObjectId id) {
-        return id.toHexString();
+        String toReturn = null;
+        if(id!=null){
+            toReturn = id.toHexString();
+        }
+        return toReturn;
     }
 
     ;
