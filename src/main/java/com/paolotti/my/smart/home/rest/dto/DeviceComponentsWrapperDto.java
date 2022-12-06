@@ -12,15 +12,15 @@ import java.util.Map;
 @ToString
 public class DeviceComponentsWrapperDto {
     @JsonView(JsonViewConfig.LowDetail.class)
-    private Map<Integer, DeviceComponentTypeEnum> numberOfComponents;
+    private Map< DeviceComponentTypeEnum,Integer> numberOfComponents;
     @JsonView(JsonViewConfig.HighDetail.class)
     private ArrayList<DeviceComponentDto> componentsList;
 
-    public Map<Integer, DeviceComponentTypeEnum> getNumberOfComponents() {
+    public Map< DeviceComponentTypeEnum,Integer> getNumberOfComponents() {
         return numberOfComponents;
     }
 
-    public void setNumberOfComponents(Map<Integer, DeviceComponentTypeEnum> numberOfComponents) {
+    public void setNumberOfComponents(Map< DeviceComponentTypeEnum,Integer> numberOfComponents) {
         this.numberOfComponents = numberOfComponents;
     }
 

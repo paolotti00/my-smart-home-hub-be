@@ -1,15 +1,16 @@
 package com.paolotti.my.smart.home.model;
 
+import com.paolotti.my.smart.home.enums.DeviceComponentTypeEnum;
 import com.paolotti.my.smart.home.enums.DeviceOperatingStatusEnum;
-import com.paolotti.my.smart.home.enums.DeviceTypeEnum;
 import lombok.ToString;
 
 @ToString
 public class DeviceComponent{
         private String id;
-        private DeviceTypeEnum type;
-        private DeviceWorkingStatus workingStatus;
+        private DeviceComponentTypeEnum type;
+        private DeviceComponentWorkingStatus workingStatus;
         private DeviceOperatingStatusEnum status;
+        private String description;
 
     public String getId() {
         return id;
@@ -19,11 +20,11 @@ public class DeviceComponent{
         this.id = id;
     }
 
-    public DeviceTypeEnum getType() {
+    public DeviceComponentTypeEnum getType() {
         return type;
     }
 
-    public void setType(DeviceTypeEnum type) {
+    public void setType(DeviceComponentTypeEnum type) {
         this.type = type;
     }
 
@@ -35,11 +36,19 @@ public class DeviceComponent{
         this.status = status;
     }
 
-    public DeviceWorkingStatus getWorkingStatus() {
+    public DeviceComponentWorkingStatus getWorkingStatus() {
         return workingStatus;
     }
 
-    public void setWorkingStatus(DeviceWorkingStatus workingStatus) {
+    public void setWorkingStatus(DeviceComponentWorkingStatus workingStatus) {
         this.workingStatus = workingStatus;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

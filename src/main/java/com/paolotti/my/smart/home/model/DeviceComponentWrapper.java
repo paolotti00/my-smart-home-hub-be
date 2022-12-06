@@ -8,14 +8,14 @@ import java.util.Map;
 
 @ToString
 public class DeviceComponentWrapper {
-    private Map<Integer, DeviceComponentTypeEnum> numberOfComponents;
+    private Map< DeviceComponentTypeEnum,Integer> numberOfComponents;
     private ArrayList<DeviceComponent> componentsList;
 
-    public Map<Integer, DeviceComponentTypeEnum> getNumberOfComponents() {
+    public Map< DeviceComponentTypeEnum,Integer> getNumberOfComponents() {
         return numberOfComponents;
     }
 
-    public void setNumberOfComponents(Map<Integer, DeviceComponentTypeEnum> numberOfComponents) {
+    public void setNumberOfComponents(Map< DeviceComponentTypeEnum,Integer> numberOfComponents) {
         this.numberOfComponents = numberOfComponents;
     }
 

@@ -4,7 +4,6 @@ import com.paolotti.my.smart.home.enums.*;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 
 @ToString
 public class Device {

@@ -1,10 +1,6 @@
 package com.paolotti.my.smart.home.repository.entity;
 
-import com.paolotti.my.smart.home.enums.DeviceBrandEnum;
-import com.paolotti.my.smart.home.enums.DeviceComponentTypeEnum;
-import com.paolotti.my.smart.home.enums.DeviceInstallationStatusEnum;
-import com.paolotti.my.smart.home.enums.DeviceOperatingStatusEnum;
-import com.paolotti.my.smart.home.model.*;
+import com.paolotti.my.smart.home.enums.*;
 import lombok.ToString;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -107,14 +103,14 @@ public class DeviceEntity extends EntityBase {
 
     @ToString
     public static class DeviceComponentWrapper {
-        private Map<Integer, DeviceComponentTypeEnum> numberOfComponents;
+        private Map< DeviceComponentTypeEnum,Integer> numberOfComponents;
         private ArrayList<DeviceComponent> componentsList;
 
-        public Map<Integer, DeviceComponentTypeEnum> getNumberOfComponents() {
+        public Map< DeviceComponentTypeEnum,Integer> getNumberOfComponents() {
             return numberOfComponents;
         }
 
-        public void setNumberOfComponents(Map<Integer, DeviceComponentTypeEnum> numberOfComponents) {
+        public void setNumberOfComponents(Map< DeviceComponentTypeEnum,Integer> numberOfComponents) {
             this.numberOfComponents = numberOfComponents;
         }
 
@@ -124,6 +120,113 @@ public class DeviceEntity extends EntityBase {
 
         public void setComponentsList(ArrayList<DeviceComponent> componentsList) {
             this.componentsList = componentsList;
+        }
+    }
+    @ToString
+    public static class DeviceComponent {
+        private String id;
+        private DeviceComponentTypeEnum type;
+        private DeviceComponentWorkingStatus workingStatus;
+        private DeviceOperatingStatusEnum status;
+        private String description;
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public DeviceComponentTypeEnum getType() {
+            return type;
+        }
+
+        public void setType(DeviceComponentTypeEnum type) {
+            this.type = type;
+        }
+
+        public DeviceComponentWorkingStatus getWorkingStatus() {
+            return workingStatus;
+        }
+
+        public void setWorkingStatus(DeviceComponentWorkingStatus workingStatus) {
+            this.workingStatus = workingStatus;
+        }
+
+        public DeviceOperatingStatusEnum getStatus() {
+            return status;
+        }
+
+        public void setStatus(DeviceOperatingStatusEnum status) {
+            this.status = status;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public void setDescription(String description) {
+            this.description = description;
+        }
+
+        @ToString
+        public static class DeviceComponentWorkingStatus{
+            private DeviceWorkingStatusOut out;
+            private DeviceWorkingStatusIn in;
+            private OnOffStatusEnum powerStatus;
+
+
+
+            public OnOffStatusEnum getPowerStatus() {
+                return powerStatus;
+            }
+
+            public void setPowerStatus(OnOffStatusEnum powerStatus) {
+                this.powerStatus = powerStatus;
+            }
+            @ToString
+            public static class DeviceWorkingStatusOut {
+                private int intensity;
+                private OnOffStatusEnum powerStatus;
+                private ColorRgb colorRgb;
+
+                public int getIntensity() {
+                    return intensity;
+                }
+
+                public void setIntensity(int intensity) {
+                    this.intensity = intensity;
+                }
+
+                public OnOffStatusEnum getPowerStatus() {
+                    return powerStatus;
+                }
+
+                public void setPowerStatus(OnOffStatusEnum powerStatus) {
+                    this.powerStatus = powerStatus;
+                }
+
+                public ColorRgb getColorRgb() {
+                    return colorRgb;
+                }
+
+                public void setColorRgb(ColorRgb colorRgb) {
+                    this.colorRgb = colorRgb;
+                }
+            }
+            @ToString
+            public static class DeviceWorkingStatusIn {
+                private double temperature;
+
+                public double getTemperature() {
+                    return temperature;
+                }
+
+                public void setTemperature(double temperature) {
+                    this.temperature = temperature;
+                }
+            }
         }
     }
     @ToString

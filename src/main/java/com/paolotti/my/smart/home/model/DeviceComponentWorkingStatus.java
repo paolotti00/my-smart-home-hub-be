@@ -1,11 +1,10 @@
 package com.paolotti.my.smart.home.model;
 
 import com.paolotti.my.smart.home.enums.OnOffStatusEnum;
-import com.paolotti.my.smart.home.rest.dto.ColorRgb;
 import lombok.ToString;
 
 @ToString
-public class DeviceWorkingStatus {
+public class DeviceComponentWorkingStatus {
     private DeviceWorkingStatusOut out;
     private DeviceWorkingStatusIn in;
     private OnOffStatusEnum powerStatus;

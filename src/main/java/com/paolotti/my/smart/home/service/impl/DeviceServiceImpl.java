@@ -1,13 +1,14 @@
 package com.paolotti.my.smart.home.service.impl;
 
+import com.paolotti.my.smart.home.enums.DeviceComponentTypeEnum;
+import com.paolotti.my.smart.home.enums.DeviceInstallationStatusEnum;
+import com.paolotti.my.smart.home.enums.DeviceOperatingStatusEnum;
+import com.paolotti.my.smart.home.enums.OnOffStatusEnum;
 import com.paolotti.my.smart.home.exception.DeviceNotExistsException;
 import com.paolotti.my.smart.home.exception.GroupNotExistsException;
 import com.paolotti.my.smart.home.exception.MissingFieldException;
-import com.paolotti.my.smart.home.exception.ValidationException;
 import com.paolotti.my.smart.home.mapper.IDeviceMapper;
-import com.paolotti.my.smart.home.model.Device;
-import com.paolotti.my.smart.home.model.DeviceActionsSchema;
-import com.paolotti.my.smart.home.model.ValidationHelperObject;
+import com.paolotti.my.smart.home.model.*;
 import com.paolotti.my.smart.home.repository.IDeviceCustomRepository;
 import com.paolotti.my.smart.home.repository.IDeviceGroupCustomRepository;
 import com.paolotti.my.smart.home.repository.entity.DeviceEntity;
@@ -19,8 +20,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Objects;
+import java.util.Map;
 
 @Service
 public class DeviceServiceImpl implements IDeviceService {
@@ -40,14 +42,42 @@ public class DeviceServiceImpl implements IDeviceService {
         String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         logger.info("{}: creation device started, device to create {}",methodName,device);
         Device finalDevice = device;
+        // validation
         ArrayList<ValidationHelperObject> toValidateItems = new ArrayList<>();
         toValidateItems.add(new ValidationHelperObject<String>("name", finalDevice.getName(), ValidationHelperObject.ValidationType.NOT_NULL));
+        toValidateItems.add(new ValidationHelperObject<Object>("brand", finalDevice.getBrand(), ValidationHelperObject.ValidationType.NOT_NULL));
         validationHelperService.validate(toValidateItems);
-
-        // todo pt
+        // creation
+        // create the components
+        if(device.getComponents()!=null && device.getComponents().getNumberOfComponents()!=null)
+            {
+                ArrayList<DeviceComponent>deviceComponents = new ArrayList<>();
+                final int[] totalNComponents = {0};
+                // initializing
+                device.getComponents().getNumberOfComponents().forEach((type,number)->{
+                    totalNComponents[0] = totalNComponents[0] + number;
+                    for(int i = 0; number>i;i++){
+                        DeviceComponent deviceComponent = new DeviceComponent();
+                        DeviceComponentWorkingStatus deviceComponentWorkingStatus = new DeviceComponentWorkingStatus();
+                        deviceComponentWorkingStatus.setPowerStatus(OnOffStatusEnum.OFF);
+                        deviceComponent.setType(type);
+                        deviceComponent.setId(type+"_"+i);
+                        deviceComponent.setWorkingStatus(deviceComponentWorkingStatus);
+                        deviceComponent.setStatus(DeviceOperatingStatusEnum.OFFLINE);
+                        deviceComponents.add(deviceComponent);
+                    }
+                });
+                logger.info("initialized the {} components",totalNComponents[0]);
+                // setting the created components to the device
+                device.getComponents().setComponentsList(deviceComponents);
+            }
+        device.setCreationDate(LocalDateTime.now());
+        device.setInstallationStatus(DeviceInstallationStatusEnum.TO_ACTIVATE);
         DeviceEntity deviceEntity = deviceMapper.toEntity(device);
-        DeviceEntity deviceMapped = deviceCustomRepository.save(deviceEntity);
-        device = deviceMapper.toModel(deviceMapped);
+        deviceEntity = deviceCustomRepository.save(deviceEntity);
+        logger.info("entity saved with id {}",deviceEntity.getId());
+        logger.debug("the entity saved is {}",deviceEntity);
+        device = deviceMapper.toModel(deviceEntity);
         return device;
     }
 
