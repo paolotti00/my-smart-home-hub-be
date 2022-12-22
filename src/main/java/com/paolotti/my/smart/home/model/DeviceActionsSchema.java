@@ -8,9 +8,7 @@ public class DeviceActionsSchema {
     // the action schema is a set of action that the device can do
     // for example we can send to device the schema "blink" and if is supported the device has , defined in the fw, the steps that it have to do the action
     private String name;
-    private ColorRgb colorRgb;
-    private Long durationMs;
-    private int repetition;
+    private String description;
     private DeviceActionSchemaTypeEnum deviceActionSchemaTypeEnum;
 
     public String getName() {
@@ -21,28 +19,20 @@ public class DeviceActionsSchema {
         this.name = name;
     }
 
-    public ColorRgb getColorRgb() {
-        return colorRgb;
+    public String getDescription() {
+        return description;
     }
 
-    public void setColorRgb(ColorRgb colorRgb) {
-        this.colorRgb = colorRgb;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public Long getDurationMs() {
-        return durationMs;
+    public DeviceActionSchemaTypeEnum getDeviceActionSchemaTypeEnum() {
+        return deviceActionSchemaTypeEnum;
     }
 
-    public void setDurationMs(Long durationMs) {
-        this.durationMs = durationMs;
-    }
-
-    public int getRepetition() {
-        return repetition;
-    }
-
-    public void setRepetition(int repetition) {
-        this.repetition = repetition;
+    public void setDeviceActionSchemaTypeEnum(DeviceActionSchemaTypeEnum deviceActionSchemaTypeEnum) {
+        this.deviceActionSchemaTypeEnum = deviceActionSchemaTypeEnum;
     }
 
     public DeviceActionSchemaTypeEnum getDeviceComponentActionSchemaTypeEnum() {
