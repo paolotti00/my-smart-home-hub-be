@@ -4,15 +4,18 @@ import com.paolotti.my.smart.home.enums.DeviceComponentTypeEnum;
 import com.paolotti.my.smart.home.enums.DeviceInstallationStatusEnum;
 import com.paolotti.my.smart.home.enums.DeviceOperatingStatusEnum;
 import com.paolotti.my.smart.home.enums.OnOffStatusEnum;
+import com.paolotti.my.smart.home.exception.BrandNotSupportedException;
 import com.paolotti.my.smart.home.exception.DeviceNotExistsException;
 import com.paolotti.my.smart.home.exception.GroupNotExistsException;
 import com.paolotti.my.smart.home.exception.MissingFieldException;
+import com.paolotti.my.smart.home.factory.IBeanFactoryService;
 import com.paolotti.my.smart.home.mapper.IDeviceMapper;
 import com.paolotti.my.smart.home.model.*;
 import com.paolotti.my.smart.home.repository.IDeviceCustomRepository;
 import com.paolotti.my.smart.home.repository.IDeviceGroupCustomRepository;
 import com.paolotti.my.smart.home.repository.entity.DeviceEntity;
 import com.paolotti.my.smart.home.repository.entity.DeviceGroupEntity;
+import com.paolotti.my.smart.home.service.IDeviceLightByBrandService;
 import com.paolotti.my.smart.home.service.IDeviceService;
 import com.paolotti.my.smart.home.service.IValidationHelperService;
 import org.slf4j.Logger;
@@ -34,6 +37,8 @@ public class DeviceServiceImpl implements IDeviceService {
     IValidationHelperService validationHelperService;
     @Autowired
     IDeviceMapper deviceMapper;
+    @Autowired
+    IBeanFactoryService beanFactoryService;
 
     private static final Logger logger = LoggerFactory.getLogger(DeviceServiceImpl.class);
 
@@ -128,5 +133,26 @@ public class DeviceServiceImpl implements IDeviceService {
         }
         logger.info("retrieved {} devices in the group with id {} and name",devices.size(),groupId);
         return devices;
+    }
+    // light
+    @Override
+    public void switchAllLightsByDevice(String userId, String deviceId, OnOffStatusEnum desiredStatus) throws BrandNotSupportedException, DeviceNotExistsException {
+        logger.info("switching device lights by device : userId {} deviceId {} desiredStatus {}", userId, deviceId, desiredStatus);
+        // todo retrieve the user
+        // check if have the permission to do something
+        Device device = null;
+        device = retrieveDeviceById(deviceId);
+        logger.info("device retrieved {}", device);
+        IDeviceLightByBrandService deviceLightByBrandService = beanFactoryService.getDeviceLightByBrandServiceImpl(device.getBrand());
+        switch (desiredStatus) {
+            case ON:
+                deviceLightByBrandService.switchOn(device);
+                logger.info("device {} switched ON", device.getId());
+                break;
+            case OFF:
+                deviceLightByBrandService.switchOff(device);
+                logger.info("device {} switched OFF", device.getId());
+                break;
+        }
     }
 }

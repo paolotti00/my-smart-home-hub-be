@@ -1,12 +1,9 @@
 package com.paolotti.my.smart.home.service;
 
-import com.paolotti.my.smart.home.exception.DeviceNotExistsException;
-import com.paolotti.my.smart.home.exception.GroupNotExistsException;
-import com.paolotti.my.smart.home.exception.MissingFieldException;
-import com.paolotti.my.smart.home.exception.ValidationException;
+import com.paolotti.my.smart.home.enums.OnOffStatusEnum;
+import com.paolotti.my.smart.home.exception.*;
 import com.paolotti.my.smart.home.model.Device;
 import com.paolotti.my.smart.home.model.DeviceActionsSchema;
-import com.paolotti.my.smart.home.rest.dto.DeviceDto;
 
 import java.util.ArrayList;
 
@@ -17,4 +14,6 @@ public interface IDeviceService {
     public void doCustomActionSchema(String deviceId, DeviceActionsSchema deviceActionsSchema);
     public Device retrieveDeviceById(String deviceId) throws DeviceNotExistsException;
     public ArrayList<Device> retrieveDevicesByGroupId(String groupId) throws GroupNotExistsException;
+    // light
+    void switchAllLightsByDevice(String userId, String deviceId, OnOffStatusEnum desiredStatus) throws BrandNotSupportedException, DeviceNotExistsException;
 }
