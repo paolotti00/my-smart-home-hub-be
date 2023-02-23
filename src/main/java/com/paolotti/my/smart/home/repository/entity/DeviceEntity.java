@@ -1,35 +1,25 @@
 package com.paolotti.my.smart.home.repository.entity;
 
-import org.springframework.data.annotation.Id;
+import com.paolotti.my.smart.home.enums.*;
+import lombok.ToString;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Map;
 
 @Document(collection = "devices")
-public class DeviceEntity {
-    @Id
-    private String id;
+public class DeviceEntity extends EntityBase {
     private UserEntity user;
-    private String name;
-    private DeviceTypeEnum type;
     private NetworkData networkData;
-    private ArrayList<DeviceComponentSensor> sensorList;
-    private ArrayList<DeviceComponentLight> lightList;
-    private ArrayList<String> groups;
+    private String name;
+    private DeviceComponentWrapper components;
     private DeviceOperatingStatusEnum status;
     private DeviceInstallationStatusEnum installationStatus;
     private LocalDateTime registrationDate;
-    private LocalDateTime creationDate;
     private LocalDateTime activationDate;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
+    private DeviceBrandEnum brand;
+    private String firmwareVersion;
 
     public UserEntity getUser() {
         return user;
@@ -37,23 +27,6 @@ public class DeviceEntity {
 
     public void setUser(UserEntity user) {
         this.user = user;
-    }
-
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public DeviceTypeEnum getType() {
-        return type;
-    }
-
-    public void setType(DeviceTypeEnum type) {
-        this.type = type;
     }
 
     public NetworkData getNetworkData() {
@@ -64,28 +37,20 @@ public class DeviceEntity {
         this.networkData = networkData;
     }
 
-    public ArrayList<DeviceComponentSensor> getSensorList() {
-        return sensorList;
+    public String getName() {
+        return name;
     }
 
-    public void setSensorList(ArrayList<DeviceComponentSensor> sensorList) {
-        this.sensorList = sensorList;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public ArrayList<DeviceComponentLight> getLightList() {
-        return lightList;
+    public DeviceComponentWrapper getComponents() {
+        return components;
     }
 
-    public void setLightList(ArrayList<DeviceComponentLight> lightList) {
-        this.lightList = lightList;
-    }
-
-    public ArrayList<String> getGroups() {
-        return groups;
-    }
-
-    public void setGroups(ArrayList<String> groups) {
-        this.groups = groups;
+    public void setComponents(DeviceComponentWrapper components) {
+        this.components = components;
     }
 
     public DeviceOperatingStatusEnum getStatus() {
@@ -112,14 +77,6 @@ public class DeviceEntity {
         this.registrationDate = registrationDate;
     }
 
-    public LocalDateTime getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(LocalDateTime creationDate) {
-        this.creationDate = creationDate;
-    }
-
     public LocalDateTime getActivationDate() {
         return activationDate;
     }
@@ -128,35 +85,50 @@ public class DeviceEntity {
         this.activationDate = activationDate;
     }
 
-    public enum OnOffStatusEnum{
-        ON,
-        OFF
-    }
-    public enum DeviceOperatingStatusEnum{
-        ONLINE, // the device was discovered and activated and is online
-        OFFLINE, // the device was discovered and activated and is offline
-
-    }
-    public enum DeviceInstallationStatusEnum{
-        TO_ACTIVATE, // the device was discovered but not activated yet
-        ACTIVE, // the device was discovered and activated
-        DEACTIVATED, // the device was discovered and activated then was deactivated
-        BLACKLISTED, // the device was discovered and blacklisted (so it will not discover anymore)
-    }
-    public enum DeviceTypeEnum{
-        SENSOR,
-        LIGHT,
-        MIX
-    }
-    public enum DeviceSensorTypeEnum{
-        HEAT,
-        HUMIDITY,
-        MIX
+    public DeviceBrandEnum getBrand() {
+        return brand;
     }
 
-    public static class DeviceComponentBase {
+    public void setBrand(DeviceBrandEnum brand) {
+        this.brand = brand;
+    }
+
+    public String getFirmwareVersion() {
+        return firmwareVersion;
+    }
+
+    public void setFirmwareVersion(String firmwareVersion) {
+        this.firmwareVersion = firmwareVersion;
+    }
+
+    @ToString
+    public static class DeviceComponentWrapper {
+        private Map< DeviceComponentTypeEnum,Integer> numberOfComponents;
+        private ArrayList<DeviceComponent> componentsList;
+
+        public Map< DeviceComponentTypeEnum,Integer> getNumberOfComponents() {
+            return numberOfComponents;
+        }
+
+        public void setNumberOfComponents(Map< DeviceComponentTypeEnum,Integer> numberOfComponents) {
+            this.numberOfComponents = numberOfComponents;
+        }
+
+        public ArrayList<DeviceComponent> getComponentsList() {
+            return componentsList;
+        }
+
+        public void setComponentsList(ArrayList<DeviceComponent> componentsList) {
+            this.componentsList = componentsList;
+        }
+    }
+    @ToString
+    public static class DeviceComponent {
         private String id;
-        private OnOffStatusEnum workingStatus;
+        private DeviceComponentTypeEnum type;
+        private DeviceComponentWorkingStatus workingStatus;
+        private DeviceOperatingStatusEnum status;
+        private String description;
 
         public String getId() {
             return id;
@@ -166,29 +138,98 @@ public class DeviceEntity {
             this.id = id;
         }
 
-        public OnOffStatusEnum getWorkingStatus() {
-            return workingStatus;
-        }
-
-        public void setWorkingStatus(OnOffStatusEnum workingStatus) {
-            this.workingStatus = workingStatus;
-        }
-    }
-    public static class DeviceComponentSensor extends DeviceComponentBase {
-        private DeviceSensorTypeEnum type;
-
-        public DeviceSensorTypeEnum getType() {
+        public DeviceComponentTypeEnum getType() {
             return type;
         }
 
-        public void setType(DeviceSensorTypeEnum type) {
+        public void setType(DeviceComponentTypeEnum type) {
             this.type = type;
         }
-    }
-    public static class DeviceComponentLight extends DeviceComponentBase {
 
-    }
+        public DeviceComponentWorkingStatus getWorkingStatus() {
+            return workingStatus;
+        }
 
+        public void setWorkingStatus(DeviceComponentWorkingStatus workingStatus) {
+            this.workingStatus = workingStatus;
+        }
+
+        public DeviceOperatingStatusEnum getStatus() {
+            return status;
+        }
+
+        public void setStatus(DeviceOperatingStatusEnum status) {
+            this.status = status;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public void setDescription(String description) {
+            this.description = description;
+        }
+
+        @ToString
+        public static class DeviceComponentWorkingStatus{
+            private DeviceWorkingStatusOut out;
+            private DeviceWorkingStatusIn in;
+            private OnOffStatusEnum powerStatus;
+
+
+
+            public OnOffStatusEnum getPowerStatus() {
+                return powerStatus;
+            }
+
+            public void setPowerStatus(OnOffStatusEnum powerStatus) {
+                this.powerStatus = powerStatus;
+            }
+            @ToString
+            public static class DeviceWorkingStatusOut {
+                private int intensity;
+                private OnOffStatusEnum powerStatus;
+                private ColorRgb colorRgb;
+
+                public int getIntensity() {
+                    return intensity;
+                }
+
+                public void setIntensity(int intensity) {
+                    this.intensity = intensity;
+                }
+
+                public OnOffStatusEnum getPowerStatus() {
+                    return powerStatus;
+                }
+
+                public void setPowerStatus(OnOffStatusEnum powerStatus) {
+                    this.powerStatus = powerStatus;
+                }
+
+                public ColorRgb getColorRgb() {
+                    return colorRgb;
+                }
+
+                public void setColorRgb(ColorRgb colorRgb) {
+                    this.colorRgb = colorRgb;
+                }
+            }
+            @ToString
+            public static class DeviceWorkingStatusIn {
+                private double temperature;
+
+                public double getTemperature() {
+                    return temperature;
+                }
+
+                public void setTemperature(double temperature) {
+                    this.temperature = temperature;
+                }
+            }
+        }
+    }
+    @ToString
     public static class NetworkData {
         String ip;
         String macAddress;
@@ -218,5 +259,4 @@ public class DeviceEntity {
             this.name = name;
         }
     }
-
 }

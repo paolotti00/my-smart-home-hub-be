@@ -20,6 +20,12 @@ public class UserServiceImpl implements IUserService {
     IUserMapper userMapper;
 
     @Override
+    public User create(User userDto) {
+        // todo pt
+        return null;
+    }
+
+    @Override
     public User getUserById(String userId) throws UserNotExistException {
         String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         logger.info("{}: getting userId {}", methodName, userId);

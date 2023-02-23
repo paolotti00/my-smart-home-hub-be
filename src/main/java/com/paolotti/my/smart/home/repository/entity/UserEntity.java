@@ -1,25 +1,17 @@
 package com.paolotti.my.smart.home.repository.entity;
 
+import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 
-
+@ToString
 @Document(collection = "users")
-public class UserEntity {
-    @Id
-    String id;
+public class UserEntity extends EntityBase{
     String name;
     String surname;
     String email;
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;

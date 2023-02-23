@@ -1,8 +1,16 @@
 package com.paolotti.my.smart.home.rest.dto;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.paolotti.my.smart.home.rest.dto.view.JsonViewConfig;
+import lombok.ToString;
+
+@ToString
 public class NetworkDataDto {
+    @JsonView(JsonViewConfig.LowDetail.class)
     String ip;
+    @JsonView(JsonViewConfig.LowDetail.class)
     String macAddress;
+    @JsonView(JsonViewConfig.LowDetail.class)
     String name;
 
     public String getIp() {
@@ -29,12 +37,4 @@ public class NetworkDataDto {
         this.name = name;
     }
 
-    @Override
-    public String toString() {
-        return "NetworkDataDto{" +
-                "ip='" + ip + '\'' +
-                ", macAddress='" + macAddress + '\'' +
-                ", name='" + name + '\'' +
-                '}';
-    }
 }

@@ -2,8 +2,8 @@ package com.paolotti.my.smart.home.factory;
 
 import com.paolotti.my.smart.home.enums.DeviceBrandEnum;
 import com.paolotti.my.smart.home.exception.BrandNotSupportedException;
-import com.paolotti.my.smart.home.service.IDeviceLightByBrandService;
+import com.paolotti.my.smart.home.service.IDeviceByBrandService;
 
 public interface IBeanFactoryService {
-    IDeviceLightByBrandService getDeviceLightByBrandServiceImpl(DeviceBrandEnum deviceBrandEnum) throws BrandNotSupportedException;
+    IDeviceByBrandService getDeviceLightByBrandServiceImpl(DeviceBrandEnum deviceBrandEnum) throws BrandNotSupportedException;
 }

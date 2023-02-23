@@ -3,17 +3,12 @@ package com.paolotti.my.smart.home.service.impl;
 import com.paolotti.my.smart.home.constant.MessageConst;
 import com.paolotti.my.smart.home.enums.DeviceInstallationStatusEnum;
 import com.paolotti.my.smart.home.exception.*;
+import com.paolotti.my.smart.home.factory.IBeanFactoryService;
 import com.paolotti.my.smart.home.mapper.IDeviceMapper;
-import com.paolotti.my.smart.home.mapper.IDeviceRegistrationMapper;
 import com.paolotti.my.smart.home.model.Device;
-import com.paolotti.my.smart.home.model.DeviceRegistrationRequest;
-import com.paolotti.my.smart.home.model.DeviceRegistrationResponse;
 import com.paolotti.my.smart.home.model.User;
 import com.paolotti.my.smart.home.repository.IDeviceCustomRepository;
 import com.paolotti.my.smart.home.repository.entity.DeviceEntity;
-import com.paolotti.my.smart.home.rest.dto.DeviceDto;
-import com.paolotti.my.smart.home.rest.dto.reqres.DeviceRegistrationRequestDto;
-import com.paolotti.my.smart.home.rest.dto.reqres.DeviceRegistrationResponseDto;
 import com.paolotti.my.smart.home.service.IRegistrationDeviceService;
 import com.paolotti.my.smart.home.service.IUserService;
 import org.slf4j.Logger;
@@ -31,24 +26,22 @@ import static com.paolotti.my.smart.home.constant.MessageConst.DEVICE_ALREADY_RE
 public class RegistrationDeviceServiceImpl implements IRegistrationDeviceService {
     private static final Logger logger = LoggerFactory.getLogger(RegistrationDeviceServiceImpl.class);
     @Autowired
-    IDeviceMapper deviceMapper;
-    @Autowired
-    IDeviceRegistrationMapper deviceRegistrationMapper;
-    @Autowired
     IDeviceCustomRepository deviceCustomRepository;
     @Autowired
     IUserService userService;
+    @Autowired
+    IBeanFactoryService beanFactoryService;
+    @Autowired
+    IDeviceMapper deviceMapper;
 
     @Override
-    public DeviceRegistrationResponseDto deviceSelfRegisteringHandling(String userId, DeviceRegistrationRequestDto deviceRegistrationRequestDto) throws DeviceAlreadyRegisteredException, MissingFieldException, DeviceCreationException, UserNotExistException {
+    public Device deviceSelfRegisteringHandling(String userId, Device device) throws DeviceAlreadyRegisteredException, MissingFieldException, DeviceCreationException, UserNotExistException {
         // handling a device self registration request
         String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
-        logger.info("{}: device auto register flow started, deviceRegistrationRequestDto {}",methodName,deviceRegistrationRequestDto);
-        // convert dto to entity
-        DeviceRegistrationRequest deviceRegistrationRequest = deviceRegistrationMapper.toDeviceRegistrationRequest(deviceRegistrationRequestDto);
+        logger.info("{}: device auto register flow started, device to register {}",methodName,device);
         // request validation
         // checking if the device already exist
-        ArrayList<Device> retrievedDevices = getNotDeactivateDeviceByMacAddress(deviceRegistrationRequest.getNetworkData().getMacAddress());
+        ArrayList<Device> retrievedDevices = getNotDeactivateDeviceByMacAddress(device.getNetworkData().getMacAddress());
         logger.info("validation of request start");
         if(retrievedDevices!=null && !retrievedDevices.isEmpty()){
             // this device is already registered
@@ -58,44 +51,36 @@ public class RegistrationDeviceServiceImpl implements IRegistrationDeviceService
         // user
         User user = null;
         // enough one between user id or email is mandatory on this flow
-        if(userId==null && deviceRegistrationRequest.getUserEmail()==null){
+        if(userId==null && (device.getUser()==null || device.getUser().getEmail()==null) ){
             logger.error("the fields {} and {} are missing. enough one must be present", USER_ID_ATTRIBUTE_NAME, USER_ID_ATTRIBUTE_USER_EMAIL);
             throw new MissingFieldException(USER_ID_ATTRIBUTE_NAME + "and" +"USER_ID_ATTRIBUTE_USER_EMAIL");
         } else {
             // checking if user exist and if yes getting it
-            user= userService.checkIfUserExistsByIdOrEmailAndRetrieve(userId, deviceRegistrationRequest.getUserEmail());
+            user= userService.checkIfUserExistsByIdOrEmailAndRetrieve(userId, device.getUser().getEmail());
         }
-        if(deviceRegistrationRequest.getDeviceType()==null){
-            logger.error("the field {} is missing", DEVICE_REG_REQ_TYPE_ATTRIBUTE_NAME);
-            throw new MissingFieldException(DEVICE_REG_REQ_TYPE_ATTRIBUTE_NAME);
-        }
-        if(deviceRegistrationRequest.getNetworkData() == null || deviceRegistrationRequest.getNetworkData().getMacAddress()==null){
+        if(device.getNetworkData() == null || device.getNetworkData().getMacAddress()==null){
             logger.error("the field {} is missing", DEVICE_REG_REQ_MAC_ADDRESS_ATTRIBUTE_NAME);
             throw new MissingFieldException(DEVICE_REG_REQ_MAC_ADDRESS_ATTRIBUTE_NAME);
         }
         logger.info("validation of request done");
         // create and registering the device
-        DeviceRegistrationResponse deviceRegistrationResponse = new DeviceRegistrationResponse();
         try {
-            Device deviceToCreate = deviceMapper.toDevice(deviceRegistrationRequest);
-            deviceToCreate.setUser(user);
-            deviceToCreate.setCreationDate(LocalDateTime.now());
-            deviceRegistrationResponse.setCreatedDevice(createDeviceInToActivateStatus(deviceToCreate));
+            device.setUser(user);
+            device.setCreationDate(LocalDateTime.now());
+            device = createDeviceInToActivateStatus(device);
         } catch (DeviceCreationException e) {
             logger.error("something went wrong during the device creation. message : {}",e.getMessage());
             throw e;
         }
-        DeviceRegistrationResponseDto deviceRegistrationResponseDto = deviceRegistrationMapper.toDeviceRegistrationResponseDto(deviceRegistrationResponse);
-        logger.info("{}: device auto register flow finished, device {}",methodName,deviceRegistrationResponse);
-        return  deviceRegistrationResponseDto;
+        logger.info("{}: device auto register flow finished, device {}",methodName,device);
+        return  device;
 
 
     }
     @Override
-    public ArrayList<DeviceDto> getDeviceToActivate(String userId) throws MissingFieldException, UserNotExistException {
+    public ArrayList<Device> getDeviceToActivate(String userId) throws MissingFieldException, UserNotExistException {
         String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         logger.info("{}: getting device to activate for the user {}",methodName,userId);
-        ArrayList<DeviceDto> devicesDto = new ArrayList<DeviceDto>();
         // validation
         logger.info("validation of request start");
         if(userId==null){
@@ -107,12 +92,11 @@ public class RegistrationDeviceServiceImpl implements IRegistrationDeviceService
         logger.info("validation of request done");
         ArrayList<DeviceEntity> devicesEntity = deviceCustomRepository.findAllByUserAndToActivate(userId);
         ArrayList<Device> devices = deviceMapper.toModels(devicesEntity);
-        ArrayList<DeviceDto> deviceDtos = deviceMapper.toDtos(devices);
-        logger.info("{}: found {} devices to activate for the user {}, devices ",methodName,userId,devicesDto);
-        return deviceDtos;
+        logger.info("{}: found {} devices to activate for the user {}, devices ",methodName,userId,devices);
+        return devices;
     }
     @Override
-    public DeviceDto activate (String userId,String deviceId) throws MissingFieldException, UserNotExistException, DeviceNotExistsException, DeviceAlreadyActivated, DeviceWrongStatusException {
+    public Device activate (String userId,String deviceId) throws MissingFieldException, UserNotExistException, DeviceNotExistsException, DeviceAlreadyActivated, DeviceWrongStatusException {
         String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         logger.info("{}: activation device id {} with userId {} start",methodName,deviceId,userId);
         // validate request
@@ -146,9 +130,8 @@ public class RegistrationDeviceServiceImpl implements IRegistrationDeviceService
         DeviceEntity deviceEntity = deviceMapper.toEntity(device);
         deviceEntity = deviceCustomRepository.save(deviceEntity);
         device = deviceMapper.toModel(deviceEntity);
-        DeviceDto deviceDto = deviceMapper.toDto(device);
-        logger.info("{}: the device with id {} and userId {} was activated - device dto {}",methodName,userId,deviceId,deviceDto);
-        return deviceDto;
+        logger.info("{}: the device with id {} and userId {} was activated - device {}",methodName,userId,deviceId,device);
+        return device;
 
     }
     @Override
@@ -165,11 +148,11 @@ public class RegistrationDeviceServiceImpl implements IRegistrationDeviceService
         return device;
     }
 
-    private  ArrayList<Device> getNotDeactivateDeviceByMacAddress(String macAddress){
+    private ArrayList<Device> getNotDeactivateDeviceByMacAddress(String macAddress){
         String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         logger.info("{}: getting device with macAddress {}",methodName,macAddress);
         ArrayList<DeviceEntity> deviceEntities = deviceCustomRepository.findAllByMacAddressAndNotDeactivated(macAddress);
-        ArrayList<Device> foundDevices = (ArrayList<Device>) deviceMapper.toModels(deviceEntities);
+        ArrayList<Device> foundDevices =  deviceMapper.toModels(deviceEntities);
         logger.info("{}: getting device with macAddress {} found",methodName,foundDevices);
         return foundDevices;
     };

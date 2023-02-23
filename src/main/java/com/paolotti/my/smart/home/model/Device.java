@@ -1,33 +1,32 @@
 package com.paolotti.my.smart.home.model;
 
-import com.paolotti.my.smart.home.enums.DeviceBrandEnum;
-import com.paolotti.my.smart.home.enums.DeviceInstallationStatusEnum;
-import com.paolotti.my.smart.home.enums.DeviceOperatingStatusEnum;
-import com.paolotti.my.smart.home.enums.DeviceTypeEnum;
+import com.paolotti.my.smart.home.enums.*;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 
+@ToString
 public class Device {
+
     private String id;
     private User user;
     private NetworkData networkData;
     private String name;
-    private DeviceTypeEnum type;
-    private ArrayList<DeviceComponentSensor> sensorList;
-    private ArrayList<DeviceComponentLight> lightList;
-    private ArrayList<String> groups;
+    private DeviceComponentWrapper components;
     private DeviceOperatingStatusEnum status;
     private DeviceInstallationStatusEnum installationStatus;
     private LocalDateTime registrationDate;
     private LocalDateTime creationDate;
     private LocalDateTime activationDate;
-
-    private ArrayList<DeviceComponentActionsSchema> supportedSchemas;
     private DeviceBrandEnum brand;
+    private String firmwareVersion;
 
     public String getId() {
         return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public User getUser() {
@@ -36,10 +35,6 @@ public class Device {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public NetworkData getNetworkData() {
@@ -58,36 +53,12 @@ public class Device {
         this.name = name;
     }
 
-    public DeviceTypeEnum getType() {
-        return type;
+    public DeviceComponentWrapper getComponents() {
+        return components;
     }
 
-    public void setType(DeviceTypeEnum type) {
-        this.type = type;
-    }
-
-    public ArrayList<String> getGroups() {
-        return groups;
-    }
-
-    public void setGroups(ArrayList<String> groups) {
-        this.groups = groups;
-    }
-
-    public ArrayList<DeviceComponentSensor> getSensorList() {
-        return sensorList;
-    }
-
-    public void setSensorList(ArrayList<DeviceComponentSensor> sensorList) {
-        this.sensorList = sensorList;
-    }
-
-    public ArrayList<DeviceComponentLight> getLightList() {
-        return lightList;
-    }
-
-    public void setLightList(ArrayList<DeviceComponentLight> lightList) {
-        this.lightList = lightList;
+    public void setComponents(DeviceComponentWrapper components) {
+        this.components = components;
     }
 
     public DeviceOperatingStatusEnum getStatus() {
@@ -130,19 +101,19 @@ public class Device {
         this.activationDate = activationDate;
     }
 
-    public ArrayList<DeviceComponentActionsSchema> getSupportedSchemas() {
-        return supportedSchemas;
-    }
-
-    public void setSupportedSchemas(ArrayList<DeviceComponentActionsSchema> supportedSchemas) {
-        this.supportedSchemas = supportedSchemas;
-    }
-
     public DeviceBrandEnum getBrand() {
         return brand;
     }
 
     public void setBrand(DeviceBrandEnum brand) {
         this.brand = brand;
+    }
+
+    public String getFirmwareVersion() {
+        return firmwareVersion;
+    }
+
+    public void setFirmwareVersion(String firmwareVersion) {
+        this.firmwareVersion = firmwareVersion;
     }
 }

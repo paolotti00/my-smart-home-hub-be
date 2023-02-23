@@ -1,9 +1,18 @@
 package com.paolotti.my.smart.home.rest.dto;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.paolotti.my.smart.home.rest.dto.view.JsonViewConfig;
+import lombok.ToString;
+
+@ToString
 public class UserDto {
+    @JsonView(JsonViewConfig.MediumDetail.class)
     String id;
+    @JsonView(JsonViewConfig.MediumDetail.class)
     String name;
+    @JsonView(JsonViewConfig.MediumDetail.class)
     String surname;
+    @JsonView(JsonViewConfig.LowDetail.class)
     String email;
 
     public String getId() {
@@ -38,13 +47,4 @@ public class UserDto {
         this.email = email;
     }
 
-    @Override
-    public String toString() {
-        return "UserDto{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
-                ", email='" + email + '\'' +
-                '}';
-    }
 }

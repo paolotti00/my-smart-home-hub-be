@@ -1,29 +1,46 @@
 package com.paolotti.my.smart.home.rest.dto;
 
-import com.paolotti.my.smart.home.enums.DeviceInstallationStatusEnum;
-import com.paolotti.my.smart.home.enums.DeviceOperatingStatusEnum;
-import com.paolotti.my.smart.home.enums.DeviceTypeEnum;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.paolotti.my.smart.home.enums.*;
+import com.paolotti.my.smart.home.rest.dto.view.JsonViewConfig;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
+@ToString
 public class DeviceDto {
+    @JsonView(JsonViewConfig.HighDetail.class)
     private String id;
+    @JsonView(JsonViewConfig.LowDetail.class)
     private UserDto user;
+    @JsonView(JsonViewConfig.LowDetail.class)
     private NetworkDataDto networkData;
+    @JsonView(JsonViewConfig.LowDetail.class)
     private String name;
-    private DeviceTypeEnum type;
-    private ArrayList<DeviceComponentSensorDto> sensorList;
-    private ArrayList<DeviceComponentLightDto> lightList;
-    private ArrayList<String> groups;
+    @JsonView(JsonViewConfig.LowDetail.class)
+    private DeviceComponentsWrapperDto components;
+    @JsonView(JsonViewConfig.HighDetail.class)
     private DeviceOperatingStatusEnum status;
+    @JsonView(JsonViewConfig.HighDetail.class)
     private DeviceInstallationStatusEnum installationStatus;
+    @JsonView(JsonViewConfig.HighDetail.class)
     private LocalDateTime registrationDate;
+    @JsonView(JsonViewConfig.HighDetail.class)
     private LocalDateTime creationDate;
+    @JsonView(JsonViewConfig.HighDetail.class)
     private LocalDateTime activationDate;
+    @JsonView(JsonViewConfig.LowDetail.class)
+    private DeviceBrandEnum brand;
+    @JsonView(JsonViewConfig.MediumDetail.class)
+    private String firmwareVersion;
 
     public String getId() {
         return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public UserDto getUser() {
@@ -32,10 +49,6 @@ public class DeviceDto {
 
     public void setUser(UserDto user) {
         this.user = user;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public NetworkDataDto getNetworkData() {
@@ -54,36 +67,12 @@ public class DeviceDto {
         this.name = name;
     }
 
-    public DeviceTypeEnum getType() {
-        return type;
+    public DeviceComponentsWrapperDto getComponents() {
+        return components;
     }
 
-    public void setType(DeviceTypeEnum type) {
-        this.type = type;
-    }
-
-    public ArrayList<String> getGroups() {
-        return groups;
-    }
-
-    public void setGroups(ArrayList<String> groups) {
-        this.groups = groups;
-    }
-
-    public ArrayList<DeviceComponentSensorDto> getSensorList() {
-        return sensorList;
-    }
-
-    public void setSensorList(ArrayList<DeviceComponentSensorDto> sensorList) {
-        this.sensorList = sensorList;
-    }
-
-    public ArrayList<DeviceComponentLightDto> getLightList() {
-        return lightList;
-    }
-
-    public void setLightList(ArrayList<DeviceComponentLightDto> lightList) {
-        this.lightList = lightList;
+    public void setComponents(DeviceComponentsWrapperDto components) {
+        this.components = components;
     }
 
     public DeviceOperatingStatusEnum getStatus() {
@@ -118,21 +107,27 @@ public class DeviceDto {
         this.creationDate = creationDate;
     }
 
-    @Override
-    public String toString() {
-        return "DeviceDto{" +
-                "id='" + id + '\'' +
-                ", user=" + user +
-                ", networkData=" + networkData +
-                ", name='" + name + '\'' +
-                ", type=" + type +
-                ", sensorList=" + sensorList +
-                ", lightList=" + lightList +
-                ", groups=" + groups +
-                ", status=" + status +
-                ", installationStatus=" + installationStatus +
-                ", registrationDate=" + registrationDate +
-                ", creationDate=" + creationDate +
-                '}';
+    public LocalDateTime getActivationDate() {
+        return activationDate;
+    }
+
+    public void setActivationDate(LocalDateTime activationDate) {
+        this.activationDate = activationDate;
+    }
+
+    public DeviceBrandEnum getBrand() {
+        return brand;
+    }
+
+    public void setBrand(DeviceBrandEnum brand) {
+        this.brand = brand;
+    }
+
+    public String getFirmwareVersion() {
+        return firmwareVersion;
+    }
+
+    public void setFirmwareVersion(String firmwareVersion) {
+        this.firmwareVersion = firmwareVersion;
     }
 }
