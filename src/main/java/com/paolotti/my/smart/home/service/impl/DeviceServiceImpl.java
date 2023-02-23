@@ -1,6 +1,5 @@
 package com.paolotti.my.smart.home.service.impl;
 
-import com.paolotti.my.smart.home.enums.DeviceComponentTypeEnum;
 import com.paolotti.my.smart.home.enums.DeviceInstallationStatusEnum;
 import com.paolotti.my.smart.home.enums.DeviceOperatingStatusEnum;
 import com.paolotti.my.smart.home.enums.OnOffStatusEnum;
@@ -15,7 +14,7 @@ import com.paolotti.my.smart.home.repository.IDeviceCustomRepository;
 import com.paolotti.my.smart.home.repository.IDeviceGroupCustomRepository;
 import com.paolotti.my.smart.home.repository.entity.DeviceEntity;
 import com.paolotti.my.smart.home.repository.entity.DeviceGroupEntity;
-import com.paolotti.my.smart.home.service.IDeviceLightByBrandService;
+import com.paolotti.my.smart.home.service.IDeviceByBrandService;
 import com.paolotti.my.smart.home.service.IDeviceService;
 import com.paolotti.my.smart.home.service.IValidationHelperService;
 import org.slf4j.Logger;
@@ -25,7 +24,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Map;
 
 @Service
 public class DeviceServiceImpl implements IDeviceService {
@@ -143,7 +141,7 @@ public class DeviceServiceImpl implements IDeviceService {
         Device device = null;
         device = retrieveDeviceById(deviceId);
         logger.info("device retrieved {}", device);
-        IDeviceLightByBrandService deviceLightByBrandService = beanFactoryService.getDeviceLightByBrandServiceImpl(device.getBrand());
+        IDeviceByBrandService deviceLightByBrandService = beanFactoryService.getDeviceLightByBrandServiceImpl(device.getBrand());
         switch (desiredStatus) {
             case ON:
                 deviceLightByBrandService.switchOn(device);

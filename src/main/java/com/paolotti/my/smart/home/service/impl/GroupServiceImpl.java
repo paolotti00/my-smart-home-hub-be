@@ -5,7 +5,6 @@ import com.paolotti.my.smart.home.exception.BrandNotSupportedException;
 import com.paolotti.my.smart.home.exception.DeviceNotExistsException;
 import com.paolotti.my.smart.home.exception.GroupNotExistsException;
 import com.paolotti.my.smart.home.model.Device;
-import com.paolotti.my.smart.home.service.IDeviceLightByBrandService;
 import com.paolotti.my.smart.home.service.IDeviceService;
 import com.paolotti.my.smart.home.service.IGroupService;
 import org.slf4j.Logger;
