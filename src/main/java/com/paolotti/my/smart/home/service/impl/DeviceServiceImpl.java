@@ -3,10 +3,7 @@ package com.paolotti.my.smart.home.service.impl;
 import com.paolotti.my.smart.home.enums.DeviceInstallationStatusEnum;
 import com.paolotti.my.smart.home.enums.DeviceOperatingStatusEnum;
 import com.paolotti.my.smart.home.enums.OnOffStatusEnum;
-import com.paolotti.my.smart.home.exception.BrandNotSupportedException;
-import com.paolotti.my.smart.home.exception.DeviceNotExistsException;
-import com.paolotti.my.smart.home.exception.GroupNotExistsException;
-import com.paolotti.my.smart.home.exception.MissingFieldException;
+import com.paolotti.my.smart.home.exception.*;
 import com.paolotti.my.smart.home.factory.IBeanFactoryService;
 import com.paolotti.my.smart.home.mapper.IDeviceMapper;
 import com.paolotti.my.smart.home.model.*;
@@ -134,12 +131,11 @@ public class DeviceServiceImpl implements IDeviceService {
     }
     // light
     @Override
-    public void switchAllLightsByDevice(String userId, String deviceId, OnOffStatusEnum desiredStatus) throws BrandNotSupportedException, DeviceNotExistsException {
+    public void switchAllLights(String userId, String deviceId, OnOffStatusEnum desiredStatus) throws BrandNotSupportedException, DeviceNotExistsException {
         logger.info("switching device lights by device : userId {} deviceId {} desiredStatus {}", userId, deviceId, desiredStatus);
         // todo retrieve the user
         // check if have the permission to do something
-        Device device = null;
-        device = retrieveDeviceById(deviceId);
+        Device device = retrieveDeviceById(deviceId);
         logger.info("device retrieved {}", device);
         IDeviceByBrandService deviceLightByBrandService = beanFactoryService.getDeviceLightByBrandServiceImpl(device.getBrand());
         switch (desiredStatus) {
@@ -152,5 +148,17 @@ public class DeviceServiceImpl implements IDeviceService {
                 logger.info("device {} switched OFF", device.getId());
                 break;
         }
+    }
+
+    @Override
+    public void setColor(String userId, String deviceId, ColorRgb colorRgb) throws BrandNotSupportedException, DeviceNotExistsException, GenericException {
+        logger.info("setting device lights color to : userId {} deviceId {} colorRgb {}", userId, deviceId, colorRgb);
+        // todo retrieve the user
+        // check if have the permission to do something
+        Device device = retrieveDeviceById(deviceId);
+        logger.info("device retrieved {}", device);
+        IDeviceByBrandService deviceLightByBrandService = beanFactoryService.getDeviceLightByBrandServiceImpl(device.getBrand());
+        deviceLightByBrandService.setColor(device,colorRgb);
+        logger.info("colorRgb {} correctly set", colorRgb);
     }
 }

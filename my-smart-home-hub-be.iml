@@ -1172,6 +1172,7 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-web:5.3.23" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-webmvc:5.3.23" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-aop:5.3.23" level="project" />
+    <orderEntry type="library" name="Maven: org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.5" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.cloud:spring-cloud-starter-sleuth:3.1.5" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.cloud:spring-cloud-starter:3.1.5" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.cloud:spring-cloud-context:3.1.5" level="project" />

@@ -2,6 +2,7 @@ package com.paolotti.my.smart.home.service;
 
 import com.paolotti.my.smart.home.enums.OnOffStatusEnum;
 import com.paolotti.my.smart.home.exception.*;
+import com.paolotti.my.smart.home.model.ColorRgb;
 import com.paolotti.my.smart.home.model.Device;
 import com.paolotti.my.smart.home.model.DeviceActionsSchema;
 
@@ -15,5 +16,6 @@ public interface IDeviceService {
     public Device retrieveDeviceById(String deviceId) throws DeviceNotExistsException;
     public ArrayList<Device> retrieveDevicesByGroupId(String groupId) throws GroupNotExistsException;
     // light
-    void switchAllLightsByDevice(String userId, String deviceId, OnOffStatusEnum desiredStatus) throws BrandNotSupportedException, DeviceNotExistsException;
+    void switchAllLights(String userId, String deviceId, OnOffStatusEnum desiredStatus) throws BrandNotSupportedException, DeviceNotExistsException;
+    void setColor(String userId, String deviceId, ColorRgb colorRgb) throws BrandNotSupportedException, DeviceNotExistsException, GenericException;
 }

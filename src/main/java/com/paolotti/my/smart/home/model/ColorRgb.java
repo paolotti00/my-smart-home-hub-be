@@ -31,4 +31,9 @@ public class ColorRgb {
     public void setB(int b) {
         this.b = b;
     }
+
+    public String getRgbAsAString(){
+        return r+","+g+","+b;
+    }
+
 }

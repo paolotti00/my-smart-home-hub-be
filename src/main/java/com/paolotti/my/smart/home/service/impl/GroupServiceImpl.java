@@ -27,7 +27,7 @@ public class GroupServiceImpl implements IGroupService {
         if (devices != null && !devices.isEmpty()) {
             devices.forEach(device -> {
                 try {
-                    deviceService.switchAllLightsByDevice(userId,device.getId(), desiredStatus);
+                    deviceService.switchAllLights(userId,device.getId(), desiredStatus);
                 } catch (BrandNotSupportedException e) {
                     logger.error("failed to switch off all light of device with id {} because:{}", device.getId(), e.getMessage());
                 } catch (DeviceNotExistsException e) {
