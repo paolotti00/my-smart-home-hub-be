@@ -36,4 +36,12 @@ public class ColorRgb {
         return r+","+g+","+b;
     }
 
+    public ColorRgb() {
+    }
+
+    public ColorRgb(int r, int g, int b) {
+        this.r = r;
+        this.g = g;
+        this.b = b;
+    }
 }
