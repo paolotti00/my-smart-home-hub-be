@@ -12,6 +12,7 @@ import com.paolotti.my.smart.home.rest.dto.mqtt.LightEffectMessageDto;
 import com.paolotti.my.smart.home.service.IDeviceByBrandService;
 import com.paolotti.my.smart.home.service.IMqttMessagingService;
 import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttPersistenceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,12 +49,8 @@ public class DeviceByBrandPaolottiServiceImpl implements IDeviceByBrandService {
             ObjectMapper objectMapper = new ObjectMapper();
             LightEffectMessageDto lightEffectMessageDto = new LightEffectMessageDto(SET_COLOR_EFFECT_NAME,new EffectDataDto("1",new ArrayList<String>(){{add(colorRgb.getRgbAsAString());}}));
             payload = objectMapper.writeValueAsString(lightEffectMessageDto);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        try {
             mqttMessagingService.publish(EFFECT_TOPIC,payload,1,true);
-        } catch (MqttException e) {
+        } catch (JsonProcessingException | MqttException e) {
             e.printStackTrace();
             throw new GenericException("error occurred: "+e.getMessage());
         }
@@ -66,12 +63,8 @@ public class DeviceByBrandPaolottiServiceImpl implements IDeviceByBrandService {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             payload = objectMapper.writeValueAsString(lightEffectMessageMapper.toDto(lightEffectMessage));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        try {
             mqttMessagingService.publish(EFFECT_TOPIC,payload,1,true);
-        } catch (MqttException e) {
+        } catch (JsonProcessingException | MqttException e) {
             e.printStackTrace();
             throw new GenericException("error occurred: "+e.getMessage());
         }
