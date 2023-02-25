@@ -1,7 +1,10 @@
 package com.paolotti.my.smart.home.service.impl;
 
+import com.paolotti.my.smart.home.exception.BrandNotSupportedException;
+import com.paolotti.my.smart.home.exception.GenericException;
 import com.paolotti.my.smart.home.model.ColorRgb;
 import com.paolotti.my.smart.home.model.Device;
+import com.paolotti.my.smart.home.model.LightEffectMessage;
 import com.paolotti.my.smart.home.service.IDeviceByBrandService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,5 +28,10 @@ public class DeviceByBrandYeelightServiceImpl implements IDeviceByBrandService {
     @Override
     public void setColor(Device device, ColorRgb colorRgb) {
         logger.info("device with id {} and brand yeelight has been set to {} color!!",device.getId(),colorRgb);
+    }
+
+    @Override
+    public void doEffect(Device device, LightEffectMessage lightEffectMessage) throws GenericException {
+        throw new BrandNotSupportedException(String.format("%s is not supported by brand %s",lightEffectMessage.getName(),device.getBrand()));
     }
 }

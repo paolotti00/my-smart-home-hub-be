@@ -46,7 +46,7 @@ public class DeviceWorkingStatusDto {
         @JsonView(JsonViewConfig.LowDetail.class)
         private OnOffStatusEnum powerStatus;
         @JsonView(JsonViewConfig.LowDetail.class)
-        private ColorRgb colorRgb;
+        private ColorRgbDto colorRgbDto;
 
         public int getIntensity() {
             return intensity;
@@ -64,12 +64,12 @@ public class DeviceWorkingStatusDto {
             this.powerStatus = powerStatus;
         }
 
-        public ColorRgb getColorRgb() {
-            return colorRgb;
+        public ColorRgbDto getColorRgbDto() {
+            return colorRgbDto;
         }
 
-        public void setColorRgb(ColorRgb colorRgb) {
-            this.colorRgb = colorRgb;
+        public void setColorRgbDto(ColorRgbDto colorRgbDto) {
+            this.colorRgbDto = colorRgbDto;
         }
     }
 
