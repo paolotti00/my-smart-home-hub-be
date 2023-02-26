@@ -10,8 +10,7 @@ import com.paolotti.my.smart.home.model.Action;
 import com.paolotti.my.smart.home.mqtt.dto.ActionDto;
 import com.paolotti.my.smart.home.mqtt.dto.EffectDataDto;
 import com.paolotti.my.smart.home.service.IDeviceByBrandService;
-import com.paolotti.my.smart.home.service.IMqttMessagingService;
-import org.eclipse.paho.client.mqttv3.MqttException;
+import com.paolotti.my.smart.home.service.IDeviceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +20,10 @@ import java.util.ArrayList;
 
 @Service
 public class DeviceByBrandPaolottiServiceImpl implements IDeviceByBrandService {
-
-    @Autowired
-    IMqttMessagingService mqttMessagingService;
     @Autowired
     ILightEffectMessageMapper lightEffectMessageMapper;
+    @Autowired
+    IDeviceService deviceService;
 
     private static final Logger logger = LoggerFactory.getLogger(DeviceByBrandPaolottiServiceImpl.class);
     private static final String EFFECT_TOPIC = "light_effect"; // todo add deviceId to topic
@@ -67,8 +65,8 @@ public class DeviceByBrandPaolottiServiceImpl implements IDeviceByBrandService {
                 add(colorRgb.getRgbAsAString());
             }}));
             payload = objectMapper.writeValueAsString(actionDto);
-            mqttMessagingService.publish(EFFECT_TOPIC, payload, 1, true);
-        } catch (JsonProcessingException | MqttException e) {
+            deviceService.sendMqttCommand(EFFECT_TOPIC,payload);
+        } catch (JsonProcessingException e) {
             e.printStackTrace();
             throw new GenericException("error occurred: " + e.getMessage());
         }
@@ -88,8 +86,8 @@ public class DeviceByBrandPaolottiServiceImpl implements IDeviceByBrandService {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             payload = objectMapper.writeValueAsString(lightEffectMessageMapper.toDto(action));
-            mqttMessagingService.publish(EFFECT_TOPIC, payload, 1, true);
-        } catch (JsonProcessingException | MqttException e) {
+            deviceService.sendMqttCommand(EFFECT_TOPIC,payload);
+        } catch (JsonProcessingException e) {
             e.printStackTrace();
             throw new GenericException("error occurred: " + e.getMessage());
         }

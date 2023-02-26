@@ -1,19 +1,23 @@
 package com.paolotti.my.smart.home.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.paolotti.my.smart.home.enums.DeviceInstallationStatusEnum;
-import com.paolotti.my.smart.home.enums.DeviceOperatingStatusEnum;
 import com.paolotti.my.smart.home.enums.OnOffStatusEnum;
 import com.paolotti.my.smart.home.exception.*;
 import com.paolotti.my.smart.home.factory.IBeanFactoryService;
 import com.paolotti.my.smart.home.mapper.IDeviceMapper;
 import com.paolotti.my.smart.home.model.*;
+import com.paolotti.my.smart.home.mqtt.dto.CommandDto;
 import com.paolotti.my.smart.home.repository.IDeviceCustomRepository;
 import com.paolotti.my.smart.home.repository.IDeviceGroupCustomRepository;
 import com.paolotti.my.smart.home.repository.entity.DeviceEntity;
 import com.paolotti.my.smart.home.repository.entity.DeviceGroupEntity;
 import com.paolotti.my.smart.home.service.IDeviceByBrandService;
 import com.paolotti.my.smart.home.service.IDeviceService;
+import com.paolotti.my.smart.home.service.IMqttMessagingService;
 import com.paolotti.my.smart.home.service.IValidationHelperService;
+import org.eclipse.paho.client.mqttv3.MqttException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +38,8 @@ public class DeviceServiceImpl implements IDeviceService {
     IDeviceMapper deviceMapper;
     @Autowired
     IBeanFactoryService beanFactoryService;
+    @Autowired
+    IMqttMessagingService mqttMessagingService;
 
     private static final Logger logger = LoggerFactory.getLogger(DeviceServiceImpl.class);
 
@@ -105,6 +111,34 @@ public class DeviceServiceImpl implements IDeviceService {
         }
         logger.info("retrieved {} devices in the group with id {} and name",devices.size(),groupId);
         return devices;
+    }
+    // command
+    @Override
+    public void sendMqttCommandToAll(String topic, String payloadToEncapsulate) throws GenericException {
+        sendMqttCommand(topic,payloadToEncapsulate,null);
+    }
+    @Override
+    public void sendMqttCommandToDevice(String topic, String payloadToEncapsulate, Device device) throws GenericException {
+        sendMqttCommand(topic,payloadToEncapsulate,device);
+    }
+    private void sendMqttCommand (String topic, String payloadToEncapsulate, Device device) throws GenericException {
+        logger.info("sending mqtt command on topic {} with payloadToEncapsulate {} to deviceId {}",topic,payloadToEncapsulate,device!=null?device.getId():"all");
+        String commandId = null;
+        String payload = null;
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            commandId = String.valueOf(System.currentTimeMillis());
+            CommandDto commandDto = new CommandDto();
+            commandDto.setCommandId(commandId);
+            commandDto.setData(payloadToEncapsulate);
+            payload = objectMapper.writeValueAsString(commandDto);
+            mqttMessagingService.publish(topic, payload, 1, true);
+            // todo save command on db - create entity
+        } catch (JsonProcessingException | MqttException e) {
+            e.printStackTrace();
+            throw new GenericException("error occurred: " + e.getMessage());
+        }
+        logger.info("sent - mqtt commandId {} on topic {} with payload {} to deviceId {}",commandId,topic,payload,device!=null?device.getId():"all");
     }
     // light
     @Override

@@ -16,6 +16,11 @@ public interface IDeviceService {
     public void doCustomActionSchema(String deviceId, DeviceActionsSchema deviceActionsSchema);
     public Device retrieveDeviceById(String deviceId) throws DeviceNotExistsException;
     public ArrayList<Device> retrieveDevicesByGroupId(String groupId) throws GroupNotExistsException;
+
+    // command
+    void sendMqttCommandToAll(String topic, String payloadToEncapsulate) throws GenericException;
+    void sendMqttCommandToDevice(String topic, String payloadToEncapsulate, Device device) throws GenericException;
+
     // light
     void switchAllLights(String userId, String deviceId, OnOffStatusEnum desiredStatus) throws BrandNotSupportedException, DeviceNotExistsException;
     void setColor(String userId, String deviceId, ColorRgb colorRgb) throws BrandNotSupportedException, DeviceNotExistsException, GenericException;
