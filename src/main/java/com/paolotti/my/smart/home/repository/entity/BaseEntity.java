@@ -5,9 +5,10 @@ import org.bson.types.ObjectId;
 
 import java.time.LocalDateTime;
 @ToString
-public class EntityBase {
+public class BaseEntity {
     private ObjectId id;
     private LocalDateTime creationDate;
+    private LocalDateTime updateDate;
 
     public ObjectId getId() {
         return id;
@@ -23,5 +24,13 @@ public class EntityBase {
 
     public void setCreationDate(LocalDateTime creationDate) {
         this.creationDate = creationDate;
+    }
+
+    public LocalDateTime getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(LocalDateTime updateDate) {
+        this.updateDate = updateDate;
     }
 }

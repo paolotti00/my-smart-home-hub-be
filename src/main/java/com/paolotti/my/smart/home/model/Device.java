@@ -7,9 +7,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 @ToString
-public class Device {
+public class Device extends BaseModel{
 
-    private String id;
+    private String thingId;
     private User user;
     private NetworkData networkData;
     private String name;
@@ -17,17 +17,16 @@ public class Device {
     private DeviceOperatingStatusEnum status;
     private DeviceInstallationStatusEnum installationStatus;
     private LocalDateTime registrationDate;
-    private LocalDateTime creationDate;
     private LocalDateTime activationDate;
     private DeviceBrandEnum brand;
     private String firmwareVersion;
 
-    public String getId() {
-        return id;
+    public String getThingId() {
+        return thingId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setThingId(String thingId) {
+        this.thingId = thingId;
     }
 
     public User getUser() {
@@ -84,14 +83,6 @@ public class Device {
 
     public void setRegistrationDate(LocalDateTime registrationDate) {
         this.registrationDate = registrationDate;
-    }
-
-    public LocalDateTime getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(LocalDateTime creationDate) {
-        this.creationDate = creationDate;
     }
 
     public LocalDateTime getActivationDate() {

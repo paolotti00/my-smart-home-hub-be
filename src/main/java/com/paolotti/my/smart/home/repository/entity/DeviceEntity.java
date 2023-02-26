@@ -7,10 +7,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Map;
 
+@ToString
 @Document(collection = "devices")
-public class DeviceEntity extends EntityBase {
+public class DeviceEntity extends BaseEntity {
+    private String thingId;
     private UserEntity user;
     private NetworkData networkData;
     private String name;
@@ -21,6 +22,14 @@ public class DeviceEntity extends EntityBase {
     private LocalDateTime activationDate;
     private DeviceBrandEnum brand;
     private String firmwareVersion;
+
+    public String getThingId() {
+        return thingId;
+    }
+
+    public void setThingId(String thingId) {
+        this.thingId = thingId;
+    }
 
     public UserEntity getUser() {
         return user;

@@ -5,5 +5,5 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @ToString
 @Document(collection = "group_user")
-public class UserGroupEntity extends GroupBase{
+public class UserGroupEntity extends GroupBaseEntity {
 }

@@ -4,7 +4,7 @@ import com.paolotti.my.smart.home.enums.DeviceActionSchemaTypeEnum;
 import lombok.ToString;
 
 @ToString
-public class DeviceActionSchemaEntity extends EntityBase{
+public class DeviceActionSchemaEntity extends BaseEntity {
     private String name;
     private ColorRgb colorRgb;
     private Long durationMs;

@@ -13,6 +13,8 @@ public class DeviceDto {
     @JsonView(JsonViewConfig.HighDetail.class)
     private String id;
     @JsonView(JsonViewConfig.LowDetail.class)
+    private String thingId;;
+    @JsonView(JsonViewConfig.LowDetail.class)
     private UserDto user;
     @JsonView(JsonViewConfig.LowDetail.class)
     private NetworkDataDto networkData;
@@ -41,6 +43,14 @@ public class DeviceDto {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getThingId() {
+        return thingId;
+    }
+
+    public void setThingId(String thingId) {
+        this.thingId = thingId;
     }
 
     public UserDto getUser() {

@@ -8,7 +8,7 @@ import java.util.List;
 
 @ToString
 @Document(collection = "group_device")
-public class DeviceGroupEntity extends GroupBase{
+public class DeviceGroupEntity extends GroupBaseEntity {
     @DocumentReference
     private List<DeviceEntity> devices;
 

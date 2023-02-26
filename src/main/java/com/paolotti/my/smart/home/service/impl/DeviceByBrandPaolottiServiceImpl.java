@@ -65,7 +65,7 @@ public class DeviceByBrandPaolottiServiceImpl implements IDeviceByBrandService {
                 add(colorRgb.getRgbAsAString());
             }}));
             payload = objectMapper.writeValueAsString(actionDto);
-            deviceService.sendMqttCommand(EFFECT_TOPIC,payload);
+            deviceService.sendMqttCommandToDevice(EFFECT_TOPIC,payload,device);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             throw new GenericException("error occurred: " + e.getMessage());
@@ -86,7 +86,7 @@ public class DeviceByBrandPaolottiServiceImpl implements IDeviceByBrandService {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             payload = objectMapper.writeValueAsString(lightEffectMessageMapper.toDto(action));
-            deviceService.sendMqttCommand(EFFECT_TOPIC,payload);
+            deviceService.sendMqttCommandToDevice(EFFECT_TOPIC,payload,device);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             throw new GenericException("error occurred: " + e.getMessage());

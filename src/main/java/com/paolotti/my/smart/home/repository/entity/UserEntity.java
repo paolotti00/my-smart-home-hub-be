@@ -1,13 +1,12 @@
 package com.paolotti.my.smart.home.repository.entity;
 
 import lombok.ToString;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 
 @ToString
 @Document(collection = "users")
-public class UserEntity extends EntityBase{
+public class UserEntity extends BaseEntity {
     String name;
     String surname;
     String email;

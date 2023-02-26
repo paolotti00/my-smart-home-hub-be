@@ -2,10 +2,7 @@ package com.paolotti.my.smart.home.service;
 
 import com.paolotti.my.smart.home.enums.OnOffStatusEnum;
 import com.paolotti.my.smart.home.exception.*;
-import com.paolotti.my.smart.home.model.Action;
-import com.paolotti.my.smart.home.model.ColorRgb;
-import com.paolotti.my.smart.home.model.Device;
-import com.paolotti.my.smart.home.model.DeviceActionsSchema;
+import com.paolotti.my.smart.home.model.*;
 
 import java.util.ArrayList;
 
@@ -20,6 +17,8 @@ public interface IDeviceService {
     // command
     void sendMqttCommandToAll(String topic, String payloadToEncapsulate) throws GenericException;
     void sendMqttCommandToDevice(String topic, String payloadToEncapsulate, Device device) throws GenericException;
+
+    void sendMqttCommandToDeviceGroup(String topic, String payloadToEncapsulate, DeviceGroup deviceGroup) throws GenericException;
 
     // light
     void switchAllLights(String userId, String deviceId, OnOffStatusEnum desiredStatus) throws BrandNotSupportedException, DeviceNotExistsException;

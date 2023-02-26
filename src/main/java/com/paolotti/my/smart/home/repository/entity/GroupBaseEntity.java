@@ -3,7 +3,7 @@ package com.paolotti.my.smart.home.repository.entity;
 import lombok.ToString;
 
 @ToString
-public class GroupBase extends EntityBase{
+public class GroupBaseEntity extends BaseEntity {
     private String name;
     private String userOwnerId;
 

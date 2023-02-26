@@ -2,15 +2,19 @@ package com.paolotti.my.smart.home.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.paolotti.my.smart.home.enums.CommandDestinationTypeEnum;
+import com.paolotti.my.smart.home.enums.CommandStatusEnum;
 import com.paolotti.my.smart.home.enums.DeviceInstallationStatusEnum;
 import com.paolotti.my.smart.home.enums.OnOffStatusEnum;
 import com.paolotti.my.smart.home.exception.*;
 import com.paolotti.my.smart.home.factory.IBeanFactoryService;
+import com.paolotti.my.smart.home.mapper.ICommandMapper;
 import com.paolotti.my.smart.home.mapper.IDeviceMapper;
 import com.paolotti.my.smart.home.model.*;
-import com.paolotti.my.smart.home.mqtt.dto.CommandDto;
+import com.paolotti.my.smart.home.repository.ICommandCustomRepository;
 import com.paolotti.my.smart.home.repository.IDeviceCustomRepository;
 import com.paolotti.my.smart.home.repository.IDeviceGroupCustomRepository;
+import com.paolotti.my.smart.home.repository.entity.CommandEntity;
 import com.paolotti.my.smart.home.repository.entity.DeviceEntity;
 import com.paolotti.my.smart.home.repository.entity.DeviceGroupEntity;
 import com.paolotti.my.smart.home.service.IDeviceByBrandService;
@@ -36,6 +40,10 @@ public class DeviceServiceImpl implements IDeviceService {
     IValidationHelperService validationHelperService;
     @Autowired
     IDeviceMapper deviceMapper;
+    @Autowired
+    ICommandMapper commandMapper;
+    @Autowired
+    ICommandCustomRepository commandCustomRepository;
     @Autowired
     IBeanFactoryService beanFactoryService;
     @Autowired
@@ -115,30 +123,49 @@ public class DeviceServiceImpl implements IDeviceService {
     // command
     @Override
     public void sendMqttCommandToAll(String topic, String payloadToEncapsulate) throws GenericException {
-        sendMqttCommand(topic,payloadToEncapsulate,null);
+        sendMqttCommand(topic,payloadToEncapsulate,null,null);
     }
     @Override
     public void sendMqttCommandToDevice(String topic, String payloadToEncapsulate, Device device) throws GenericException {
-        sendMqttCommand(topic,payloadToEncapsulate,device);
+        sendMqttCommand(topic,payloadToEncapsulate,device,null);
     }
-    private void sendMqttCommand (String topic, String payloadToEncapsulate, Device device) throws GenericException {
+    @Override
+    public void sendMqttCommandToDeviceGroup(String topic, String payloadToEncapsulate, DeviceGroup deviceGroup) throws GenericException {
+        sendMqttCommand(topic,payloadToEncapsulate,null,deviceGroup);
+    }
+    private void sendMqttCommand (String topic, String payloadToEncapsulate, Device device, DeviceGroup deviceGroup) throws GenericException {
         logger.info("sending mqtt command on topic {} with payloadToEncapsulate {} to deviceId {}",topic,payloadToEncapsulate,device!=null?device.getId():"all");
         String commandId = null;
         String payload = null;
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             commandId = String.valueOf(System.currentTimeMillis());
-            CommandDto commandDto = new CommandDto();
-            commandDto.setCommandId(commandId);
-            commandDto.setData(payloadToEncapsulate);
-            payload = objectMapper.writeValueAsString(commandDto);
+            Command command = new Command();
+            command.setCommandId(commandId);
+            command.setData(payloadToEncapsulate);
+            payload = objectMapper.writeValueAsString(commandMapper.toDto(command));
             mqttMessagingService.publish(topic, payload, 1, true);
+            saveCommandInDb(command,device,deviceGroup);
             // todo save command on db - create entity
         } catch (JsonProcessingException | MqttException e) {
             e.printStackTrace();
             throw new GenericException("error occurred: " + e.getMessage());
         }
         logger.info("sent - mqtt commandId {} on topic {} with payload {} to deviceId {}",commandId,topic,payload,device!=null?device.getId():"all");
+    }
+    private void saveCommandInDb(Command command,Device device, DeviceGroup deviceGroup){
+        // save sent command in db
+        logger.info("saving in db commandId {}, deviceId{}, groupId {}",command.getCommandId(),device!=null?device.getId():null,deviceGroup!=null?deviceGroup.getId():null);
+        command.setStatusEnum(CommandStatusEnum.PENDING);
+        command.setCreationDate(LocalDateTime.now());
+        if(device!=null){
+            // is a command to specific device
+            command.setDeviceId(device.getId());
+            command.setThingId(device.getThingId());
+            command.setCommandDestinationType(CommandDestinationTypeEnum.TO_DEVICE);
+        } // todo check other case
+        CommandEntity commandEntity = commandCustomRepository.save(commandMapper.toEntity(command));
+        logger.info("saved in db commandId {}, deviceId{} , groupId {} with id {}",command.getCommandId(),device!=null?device.getId():null,deviceGroup!=null?deviceGroup.getId():null,commandEntity.getId());
     }
     // light
     @Override
