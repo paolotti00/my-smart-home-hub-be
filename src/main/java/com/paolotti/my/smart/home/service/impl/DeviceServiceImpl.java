@@ -48,29 +48,6 @@ public class DeviceServiceImpl implements IDeviceService {
         toValidateItems.add(new ValidationHelperObject<Object>("brand", finalDevice.getBrand(), ValidationHelperObject.ValidationType.NOT_NULL));
         validationHelperService.validate(toValidateItems);
         // creation
-        // create the components
-        if(device.getComponents()!=null && device.getComponents().getNumberOfComponents()!=null)
-            {
-                ArrayList<DeviceComponent>deviceComponents = new ArrayList<>();
-                final int[] totalNComponents = {0};
-                // initializing
-                device.getComponents().getNumberOfComponents().forEach((type,number)->{
-                    totalNComponents[0] = totalNComponents[0] + number;
-                    for(int i = 0; number>i;i++){
-                        DeviceComponent deviceComponent = new DeviceComponent();
-                        DeviceComponentWorkingStatus deviceComponentWorkingStatus = new DeviceComponentWorkingStatus();
-                        deviceComponentWorkingStatus.setPowerStatus(OnOffStatusEnum.OFF);
-                        deviceComponent.setType(type);
-                        deviceComponent.setId(type+"_"+i);
-                        deviceComponent.setWorkingStatus(deviceComponentWorkingStatus);
-                        deviceComponent.setStatus(DeviceOperatingStatusEnum.OFFLINE);
-                        deviceComponents.add(deviceComponent);
-                    }
-                });
-                logger.info("initialized the {} components",totalNComponents[0]);
-                // setting the created components to the device
-                device.getComponents().setComponentsList(deviceComponents);
-            }
         device.setCreationDate(LocalDateTime.now());
         device.setInstallationStatus(DeviceInstallationStatusEnum.TO_ACTIVATE);
         DeviceEntity deviceEntity = deviceMapper.toEntity(device);
@@ -163,14 +140,14 @@ public class DeviceServiceImpl implements IDeviceService {
     }
 
     @Override
-    public void doAction(String userId, String deviceId, LightEffectMessage lightEffectMessage) throws BrandNotSupportedException, DeviceNotExistsException, GenericException {
-        logger.info("sending device action to do : userId {} deviceId {} lightEffectMessage {}", userId, deviceId, lightEffectMessage);
+    public void doAction(String userId, String deviceId, Action action) throws BrandNotSupportedException, DeviceNotExistsException, GenericException {
+        logger.info("sending device action to do : userId {} deviceId {} lightEffectMessage {}", userId, deviceId, action);
         // todo retrieve the user
         // check if have the permission to do something
         Device device = retrieveDeviceById(deviceId);
         logger.info("device retrieved {}", device);
         IDeviceByBrandService deviceLightByBrandService = beanFactoryService.getDeviceLightByBrandServiceImpl(device.getBrand());
-        deviceLightByBrandService.doEffect(device,lightEffectMessage);
-        logger.info("correctly sent action to do : userId {} deviceId {} lightEffectMessage {}", userId, deviceId, lightEffectMessage);
+        deviceLightByBrandService.doEffect(device, action);
+        logger.info("correctly sent action to do : userId {} deviceId {} lightEffectMessage {}", userId, deviceId, action);
     }
 }

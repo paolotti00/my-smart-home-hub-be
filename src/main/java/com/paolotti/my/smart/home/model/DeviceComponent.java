@@ -8,7 +8,6 @@ import lombok.ToString;
 public class DeviceComponent{
         private String id;
         private DeviceComponentTypeEnum type;
-        private DeviceComponentWorkingStatus workingStatus;
         private DeviceOperatingStatusEnum status;
         private String description;
 
@@ -34,14 +33,6 @@ public class DeviceComponent{
 
     public void setStatus(DeviceOperatingStatusEnum status) {
         this.status = status;
-    }
-
-    public DeviceComponentWorkingStatus getWorkingStatus() {
-        return workingStatus;
-    }
-
-    public void setWorkingStatus(DeviceComponentWorkingStatus workingStatus) {
-        this.workingStatus = workingStatus;
     }
 
     public String getDescription() {

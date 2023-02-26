@@ -6,9 +6,9 @@ import com.paolotti.my.smart.home.exception.GenericException;
 import com.paolotti.my.smart.home.mapper.ILightEffectMessageMapper;
 import com.paolotti.my.smart.home.model.ColorRgb;
 import com.paolotti.my.smart.home.model.Device;
-import com.paolotti.my.smart.home.model.LightEffectMessage;
-import com.paolotti.my.smart.home.rest.dto.mqtt.EffectDataDto;
-import com.paolotti.my.smart.home.rest.dto.mqtt.LightEffectMessageDto;
+import com.paolotti.my.smart.home.model.Action;
+import com.paolotti.my.smart.home.mqtt.dto.ActionDto;
+import com.paolotti.my.smart.home.mqtt.dto.EffectDataDto;
 import com.paolotti.my.smart.home.service.IDeviceByBrandService;
 import com.paolotti.my.smart.home.service.IMqttMessagingService;
 import org.eclipse.paho.client.mqttv3.MqttException;
@@ -63,10 +63,10 @@ public class DeviceByBrandPaolottiServiceImpl implements IDeviceByBrandService {
         String payload = null;
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            LightEffectMessageDto lightEffectMessageDto = new LightEffectMessageDto(SET_COLOR_EFFECT_NAME, new EffectDataDto("1", new ArrayList<String>() {{
+            ActionDto actionDto = new ActionDto(SET_COLOR_EFFECT_NAME, new EffectDataDto("1", new ArrayList<String>() {{
                 add(colorRgb.getRgbAsAString());
             }}));
-            payload = objectMapper.writeValueAsString(lightEffectMessageDto);
+            payload = objectMapper.writeValueAsString(actionDto);
             mqttMessagingService.publish(EFFECT_TOPIC, payload, 1, true);
         } catch (JsonProcessingException | MqttException e) {
             e.printStackTrace();
@@ -79,20 +79,20 @@ public class DeviceByBrandPaolottiServiceImpl implements IDeviceByBrandService {
  * Perform a light effect on the device with the given ID and brand "paolotti".
  *
  * @param device              the device to perform the effect on
- * @param lightEffectMessage the light effect message to send
+ * @param action the light effect message to send
  * @throws GenericException if an error occurs while performing the effect*/
 
     @Override
-    public void doEffect(Device device, LightEffectMessage lightEffectMessage) throws GenericException {
+    public void doEffect(Device device, Action action) throws GenericException {
         String payload = null;
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            payload = objectMapper.writeValueAsString(lightEffectMessageMapper.toDto(lightEffectMessage));
+            payload = objectMapper.writeValueAsString(lightEffectMessageMapper.toDto(action));
             mqttMessagingService.publish(EFFECT_TOPIC, payload, 1, true);
         } catch (JsonProcessingException | MqttException e) {
             e.printStackTrace();
             throw new GenericException("error occurred: " + e.getMessage());
         }
-        logger.info("set action {} to device with id {} and brand paolotti", lightEffectMessage.getName(), device.getId());
+        logger.info("set action {} to device with id {} and brand paolotti", action.getName(), device.getId());
     }
 }

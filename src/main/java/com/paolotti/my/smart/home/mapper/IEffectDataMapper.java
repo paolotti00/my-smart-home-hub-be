@@ -1,10 +1,7 @@
 package com.paolotti.my.smart.home.mapper;
 
 import com.paolotti.my.smart.home.model.EffectData;
-import com.paolotti.my.smart.home.model.LightEffectMessage;
-import com.paolotti.my.smart.home.rest.dto.ColorRgbDto;
-import com.paolotti.my.smart.home.rest.dto.mqtt.EffectDataDto;
-import com.paolotti.my.smart.home.rest.dto.mqtt.LightEffectMessageDto;
+import com.paolotti.my.smart.home.mqtt.dto.EffectDataDto;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 

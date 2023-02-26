@@ -1,6 +1,7 @@
 package com.paolotti.my.smart.home.repository.entity;
 
 import com.paolotti.my.smart.home.enums.*;
+import com.paolotti.my.smart.home.model.ColorRgb;
 import lombok.ToString;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -13,7 +14,7 @@ public class DeviceEntity extends EntityBase {
     private UserEntity user;
     private NetworkData networkData;
     private String name;
-    private DeviceComponentWrapper components;
+    private ArrayList<DeviceComponent> components;
     private DeviceOperatingStatusEnum status;
     private DeviceInstallationStatusEnum installationStatus;
     private LocalDateTime registrationDate;
@@ -45,11 +46,11 @@ public class DeviceEntity extends EntityBase {
         this.name = name;
     }
 
-    public DeviceComponentWrapper getComponents() {
+    public ArrayList<DeviceComponent> getComponents() {
         return components;
     }
 
-    public void setComponents(DeviceComponentWrapper components) {
+    public void setComponents(ArrayList<DeviceComponent> components) {
         this.components = components;
     }
 
@@ -102,31 +103,9 @@ public class DeviceEntity extends EntityBase {
     }
 
     @ToString
-    public static class DeviceComponentWrapper {
-        private Map< DeviceComponentTypeEnum,Integer> numberOfComponents;
-        private ArrayList<DeviceComponent> componentsList;
-
-        public Map< DeviceComponentTypeEnum,Integer> getNumberOfComponents() {
-            return numberOfComponents;
-        }
-
-        public void setNumberOfComponents(Map< DeviceComponentTypeEnum,Integer> numberOfComponents) {
-            this.numberOfComponents = numberOfComponents;
-        }
-
-        public ArrayList<DeviceComponent> getComponentsList() {
-            return componentsList;
-        }
-
-        public void setComponentsList(ArrayList<DeviceComponent> componentsList) {
-            this.componentsList = componentsList;
-        }
-    }
-    @ToString
-    public static class DeviceComponent {
+    public abstract static class DeviceComponent {
         private String id;
         private DeviceComponentTypeEnum type;
-        private DeviceComponentWorkingStatus workingStatus;
         private DeviceOperatingStatusEnum status;
         private String description;
 
@@ -146,14 +125,6 @@ public class DeviceEntity extends EntityBase {
             this.type = type;
         }
 
-        public DeviceComponentWorkingStatus getWorkingStatus() {
-            return workingStatus;
-        }
-
-        public void setWorkingStatus(DeviceComponentWorkingStatus workingStatus) {
-            this.workingStatus = workingStatus;
-        }
-
         public DeviceOperatingStatusEnum getStatus() {
             return status;
         }
@@ -169,64 +140,40 @@ public class DeviceEntity extends EntityBase {
         public void setDescription(String description) {
             this.description = description;
         }
+    }
+    @ToString
+    @Document(collection = "devices")
+    public static class DeviceComponentLight extends DeviceComponent{
+        private ColorRgb colorRgb;
+        private int intensity;
 
-        @ToString
-        public static class DeviceComponentWorkingStatus{
-            private DeviceWorkingStatusOut out;
-            private DeviceWorkingStatusIn in;
-            private OnOffStatusEnum powerStatus;
+        public ColorRgb getColorRgb() {
+            return colorRgb;
+        }
 
+        public void setColorRgb(ColorRgb colorRgb) {
+            this.colorRgb = colorRgb;
+        }
 
+        public int getIntensity() {
+            return intensity;
+        }
 
-            public OnOffStatusEnum getPowerStatus() {
-                return powerStatus;
-            }
+        public void setIntensity(int intensity) {
+            this.intensity = intensity;
+        }
+    }
+    @ToString
+    @Document(collection = "devices")
+    public static class DeviceComponentSensorTemperature extends DeviceComponent {
+        private String temp;
 
-            public void setPowerStatus(OnOffStatusEnum powerStatus) {
-                this.powerStatus = powerStatus;
-            }
-            @ToString
-            public static class DeviceWorkingStatusOut {
-                private int intensity;
-                private OnOffStatusEnum powerStatus;
-                private ColorRgb colorRgb;
+        public String getTemp() {
+            return temp;
+        }
 
-                public int getIntensity() {
-                    return intensity;
-                }
-
-                public void setIntensity(int intensity) {
-                    this.intensity = intensity;
-                }
-
-                public OnOffStatusEnum getPowerStatus() {
-                    return powerStatus;
-                }
-
-                public void setPowerStatus(OnOffStatusEnum powerStatus) {
-                    this.powerStatus = powerStatus;
-                }
-
-                public ColorRgb getColorRgb() {
-                    return colorRgb;
-                }
-
-                public void setColorRgb(ColorRgb colorRgb) {
-                    this.colorRgb = colorRgb;
-                }
-            }
-            @ToString
-            public static class DeviceWorkingStatusIn {
-                private double temperature;
-
-                public double getTemperature() {
-                    return temperature;
-                }
-
-                public void setTemperature(double temperature) {
-                    this.temperature = temperature;
-                }
-            }
+        public void setTemp(String temp) {
+            this.temp = temp;
         }
     }
     @ToString

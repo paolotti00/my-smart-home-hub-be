@@ -1,10 +1,10 @@
-package com.paolotti.my.smart.home.rest.dto.mqtt;
+package com.paolotti.my.smart.home.mqtt.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.ToString;
 
 @ToString
-public class LightEffectMessageDto {
+public class ActionDto {
     private String name;
     @JsonProperty("effect_data")
     private EffectDataDto effectData;
@@ -25,10 +25,10 @@ public class LightEffectMessageDto {
         this.effectData = effectData;
     }
 
-    public LightEffectMessageDto() {
+    public ActionDto() {
     }
 
-    public LightEffectMessageDto(String name, EffectDataDto effectData) {
+    public ActionDto(String name, EffectDataDto effectData) {
         this.name = name;
         this.effectData = effectData;
     }

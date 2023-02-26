@@ -1,11 +1,11 @@
 package com.paolotti.my.smart.home.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.paolotti.my.smart.home.rest.dto.mqtt.EffectDataDto;
+import com.paolotti.my.smart.home.mqtt.dto.EffectDataDto;
 import lombok.ToString;
 
 @ToString
-public class LightEffectMessage {
+public class Action {
     private String name;
     @JsonProperty("effect_data")
     private EffectDataDto effectData;
@@ -26,10 +26,10 @@ public class LightEffectMessage {
         this.effectData = effectData;
     }
 
-    public LightEffectMessage() {
+    public Action() {
     }
 
-    public LightEffectMessage(String name, EffectDataDto effectData) {
+    public Action(String name, EffectDataDto effectData) {
         this.name = name;
         this.effectData = effectData;
     }

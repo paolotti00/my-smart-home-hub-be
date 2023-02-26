@@ -1,4 +1,4 @@
-package com.paolotti.my.smart.home.rest.dto.mqtt;
+package com.paolotti.my.smart.home.mqtt.dto;
 
 import lombok.ToString;
 

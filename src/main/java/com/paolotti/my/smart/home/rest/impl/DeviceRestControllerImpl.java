@@ -9,11 +9,11 @@ import com.paolotti.my.smart.home.mapper.IColorRgbMapper;
 import com.paolotti.my.smart.home.mapper.IDeviceMapper;
 import com.paolotti.my.smart.home.mapper.ILightEffectMessageMapper;
 import com.paolotti.my.smart.home.model.Device;
+import com.paolotti.my.smart.home.mqtt.dto.ActionDto;
 import com.paolotti.my.smart.home.rest.IDeviceRestController;
 import com.paolotti.my.smart.home.rest.dto.BaseResponseDto;
 import com.paolotti.my.smart.home.rest.dto.ColorRgbDto;
 import com.paolotti.my.smart.home.rest.dto.DeviceDto;
-import com.paolotti.my.smart.home.rest.dto.mqtt.LightEffectMessageDto;
 import com.paolotti.my.smart.home.service.IDeviceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -104,15 +104,15 @@ public class DeviceRestControllerImpl implements IDeviceRestController {
         return responseEntity;
     }
     @Override
-    public ResponseEntity<BaseResponseDto> doAction(String deviceId, LightEffectMessageDto lightEffectMessageDto) throws DeviceNotExistsException, BrandNotSupportedException, GenericException {
+    public ResponseEntity<BaseResponseDto> doAction(String deviceId, ActionDto actionDto) throws DeviceNotExistsException, BrandNotSupportedException, GenericException {
         String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
-        logger.info("{}: device id {} lightEffectMessageDto {}", methodName, deviceId, lightEffectMessageDto);
+        logger.info("{}: device id {} lightEffectMessageDto {}", methodName, deviceId, actionDto);
         String userId = "ex"; // todo should be retrieved from spring Principal?
         ResponseEntity<BaseResponseDto> responseEntity;
         BaseResponseDto baseResponseDto = new BaseResponseDto();
         try {
-            deviceService.doAction(userId, deviceId, lightEffectMessageMapper.toModel(lightEffectMessageDto));
-            baseResponseDto.setMessage(String.format("device %s correctly sent %s", deviceId, lightEffectMessageDto));
+            deviceService.doAction(userId, deviceId, lightEffectMessageMapper.toModel(actionDto));
+            baseResponseDto.setMessage(String.format("device %s correctly sent %s", deviceId, actionDto));
             responseEntity = new ResponseEntity<>(baseResponseDto, HttpStatus.OK);
         } catch (Exception e) {
             logger.error("{} error", methodName);

@@ -1,7 +1,6 @@
-package com.paolotti.my.smart.home.listener;
+package com.paolotti.my.smart.home.mqtt.listener;
 
 import com.paolotti.my.smart.home.service.IMqttMessagingService;
-import com.paolotti.my.smart.home.service.impl.DeviceServiceImpl;
 import org.eclipse.paho.client.mqttv3.IMqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.slf4j.Logger;

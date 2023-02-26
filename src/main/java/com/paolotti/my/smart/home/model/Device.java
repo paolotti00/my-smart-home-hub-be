@@ -4,6 +4,7 @@ import com.paolotti.my.smart.home.enums.*;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 @ToString
 public class Device {
@@ -12,7 +13,7 @@ public class Device {
     private User user;
     private NetworkData networkData;
     private String name;
-    private DeviceComponentWrapper components;
+    private ArrayList<DeviceComponent> components;
     private DeviceOperatingStatusEnum status;
     private DeviceInstallationStatusEnum installationStatus;
     private LocalDateTime registrationDate;
@@ -53,11 +54,11 @@ public class Device {
         this.name = name;
     }
 
-    public DeviceComponentWrapper getComponents() {
+    public ArrayList<DeviceComponent> getComponents() {
         return components;
     }
 
-    public void setComponents(DeviceComponentWrapper components) {
+    public void setComponents(ArrayList<DeviceComponent> components) {
         this.components = components;
     }
 

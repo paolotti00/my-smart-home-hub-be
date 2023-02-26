@@ -2,10 +2,10 @@ package com.paolotti.my.smart.home.service;
 
 import com.paolotti.my.smart.home.enums.OnOffStatusEnum;
 import com.paolotti.my.smart.home.exception.*;
+import com.paolotti.my.smart.home.model.Action;
 import com.paolotti.my.smart.home.model.ColorRgb;
 import com.paolotti.my.smart.home.model.Device;
 import com.paolotti.my.smart.home.model.DeviceActionsSchema;
-import com.paolotti.my.smart.home.model.LightEffectMessage;
 
 import java.util.ArrayList;
 
@@ -19,5 +19,5 @@ public interface IDeviceService {
     // light
     void switchAllLights(String userId, String deviceId, OnOffStatusEnum desiredStatus) throws BrandNotSupportedException, DeviceNotExistsException;
     void setColor(String userId, String deviceId, ColorRgb colorRgb) throws BrandNotSupportedException, DeviceNotExistsException, GenericException;
-    void doAction(String userId, String deviceId, LightEffectMessage lightEffectMessage) throws BrandNotSupportedException, DeviceNotExistsException, GenericException;
+    void doAction(String userId, String deviceId, Action action) throws BrandNotSupportedException, DeviceNotExistsException, GenericException;
 }

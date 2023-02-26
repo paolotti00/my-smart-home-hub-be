@@ -19,7 +19,7 @@ public class DeviceDto {
     @JsonView(JsonViewConfig.LowDetail.class)
     private String name;
     @JsonView(JsonViewConfig.LowDetail.class)
-    private DeviceComponentsWrapperDto components;
+    private ArrayList<DeviceComponentDto> components;
     @JsonView(JsonViewConfig.HighDetail.class)
     private DeviceOperatingStatusEnum status;
     @JsonView(JsonViewConfig.HighDetail.class)
@@ -67,11 +67,11 @@ public class DeviceDto {
         this.name = name;
     }
 
-    public DeviceComponentsWrapperDto getComponents() {
+    public ArrayList<DeviceComponentDto> getComponents() {
         return components;
     }
 
-    public void setComponents(DeviceComponentsWrapperDto components) {
+    public void setComponents(ArrayList<DeviceComponentDto> components) {
         this.components = components;
     }
 

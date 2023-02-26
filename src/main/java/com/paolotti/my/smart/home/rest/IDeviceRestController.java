@@ -7,7 +7,7 @@ import com.paolotti.my.smart.home.exception.GenericException;
 import com.paolotti.my.smart.home.exception.MissingFieldException;
 import com.paolotti.my.smart.home.rest.dto.BaseResponseDto;
 import com.paolotti.my.smart.home.rest.dto.ColorRgbDto;
-import com.paolotti.my.smart.home.rest.dto.mqtt.LightEffectMessageDto;
+import com.paolotti.my.smart.home.mqtt.dto.ActionDto;
 import com.paolotti.my.smart.home.rest.dto.view.JsonViewConfig;
 import com.paolotti.my.smart.home.rest.dto.DeviceDto;
 import org.springframework.http.ResponseEntity;
@@ -25,5 +25,5 @@ public interface IDeviceRestController {
     @PutMapping("{deviceId}/set/color")
     ResponseEntity<BaseResponseDto> setColor(@PathVariable String deviceId, @RequestBody ColorRgbDto colorRgbDto) throws DeviceNotExistsException, BrandNotSupportedException, GenericException;
     @PutMapping("{deviceId}/do/action")
-    ResponseEntity<BaseResponseDto> doAction(@PathVariable String deviceId, @RequestBody LightEffectMessageDto lightEffectMessageDto) throws DeviceNotExistsException, BrandNotSupportedException, GenericException;
+    ResponseEntity<BaseResponseDto> doAction(@PathVariable String deviceId, @RequestBody ActionDto actionDto) throws DeviceNotExistsException, BrandNotSupportedException, GenericException;
 }
