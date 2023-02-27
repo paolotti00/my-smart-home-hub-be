@@ -10,19 +10,19 @@ public class Command extends BaseModel{
     private String deviceId;
     private String thingId;
     private CommandStatusEnum statusEnum;
-    private CommandDestinationTypeEnum commandDestinationTypeEnum;
+    private CommandDestinationTypeEnum destinationType;
     private String data;
 
     public Command() {
     }
 
-    public Command(LocalDateTime creationDate, String commandId, String deviceId, String thingId, CommandStatusEnum statusEnum, CommandDestinationTypeEnum commandDestinationTypeEnum, String data) {
+    public Command(LocalDateTime creationDate, String commandId, String deviceId, String thingId, CommandStatusEnum statusEnum, CommandDestinationTypeEnum destinationType, String data) {
         super(creationDate);
         this.commandId = commandId;
         this.deviceId = deviceId;
         this.thingId = thingId;
         this.statusEnum = statusEnum;
-        this.commandDestinationTypeEnum = commandDestinationTypeEnum;
+        this.destinationType = destinationType;
         this.data = data;
     }
 
@@ -58,12 +58,12 @@ public class Command extends BaseModel{
         this.statusEnum = statusEnum;
     }
 
-    public CommandDestinationTypeEnum getCommandDestinationType() {
-        return commandDestinationTypeEnum;
+    public CommandDestinationTypeEnum getDestinationType() {
+        return destinationType;
     }
 
-    public void setCommandDestinationType(CommandDestinationTypeEnum commandDestinationTypeEnum) {
-        this.commandDestinationTypeEnum = commandDestinationTypeEnum;
+    public void setDestinationType(CommandDestinationTypeEnum destinationType) {
+        this.destinationType = destinationType;
     }
 
     public String getData() {

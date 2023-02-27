@@ -12,7 +12,7 @@ public class CommandEntity extends BaseEntity {
     private String deviceId;
     private String thingId;
     private CommandStatusEnum statusEnum;
-    private CommandDestinationTypeEnum commandDestinationTypeEnum;
+    private CommandDestinationTypeEnum destinationType;
     private String data;
 
     public String getCommandId() {
@@ -47,12 +47,12 @@ public class CommandEntity extends BaseEntity {
         this.statusEnum = statusEnum;
     }
 
-    public CommandDestinationTypeEnum getCommandDestinationTypeEnum() {
-        return commandDestinationTypeEnum;
+    public CommandDestinationTypeEnum getDestinationType() {
+        return destinationType;
     }
 
-    public void setCommandDestinationTypeEnum(CommandDestinationTypeEnum commandDestinationTypeEnum) {
-        this.commandDestinationTypeEnum = commandDestinationTypeEnum;
+    public void setDestinationType(CommandDestinationTypeEnum destinationType) {
+        this.destinationType = destinationType;
     }
 
     public String getData() {

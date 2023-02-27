@@ -162,7 +162,7 @@ public class DeviceServiceImpl implements IDeviceService {
             // is a command to specific device
             command.setDeviceId(device.getId());
             command.setThingId(device.getThingId());
-            command.setCommandDestinationType(CommandDestinationTypeEnum.TO_DEVICE);
+            command.setDestinationType(CommandDestinationTypeEnum.TO_DEVICE);
         } // todo check other case
         CommandEntity commandEntity = commandCustomRepository.save(commandMapper.toEntity(command));
         logger.info("saved in db commandId {}, deviceId{} , groupId {} with id {}",command.getCommandId(),device!=null?device.getId():null,deviceGroup!=null?deviceGroup.getId():null,commandEntity.getId());
