@@ -1,8 +1,11 @@
 package com.paolotti.my.smart.home.mapper;
 
+import com.paolotti.my.smart.home.utility.Utility;
 import org.bson.types.ObjectId;
 import org.mapstruct.Mapper;
 import org.mapstruct.Named;
+
+import java.awt.*;
 
 @Mapper( componentModel = "spring")
 public interface IBaseMapper {
@@ -24,6 +27,15 @@ public interface IBaseMapper {
             toReturn = id.toHexString();
         }
         return toReturn;
+    }
+
+    @Named("toColorString")
+    default String toColorString(Color rgbColor){
+       return Utility.colorToString(rgbColor);
+    }
+    @Named("stringToColor")
+    default Color stringToColor(String rgbColor){
+        return Utility.parseColor(rgbColor);
     }
 
     ;

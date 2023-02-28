@@ -1,8 +1,9 @@
-package com.paolotti.my.smart.home.rest.dto;
+package com.paolotti.my.smart.home.dto.rest;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.paolotti.my.smart.home.dto.DeviceComponentDto;
 import com.paolotti.my.smart.home.enums.*;
-import com.paolotti.my.smart.home.rest.dto.view.JsonViewConfig;
+import com.paolotti.my.smart.home.dto.rest.view.JsonViewConfig;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
@@ -23,7 +24,7 @@ public class DeviceDto {
     @JsonView(JsonViewConfig.LowDetail.class)
     private ArrayList<DeviceComponentDto> components;
     @JsonView(JsonViewConfig.HighDetail.class)
-    private DeviceOperatingStatusEnum status;
+    private DeviceConnectionStatusEnum status;
     @JsonView(JsonViewConfig.HighDetail.class)
     private DeviceInstallationStatusEnum installationStatus;
     @JsonView(JsonViewConfig.HighDetail.class)
@@ -85,11 +86,11 @@ public class DeviceDto {
         this.components = components;
     }
 
-    public DeviceOperatingStatusEnum getStatus() {
+    public DeviceConnectionStatusEnum getStatus() {
         return status;
     }
 
-    public void setStatus(DeviceOperatingStatusEnum status) {
+    public void setStatus(DeviceConnectionStatusEnum status) {
         this.status = status;
     }
 

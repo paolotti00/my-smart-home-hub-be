@@ -1,22 +1,21 @@
 package com.paolotti.my.smart.home.mapper;
 
-import com.paolotti.my.smart.home.enums.DeviceComponentTypeEnum;
 import com.paolotti.my.smart.home.model.Device;
 import com.paolotti.my.smart.home.model.DeviceComponent;
 import com.paolotti.my.smart.home.model.DeviceComponentLight;
 import com.paolotti.my.smart.home.model.DeviceComponentSensorTemperature;
 import com.paolotti.my.smart.home.repository.entity.DeviceEntity;
-import com.paolotti.my.smart.home.rest.dto.DeviceComponentDto;
-import com.paolotti.my.smart.home.rest.dto.DeviceComponentLightDto;
-import com.paolotti.my.smart.home.rest.dto.DeviceComponentSensorTemperatureDto;
-import com.paolotti.my.smart.home.rest.dto.DeviceDto;
-import org.bson.types.ObjectId;
+import com.paolotti.my.smart.home.dto.DeviceComponentDto;
+import com.paolotti.my.smart.home.dto.rest.DeviceComponentLightDto;
+import com.paolotti.my.smart.home.dto.rest.DeviceComponentSensorTemperatureDto;
+import com.paolotti.my.smart.home.dto.rest.DeviceDto;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;

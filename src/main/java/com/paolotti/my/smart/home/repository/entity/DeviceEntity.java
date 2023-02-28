@@ -1,12 +1,14 @@
 package com.paolotti.my.smart.home.repository.entity;
 
 import com.paolotti.my.smart.home.enums.*;
-import com.paolotti.my.smart.home.model.ColorRgb;
+import com.paolotti.my.smart.home.model.Led;
 import lombok.ToString;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.awt.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Map;
 
 @ToString
 @Document(collection = "devices")
@@ -16,7 +18,7 @@ public class DeviceEntity extends BaseEntity {
     private NetworkData networkData;
     private String name;
     private ArrayList<DeviceComponent> components;
-    private DeviceOperatingStatusEnum status;
+    private DeviceConnectionStatusEnum status;
     private DeviceInstallationStatusEnum installationStatus;
     private LocalDateTime registrationDate;
     private LocalDateTime activationDate;
@@ -63,11 +65,11 @@ public class DeviceEntity extends BaseEntity {
         this.components = components;
     }
 
-    public DeviceOperatingStatusEnum getStatus() {
+    public DeviceConnectionStatusEnum getStatus() {
         return status;
     }
 
-    public void setStatus(DeviceOperatingStatusEnum status) {
+    public void setStatus(DeviceConnectionStatusEnum status) {
         this.status = status;
     }
 
@@ -115,7 +117,7 @@ public class DeviceEntity extends BaseEntity {
     public abstract static class DeviceComponent {
         private String id;
         private DeviceComponentTypeEnum type;
-        private DeviceOperatingStatusEnum status;
+        private DeviceConnectionStatusEnum status;
         private String description;
 
         public String getId() {
@@ -134,11 +136,11 @@ public class DeviceEntity extends BaseEntity {
             this.type = type;
         }
 
-        public DeviceOperatingStatusEnum getStatus() {
+        public DeviceConnectionStatusEnum getStatus() {
             return status;
         }
 
-        public void setStatus(DeviceOperatingStatusEnum status) {
+        public void setStatus(DeviceConnectionStatusEnum status) {
             this.status = status;
         }
 
@@ -150,28 +152,21 @@ public class DeviceEntity extends BaseEntity {
             this.description = description;
         }
     }
+
     @ToString
     @Document(collection = "devices")
-    public static class DeviceComponentLight extends DeviceComponent{
-        private ColorRgb colorRgb;
-        private int intensity;
+    public static class DeviceComponentLight extends DeviceComponent {
+        private Map<Integer, Led> leds;
 
-        public ColorRgb getColorRgb() {
-            return colorRgb;
+        public Map<Integer, Led> getLeds() {
+            return leds;
         }
 
-        public void setColorRgb(ColorRgb colorRgb) {
-            this.colorRgb = colorRgb;
-        }
-
-        public int getIntensity() {
-            return intensity;
-        }
-
-        public void setIntensity(int intensity) {
-            this.intensity = intensity;
+        public void setLeds(Map<Integer, Led> leds) {
+            this.leds = leds;
         }
     }
+
     @ToString
     @Document(collection = "devices")
     public static class DeviceComponentSensorTemperature extends DeviceComponent {
@@ -185,6 +180,7 @@ public class DeviceEntity extends BaseEntity {
             this.temp = temp;
         }
     }
+
     @ToString
     public static class NetworkData {
         String ip;
@@ -213,6 +209,19 @@ public class DeviceEntity extends BaseEntity {
 
         public void setName(String name) {
             this.name = name;
+        }
+    }
+
+    @ToString
+    public static class Led {
+        String rgbColor;
+
+        public String getRgbColor() {
+            return rgbColor;
+        }
+
+        public void setRgbColor(String rgbColor) {
+            this.rgbColor = rgbColor;
         }
     }
 }

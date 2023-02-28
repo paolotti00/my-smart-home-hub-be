@@ -1,24 +1,32 @@
 package com.paolotti.my.smart.home.model;
 
+import java.util.Map;
+
 public class DeviceComponentLight extends DeviceComponent{
-    private ColorRgb colorRgb;
-    private int intensity;
+    private Map<Integer,Led> leds;
+    private Action action;
 
-
-    public int getIntensity() {
-        return intensity;
+    public Map<Integer, Led> getLeds() {
+        return leds;
     }
 
-    public void setIntensity(int intensity) {
-        this.intensity = intensity;
+    public void setLeds(Map<Integer, Led> leds) {
+        this.leds = leds;
     }
 
-    public ColorRgb getColorRgb() {
-        return colorRgb;
+    public void setLed(int position, Led led) {
+        this.leds.put(position, led);
     }
 
-    public void setColorRgb(ColorRgb colorRgb) {
-        this.colorRgb = colorRgb;
+    public Led getLed(int position) {
+        return this.leds.get(position);
     }
 
+    public Action getAction() {
+        return action;
+    }
+
+    public void setAction(Action action) {
+        this.action = action;
+    }
 }

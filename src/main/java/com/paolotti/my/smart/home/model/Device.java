@@ -14,7 +14,7 @@ public class Device extends BaseModel{
     private NetworkData networkData;
     private String name;
     private ArrayList<DeviceComponent> components;
-    private DeviceOperatingStatusEnum status;
+    private DeviceConnectionStatusEnum status;
     private DeviceInstallationStatusEnum installationStatus;
     private LocalDateTime registrationDate;
     private LocalDateTime activationDate;
@@ -61,11 +61,11 @@ public class Device extends BaseModel{
         this.components = components;
     }
 
-    public DeviceOperatingStatusEnum getStatus() {
+    public DeviceConnectionStatusEnum getStatus() {
         return status;
     }
 
-    public void setStatus(DeviceOperatingStatusEnum status) {
+    public void setStatus(DeviceConnectionStatusEnum status) {
         this.status = status;
     }
 

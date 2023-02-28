@@ -1,12 +1,13 @@
-package com.paolotti.my.smart.home.rest.dto;
+package com.paolotti.my.smart.home.dto;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.paolotti.my.smart.home.dto.rest.DeviceComponentLightDto;
+import com.paolotti.my.smart.home.dto.rest.DeviceComponentSensorTemperatureDto;
 import com.paolotti.my.smart.home.enums.DeviceComponentTypeEnum;
-import com.paolotti.my.smart.home.enums.DeviceOperatingStatusEnum;
-import com.paolotti.my.smart.home.enums.DeviceTypeEnum;
-import com.paolotti.my.smart.home.rest.dto.view.JsonViewConfig;
+import com.paolotti.my.smart.home.enums.DeviceConnectionStatusEnum;
+import com.paolotti.my.smart.home.dto.rest.view.JsonViewConfig;
 import lombok.ToString;
 
 @ToString
@@ -21,7 +22,7 @@ public class DeviceComponentDto {
     @JsonView(JsonViewConfig.LowDetail.class)
     private DeviceComponentTypeEnum type;
     @JsonView(JsonViewConfig.LowDetail.class)
-    private DeviceOperatingStatusEnum status;
+    private DeviceConnectionStatusEnum connectionStatus;
     @JsonView(JsonViewConfig.LowDetail.class)
     private String description;
 
@@ -41,12 +42,12 @@ public class DeviceComponentDto {
         this.type = type;
     }
 
-    public DeviceOperatingStatusEnum getStatus() {
-        return status;
+    public DeviceConnectionStatusEnum getConnectionStatus() {
+        return connectionStatus;
     }
 
-    public void setStatus(DeviceOperatingStatusEnum status) {
-        this.status = status;
+    public void setConnectionStatus(DeviceConnectionStatusEnum connectionStatus) {
+        this.connectionStatus = connectionStatus;
     }
 
     public String getDescription() {

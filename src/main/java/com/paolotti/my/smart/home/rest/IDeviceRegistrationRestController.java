@@ -3,8 +3,8 @@ package com.paolotti.my.smart.home.rest;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.paolotti.my.smart.home.constant.RestConst;
 import com.paolotti.my.smart.home.exception.*;
-import com.paolotti.my.smart.home.rest.dto.DeviceDto;
-import com.paolotti.my.smart.home.rest.dto.view.JsonViewConfig;
+import com.paolotti.my.smart.home.dto.rest.DeviceDto;
+import com.paolotti.my.smart.home.dto.rest.view.JsonViewConfig;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

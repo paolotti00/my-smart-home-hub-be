@@ -1,14 +1,13 @@
 package com.paolotti.my.smart.home.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.paolotti.my.smart.home.mqtt.dto.EffectDataDto;
 import lombok.ToString;
 
 @ToString
 public class Action {
     private String name;
     @JsonProperty("effect_data")
-    private EffectDataDto effectData;
+    private EffectData effectData;
 
     public String getName() {
         return name;
@@ -18,18 +17,18 @@ public class Action {
         this.name = name;
     }
 
-    public EffectDataDto getEffectData() {
+    public EffectData getEffectData() {
         return effectData;
     }
 
-    public void setEffectData(EffectDataDto effectData) {
+    public void setEffectData(EffectData effectData) {
         this.effectData = effectData;
     }
 
     public Action() {
     }
 
-    public Action(String name, EffectDataDto effectData) {
+    public Action(String name, EffectData effectData) {
         this.name = name;
         this.effectData = effectData;
     }

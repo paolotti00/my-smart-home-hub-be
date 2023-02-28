@@ -3,7 +3,7 @@ package com.paolotti.my.smart.home.rest.impl;
 import com.paolotti.my.smart.home.enums.OnOffStatusEnum;
 import com.paolotti.my.smart.home.exception.GroupNotExistsException;
 import com.paolotti.my.smart.home.rest.IGroupRestController;
-import com.paolotti.my.smart.home.rest.dto.BaseResponseDto;
+import com.paolotti.my.smart.home.dto.rest.BaseResponseDto;
 import com.paolotti.my.smart.home.service.IGroupService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

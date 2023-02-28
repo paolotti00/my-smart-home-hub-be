@@ -1,7 +1,7 @@
-package com.paolotti.my.smart.home.rest.dto;
+package com.paolotti.my.smart.home.dto.rest;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.paolotti.my.smart.home.rest.dto.view.JsonViewConfig;
+import com.paolotti.my.smart.home.dto.rest.view.JsonViewConfig;
 import lombok.ToString;
 
 import java.util.List;

@@ -27,6 +27,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.awt.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -189,15 +190,15 @@ public class DeviceServiceImpl implements IDeviceService {
     }
 
     @Override
-    public void setColor(String userId, String deviceId, ColorRgb colorRgb) throws BrandNotSupportedException, DeviceNotExistsException, GenericException {
-        logger.info("setting device lights color to : userId {} deviceId {} colorRgb {}", userId, deviceId, colorRgb);
+    public void setColor(String userId, String deviceId, String rgbColor) throws BrandNotSupportedException, DeviceNotExistsException, GenericException {
+        logger.info("setting device lights color to : userId {} deviceId {} colorRgb {}", userId, deviceId, rgbColor);
         // todo retrieve the user
         // check if have the permission to do something
         Device device = retrieveDeviceById(deviceId);
         logger.info("device retrieved {}", device);
         IDeviceByBrandService deviceLightByBrandService = beanFactoryService.getDeviceLightByBrandServiceImpl(device.getBrand());
-        deviceLightByBrandService.setColor(device,colorRgb);
-        logger.info("colorRgb {} correctly set", colorRgb);
+        deviceLightByBrandService.setColor(device,rgbColor);
+        logger.info("colorRgb {} correctly set", rgbColor);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.paolotti.my.smart.home.model;
+package com.paolotti.my.smart.home.dto;
 
 import lombok.ToString;
 
@@ -6,7 +6,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 @ToString
-public class EffectData {
+public class EffectDataDto {
     private String wait;
     private ArrayList<String> rgbColors;
 
@@ -26,10 +26,10 @@ public class EffectData {
         this.rgbColors = rgbColors;
     }
 
-    public EffectData() {
+    public EffectDataDto() {
     }
 
-    public EffectData(String wait, ArrayList<String> rgbColors) {
+    public EffectDataDto(String wait, ArrayList<String> rgbColors) {
         this.wait = wait;
         this.rgbColors = rgbColors;
     }

@@ -1,4 +1,4 @@
-package com.paolotti.my.smart.home.mqtt.dto;
+package com.paolotti.my.smart.home.dto.mqtt;
 
 import com.paolotti.my.smart.home.enums.ResultStatusEnum;
 import lombok.ToString;

@@ -1,4 +1,4 @@
-package com.paolotti.my.smart.home.rest.dto.view;
+package com.paolotti.my.smart.home.dto.rest.view;
 
 public class JsonViewConfig {
 

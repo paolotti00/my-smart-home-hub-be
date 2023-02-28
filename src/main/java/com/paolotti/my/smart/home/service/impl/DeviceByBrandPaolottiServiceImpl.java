@@ -4,18 +4,19 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.paolotti.my.smart.home.exception.GenericException;
 import com.paolotti.my.smart.home.mapper.ILightEffectMessageMapper;
-import com.paolotti.my.smart.home.model.ColorRgb;
 import com.paolotti.my.smart.home.model.Device;
 import com.paolotti.my.smart.home.model.Action;
-import com.paolotti.my.smart.home.mqtt.dto.ActionDto;
-import com.paolotti.my.smart.home.mqtt.dto.EffectDataDto;
+import com.paolotti.my.smart.home.dto.ActionDto;
+import com.paolotti.my.smart.home.dto.EffectDataDto;
 import com.paolotti.my.smart.home.service.IDeviceByBrandService;
 import com.paolotti.my.smart.home.service.IDeviceService;
+import com.paolotti.my.smart.home.utility.Utility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 @Service
@@ -53,16 +54,16 @@ public class DeviceByBrandPaolottiServiceImpl implements IDeviceByBrandService {
      * Set the color of the device with the given ID and brand "paolotti".
      *
      * @param device   the device to set the color for
-     * @param colorRgb the RGB color to set
+     * @param rgbColor the RGB color to set
      * @throws GenericException if an error occurs while setting the color
      */
     @Override
-    public void setColor(Device device, ColorRgb colorRgb) throws GenericException {
+    public void setColor(Device device, String rgbColor) throws GenericException {
         String payload = null;
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             ActionDto actionDto = new ActionDto(SET_COLOR_EFFECT_NAME, new EffectDataDto("1", new ArrayList<String>() {{
-                add(colorRgb.getRgbAsAString());
+                add(rgbColor);
             }}));
             payload = objectMapper.writeValueAsString(actionDto);
             deviceService.sendMqttCommandToDevice(EFFECT_TOPIC,payload,device);
@@ -70,7 +71,7 @@ public class DeviceByBrandPaolottiServiceImpl implements IDeviceByBrandService {
             e.printStackTrace();
             throw new GenericException("error occurred: " + e.getMessage());
         }
-        logger.info("device with id {} and brand paolotti has been set to {} color!!", device.getId(), colorRgb);
+        logger.info("device with id {} and brand paolotti has been set to {} color!!", device.getId(), rgbColor);
     }
 
 /**

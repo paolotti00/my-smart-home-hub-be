@@ -1,4 +1,4 @@
-package com.paolotti.my.smart.home.mqtt.dto;
+package com.paolotti.my.smart.home.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.ToString;

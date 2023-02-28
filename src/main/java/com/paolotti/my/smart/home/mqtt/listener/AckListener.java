@@ -1,5 +1,8 @@
 package com.paolotti.my.smart.home.mqtt.listener;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.paolotti.my.smart.home.dto.mqtt.AckDto;
 import com.paolotti.my.smart.home.service.IMqttMessagingService;
 import org.eclipse.paho.client.mqttv3.*;
 import org.slf4j.Logger;
@@ -38,8 +41,9 @@ public class AckListener {
             }
         });
     }
-    void handle(String message) throws MqttException {
-        logger.info("msg ricevuto " + message);
+    void handle(String message) throws MqttException, JsonProcessingException {
+        AckDto ackDto = new ObjectMapper().readValue(message,AckDto.class);
+        logger.info("msg ricevuto " + ackDto);
 
     }
 }

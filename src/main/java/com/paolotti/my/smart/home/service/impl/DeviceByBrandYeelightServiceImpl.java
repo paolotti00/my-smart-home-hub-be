@@ -3,12 +3,13 @@ package com.paolotti.my.smart.home.service.impl;
 import com.paolotti.my.smart.home.exception.BrandNotSupportedException;
 import com.paolotti.my.smart.home.exception.GenericException;
 import com.paolotti.my.smart.home.model.Action;
-import com.paolotti.my.smart.home.model.ColorRgb;
 import com.paolotti.my.smart.home.model.Device;
 import com.paolotti.my.smart.home.service.IDeviceByBrandService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import java.awt.*;
 
 @Service
 public class DeviceByBrandYeelightServiceImpl implements IDeviceByBrandService {
@@ -26,8 +27,8 @@ public class DeviceByBrandYeelightServiceImpl implements IDeviceByBrandService {
     }
 
     @Override
-    public void setColor(Device device, ColorRgb colorRgb) {
-        logger.info("device with id {} and brand yeelight has been set to {} color!!",device.getId(),colorRgb);
+    public void setColor(Device device, String rgbColor) {
+        logger.info("device with id {} and brand yeelight has been set to {} color!!",device.getId(),rgbColor);
     }
 
     @Override

@@ -5,15 +5,13 @@ import com.paolotti.my.smart.home.exception.BrandNotSupportedException;
 import com.paolotti.my.smart.home.exception.DeviceNotExistsException;
 import com.paolotti.my.smart.home.exception.GenericException;
 import com.paolotti.my.smart.home.exception.MissingFieldException;
-import com.paolotti.my.smart.home.mapper.IColorRgbMapper;
 import com.paolotti.my.smart.home.mapper.IDeviceMapper;
 import com.paolotti.my.smart.home.mapper.ILightEffectMessageMapper;
 import com.paolotti.my.smart.home.model.Device;
-import com.paolotti.my.smart.home.mqtt.dto.ActionDto;
+import com.paolotti.my.smart.home.dto.ActionDto;
 import com.paolotti.my.smart.home.rest.IDeviceRestController;
-import com.paolotti.my.smart.home.rest.dto.BaseResponseDto;
-import com.paolotti.my.smart.home.rest.dto.ColorRgbDto;
-import com.paolotti.my.smart.home.rest.dto.DeviceDto;
+import com.paolotti.my.smart.home.dto.rest.BaseResponseDto;
+import com.paolotti.my.smart.home.dto.rest.DeviceDto;
 import com.paolotti.my.smart.home.service.IDeviceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,14 +21,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.awt.*;
+
 @RestController()
 public class DeviceRestControllerImpl implements IDeviceRestController {
     @Autowired
     IDeviceService deviceService;
     @Autowired
     IDeviceMapper deviceMapper;
-    @Autowired
-    IColorRgbMapper colorRgbMapper;
     @Autowired
     ILightEffectMessageMapper lightEffectMessageMapper;
     private static final Logger logger = LoggerFactory.getLogger(DeviceRestControllerImpl.class);
@@ -87,15 +85,15 @@ public class DeviceRestControllerImpl implements IDeviceRestController {
         return responseEntity;
     }
     @Override
-    public ResponseEntity<BaseResponseDto> setColor(String deviceId, ColorRgbDto colorRgbDto) throws DeviceNotExistsException, BrandNotSupportedException, GenericException {
+    public ResponseEntity<BaseResponseDto> setColor(String deviceId, String colorRgb) throws DeviceNotExistsException, BrandNotSupportedException, GenericException {
         String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
-        logger.info("{}: device id {} colorRgb {}", methodName, deviceId, colorRgbDto);
+        logger.info("{}: device id {} colorRgb {}", methodName, deviceId, colorRgb);
         String userId = "ex"; // todo should be retrieved from spring Principal?
         ResponseEntity<BaseResponseDto> responseEntity;
         BaseResponseDto baseResponseDto = new BaseResponseDto();
         try {
-            deviceService.setColor(userId, deviceId, colorRgbMapper.toModel(colorRgbDto));
-            baseResponseDto.setMessage(String.format("device %s correctly set color %s", deviceId, colorRgbDto));
+            deviceService.setColor(userId, deviceId,colorRgb);
+            baseResponseDto.setMessage(String.format("device %s correctly set color %s", deviceId, colorRgb));
             responseEntity = new ResponseEntity<>(baseResponseDto, HttpStatus.OK);
         } catch (Exception e) {
             logger.error("{} error", methodName);

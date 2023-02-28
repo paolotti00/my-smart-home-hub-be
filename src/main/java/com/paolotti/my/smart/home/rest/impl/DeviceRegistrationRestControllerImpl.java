@@ -5,7 +5,7 @@ import com.paolotti.my.smart.home.exception.*;
 import com.paolotti.my.smart.home.mapper.IDeviceMapper;
 import com.paolotti.my.smart.home.model.Device;
 import com.paolotti.my.smart.home.rest.IDeviceRegistrationRestController;
-import com.paolotti.my.smart.home.rest.dto.DeviceDto;
+import com.paolotti.my.smart.home.dto.rest.DeviceDto;
 import com.paolotti.my.smart.home.service.IRegistrationDeviceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
