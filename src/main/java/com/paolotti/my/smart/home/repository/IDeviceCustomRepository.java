@@ -11,5 +11,5 @@ public interface IDeviceCustomRepository {
 
     ArrayList<DeviceEntity>  findAllByUserAndToActivate(String userId);
 
-    DeviceEntity  findById(String deviceId);
+    DeviceEntity findActiveById(String deviceId);
 }

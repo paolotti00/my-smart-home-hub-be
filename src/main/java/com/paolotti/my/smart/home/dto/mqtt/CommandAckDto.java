@@ -4,11 +4,11 @@ import com.paolotti.my.smart.home.enums.ResultStatusEnum;
 import lombok.ToString;
 
 @ToString
-public class AckDto {
+public class CommandAckDto {
     private String deviceId;
     private String commandId;
     private ResultStatusEnum ack;
-    private StatusDto status;
+    private DeviceStatusDto deviceStatus;
 
     public String getDeviceId() {
         return deviceId;
@@ -34,11 +34,11 @@ public class AckDto {
         this.ack = ack;
     }
 
-    public StatusDto getStatus() {
-        return status;
+    public DeviceStatusDto getDeviceStatus() {
+        return deviceStatus;
     }
 
-    public void setStatus(StatusDto status) {
-        this.status = status;
+    public void setDeviceStatus(DeviceStatusDto deviceStatus) {
+        this.deviceStatus = deviceStatus;
     }
 }

@@ -2,8 +2,11 @@ package com.paolotti.my.smart.home.mqtt.listener;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.paolotti.my.smart.home.dto.mqtt.AckDto;
-import com.paolotti.my.smart.home.service.IMqttMessagingService;
+import com.paolotti.my.smart.home.dto.mqtt.CommandAckDto;
+import com.paolotti.my.smart.home.exception.ValidationException;
+import com.paolotti.my.smart.home.mapper.ICommandAckMapper;
+import com.paolotti.my.smart.home.model.CommandAck;
+import com.paolotti.my.smart.home.service.IDeviceService;
 import org.eclipse.paho.client.mqttv3.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,11 +16,14 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 @Service
 public class AckListener {
     @Autowired
     private MqttAsyncClient mqttAsyncClient;
+    @Autowired
+    private IDeviceService deviceService;
+    @Autowired
+    private ICommandAckMapper commandAckMapper;
     private static final Logger logger = LoggerFactory.getLogger(AckListener.class);
     @Value("${mqtt.topic.command.ack}")
     private String ackTopic;
@@ -42,8 +48,13 @@ public class AckListener {
         });
     }
     void handle(String message) throws MqttException, JsonProcessingException {
-        AckDto ackDto = new ObjectMapper().readValue(message,AckDto.class);
-        logger.info("msg ricevuto " + ackDto);
-
+        logger.info("received: {} on topic {} : ",message,ackTopic);
+        CommandAckDto commandAckDto = new ObjectMapper().readValue(message, CommandAckDto.class);
+        CommandAck commandAck = commandAckMapper.toModel(commandAckDto);
+        try {
+            deviceService.updateDeviceStatusFromAckReceived(commandAck);
+        } catch (ValidationException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -4,7 +4,7 @@ import com.paolotti.my.smart.home.dto.DeviceComponentDto;
 
 import java.util.ArrayList;
 
-public class StatusDto {
+public class DeviceStatusDto {
     private ArrayList<DeviceComponentDto> components;
 
     public ArrayList<DeviceComponentDto> getComponents() {

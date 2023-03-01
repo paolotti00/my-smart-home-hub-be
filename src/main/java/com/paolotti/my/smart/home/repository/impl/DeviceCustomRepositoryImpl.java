@@ -36,7 +36,7 @@ public class DeviceCustomRepositoryImpl implements IDeviceCustomRepository {
     }
 
     @Override
-    public DeviceEntity findById(String deviceId) {
+    public DeviceEntity findActiveById(String deviceId) {
         Query query = new Query();
         Criteria criteria = Criteria.where("id").is(deviceId).and("installationStatus").is(DeviceInstallationStatusEnum.ACTIVE);
         query.addCriteria(criteria);

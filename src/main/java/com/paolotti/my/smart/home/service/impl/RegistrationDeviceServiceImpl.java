@@ -138,7 +138,7 @@ public class RegistrationDeviceServiceImpl implements IRegistrationDeviceService
     public Device getDeviceById(String deviceId) throws DeviceNotExistsException {
         String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         logger.info("{}: getting deviceId {}",methodName,deviceId);
-        DeviceEntity deviceEntity = deviceCustomRepository.findById(deviceId);
+        DeviceEntity deviceEntity = deviceCustomRepository.findActiveById(deviceId);
         if(deviceEntity==null){
             logger.error("user userId {} not exist",deviceId);
             throw new DeviceNotExistsException(deviceId);

@@ -1,7 +1,8 @@
 package com.paolotti.my.smart.home.repository;
 
-import com.paolotti.my.smart.home.repository.entity.CommandEntity;
+import org.springframework.stereotype.Repository;
 
+
+@Repository
 public interface ICommandCustomRepository {
-    CommandEntity save(CommandEntity command);
 }
