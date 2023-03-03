@@ -6,7 +6,7 @@ import com.paolotti.my.smart.home.repository.entity.DeviceEntity;
 
 public interface IDeviceComponentSensorTemperatureMapper {
     DeviceComponentSensorTemperature toModel(DeviceComponentSensorTemperatureDto deviceComponentSensorTemperatureDto);
-    DeviceComponentSensorTemperature toModel(DeviceEntity.DeviceComponentSensorTemperature deviceComponentSensorTemperature);
-    DeviceEntity.DeviceComponentSensorTemperature toEntity(DeviceComponentSensorTemperature deviceComponentSensorTemperature);
+    DeviceComponentSensorTemperature toModel(DeviceEntity.DeviceComponentEntitySensorTemperature deviceComponentSensorTemperature);
+    DeviceEntity.DeviceComponentEntitySensorTemperature toEntity(DeviceComponentSensorTemperature deviceComponentSensorTemperature);
     DeviceComponentSensorTemperatureDto toDto(DeviceComponentSensorTemperature deviceComponentSensorTemperature);
 }

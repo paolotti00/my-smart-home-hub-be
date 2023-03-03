@@ -1,11 +1,11 @@
 package com.paolotti.my.smart.home.repository.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.paolotti.my.smart.home.enums.*;
-import com.paolotti.my.smart.home.model.Led;
+import com.paolotti.my.smart.home.model.EffectData;
 import lombok.ToString;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.awt.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Map;
@@ -17,7 +17,7 @@ public class DeviceEntity extends BaseEntity {
     private UserEntity user;
     private NetworkData networkData;
     private String name;
-    private ArrayList<DeviceComponent> components;
+    private ArrayList<DeviceComponentEntity> components;
     private DeviceConnectionStatusEnum status;
     private DeviceInstallationStatusEnum installationStatus;
     private LocalDateTime registrationDate;
@@ -57,11 +57,11 @@ public class DeviceEntity extends BaseEntity {
         this.name = name;
     }
 
-    public ArrayList<DeviceComponent> getComponents() {
+    public ArrayList<DeviceComponentEntity> getComponents() {
         return components;
     }
 
-    public void setComponents(ArrayList<DeviceComponent> components) {
+    public void setComponents(ArrayList<DeviceComponentEntity> components) {
         this.components = components;
     }
 
@@ -114,7 +114,7 @@ public class DeviceEntity extends BaseEntity {
     }
 
     @ToString
-    public abstract static class DeviceComponent {
+    public abstract static class DeviceComponentEntity {
         private String id;
         private DeviceComponentTypeEnum type;
         private DeviceConnectionStatusEnum status;
@@ -155,21 +155,70 @@ public class DeviceEntity extends BaseEntity {
 
     @ToString
     @Document(collection = "devices")
-    public static class DeviceComponentLight extends DeviceComponent {
-        private Map<Integer, Led> leds;
+    public static class DeviceComponentEntityLight extends DeviceComponentEntity {
+        private Map<Integer, LedEntity> leds;
+        private ActionEntity action;
 
-        public Map<Integer, Led> getLeds() {
+        public Map<Integer, LedEntity> getLeds() {
             return leds;
         }
-
-        public void setLeds(Map<Integer, Led> leds) {
+        public void setLeds(Map<Integer, LedEntity> leds) {
             this.leds = leds;
+        }
+
+        public ActionEntity getAction() {
+            return action;
+        }
+
+        public void setAction(ActionEntity action) {
+            this.action = action;
+        }
+
+        public static class ActionEntity {
+            private String name;
+            private EffectDataEntity effectData;
+
+            public String getName() {
+                return name;
+            }
+
+            public void setName(String name) {
+                this.name = name;
+            }
+
+            public EffectDataEntity getEffectData() {
+                return effectData;
+            }
+
+            public void setEffectData(EffectDataEntity effectData) {
+                this.effectData = effectData;
+            }
+        }
+        public static class EffectDataEntity{
+            private String wait;
+            private ArrayList<String> rgbColors;
+
+            public String getWait() {
+                return wait;
+            }
+
+            public void setWait(String wait) {
+                this.wait = wait;
+            }
+
+            public ArrayList<String> getRgbColors() {
+                return rgbColors;
+            }
+
+            public void setRgbColors(ArrayList<String> rgbColors) {
+                this.rgbColors = rgbColors;
+            }
         }
     }
 
     @ToString
     @Document(collection = "devices")
-    public static class DeviceComponentSensorTemperature extends DeviceComponent {
+    public static class DeviceComponentEntitySensorTemperature extends DeviceComponentEntity {
         private String temp;
 
         public String getTemp() {
@@ -213,7 +262,7 @@ public class DeviceEntity extends BaseEntity {
     }
 
     @ToString
-    public static class Led {
+    public static class LedEntity {
         String rgbColor;
 
         public String getRgbColor() {

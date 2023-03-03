@@ -3,6 +3,7 @@ package com.paolotti.my.smart.home.mqtt.listener;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.paolotti.my.smart.home.dto.mqtt.CommandAckDto;
+import com.paolotti.my.smart.home.exception.DeviceNotExistsException;
 import com.paolotti.my.smart.home.exception.ValidationException;
 import com.paolotti.my.smart.home.mapper.ICommandAckMapper;
 import com.paolotti.my.smart.home.model.CommandAck;
@@ -47,12 +48,17 @@ public class AckListener {
             }
         });
     }
-    void handle(String message) throws MqttException, JsonProcessingException {
+    void handle(String message) throws MqttException {
         logger.info("received: {} on topic {} : ",message,ackTopic);
-        CommandAckDto commandAckDto = new ObjectMapper().readValue(message, CommandAckDto.class);
-        CommandAck commandAck = commandAckMapper.toModel(commandAckDto);
         try {
-            deviceService.updateDeviceStatusFromAckReceived(commandAck);
+            try {
+                CommandAckDto commandAckDto = new ObjectMapper().readValue(message, CommandAckDto.class);
+                CommandAck commandAck = commandAckMapper.toModel(commandAckDto);
+                deviceService.updateDeviceStatusFromAckReceived(commandAck);
+            } catch (JsonProcessingException | DeviceNotExistsException e) {
+                // todo
+                e.printStackTrace();
+            }
         } catch (ValidationException e) {
             throw new RuntimeException(e);
         }

@@ -15,7 +15,6 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,41 +46,41 @@ public interface IDeviceMapper {
     DeviceComponentLight toModel (DeviceComponentLightDto deviceComponentLightDto);
     DeviceComponentSensorTemperatureDto toDto (DeviceComponentSensorTemperature deviceComponentSensorTemperature);
     DeviceComponentSensorTemperature toModel (DeviceComponentSensorTemperatureDto deviceComponentSensorTemperatureDto);
-    DeviceComponentLight toModel (DeviceEntity.DeviceComponentLight deviceComponentLight);
-    DeviceEntity.DeviceComponentLight toEntity (DeviceComponentLight deviceComponentLight);
-    DeviceComponentSensorTemperature toModel (DeviceEntity.DeviceComponentSensorTemperature deviceComponentSensorTemperature);
-    DeviceEntity.DeviceComponentSensorTemperature toEntity (DeviceComponentSensorTemperature deviceComponentSensorTemperature);
+    DeviceComponentLight toModel (DeviceEntity.DeviceComponentEntityLight deviceComponentLight);
+    DeviceEntity.DeviceComponentEntityLight toEntity (DeviceComponentLight deviceComponentLight);
+    DeviceComponentSensorTemperature toModel (DeviceEntity.DeviceComponentEntitySensorTemperature deviceComponentSensorTemperature);
+    DeviceEntity.DeviceComponentEntitySensorTemperature toEntity (DeviceComponentSensorTemperature deviceComponentSensorTemperature);
 
 
     @Named("toComponentsListEntityModel")
-    default ArrayList<DeviceComponent> toComponentsListEntityModel(ArrayList<DeviceEntity.DeviceComponent> deviceComponentsEntity){
-        if(deviceComponentsEntity == null){
+    default ArrayList<DeviceComponent> toComponentsListEntityModel(ArrayList<DeviceEntity.DeviceComponentEntity> deviceComponentsEntityEntity){
+        if(deviceComponentsEntityEntity == null){
             return null ;
         }
         ArrayList<DeviceComponent> deviceComponents = new ArrayList<>();
-        for(DeviceEntity.DeviceComponent deviceComponentEntity:deviceComponentsEntity){
-            if(deviceComponentEntity instanceof DeviceEntity.DeviceComponentLight){
-                deviceComponents.add(toModel((DeviceEntity.DeviceComponentLight)deviceComponentEntity));
-            } else if(deviceComponentEntity instanceof DeviceEntity.DeviceComponentSensorTemperature){
-                deviceComponents.add(toModel((DeviceEntity.DeviceComponentSensorTemperature)deviceComponentEntity));
+        for(DeviceEntity.DeviceComponentEntity deviceComponentEntity: deviceComponentsEntityEntity){
+            if(deviceComponentEntity instanceof DeviceEntity.DeviceComponentEntityLight){
+                deviceComponents.add(toModel((DeviceEntity.DeviceComponentEntityLight)deviceComponentEntity));
+            } else if(deviceComponentEntity instanceof DeviceEntity.DeviceComponentEntitySensorTemperature){
+                deviceComponents.add(toModel((DeviceEntity.DeviceComponentEntitySensorTemperature)deviceComponentEntity));
             }
         }
         return deviceComponents;
     };
     @Named("toComponentsListModelEntity")
-    default ArrayList<DeviceEntity.DeviceComponent>  toComponentsListModelEntity(ArrayList<DeviceComponent> deviceComponents){
+    default ArrayList<DeviceEntity.DeviceComponentEntity>  toComponentsListModelEntity(ArrayList<DeviceComponent> deviceComponents){
         if(deviceComponents == null){
             return null ;
         }
-        ArrayList<DeviceEntity.DeviceComponent> deviceComponentDtos = new ArrayList<>();
+        ArrayList<DeviceEntity.DeviceComponentEntity> deviceComponentEntityDtos = new ArrayList<>();
         for(DeviceComponent deviceComponent:deviceComponents){
             if(deviceComponent instanceof DeviceComponentLight){
-                deviceComponentDtos.add(toEntity((DeviceComponentLight)deviceComponent));
+                deviceComponentEntityDtos.add(toEntity((DeviceComponentLight)deviceComponent));
             } else if(deviceComponent instanceof DeviceComponentSensorTemperature){
-                deviceComponentDtos.add(toEntity((DeviceComponentSensorTemperature)deviceComponent));
+                deviceComponentEntityDtos.add(toEntity((DeviceComponentSensorTemperature)deviceComponent));
             }
         }
-        return deviceComponentDtos;
+        return deviceComponentEntityDtos;
     };
     @Named("toComponentsListDtoModel")
     default ArrayList<DeviceComponent> toComponentsListDtoModel(ArrayList<DeviceComponentDto> deviceComponentDtos){

@@ -18,11 +18,6 @@ public class DeviceCustomRepositoryImpl implements IDeviceCustomRepository {
     MongoTemplate mongoTemplate;
 
     @Override
-    public DeviceEntity save(DeviceEntity deviceEntity) {
-        return mongoTemplate.save(deviceEntity);
-    }
-
-    @Override
     public  ArrayList<DeviceEntity> findAllByMacAddressAndNotDeactivated(String macAddress) {
         Query query = new Query();
         Criteria criteria = Criteria.where("networkData.macAddress").is(macAddress).and("installationStatus").ne(DeviceInstallationStatusEnum.DEACTIVATED);

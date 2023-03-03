@@ -7,7 +7,7 @@ import com.paolotti.my.smart.home.factory.IBeanFactoryService;
 import com.paolotti.my.smart.home.mapper.IDeviceMapper;
 import com.paolotti.my.smart.home.model.Device;
 import com.paolotti.my.smart.home.model.User;
-import com.paolotti.my.smart.home.repository.IDeviceCustomRepository;
+import com.paolotti.my.smart.home.repository.IDeviceRepository;
 import com.paolotti.my.smart.home.repository.entity.DeviceEntity;
 import com.paolotti.my.smart.home.service.IRegistrationDeviceService;
 import com.paolotti.my.smart.home.service.IUserService;
@@ -26,7 +26,7 @@ import static com.paolotti.my.smart.home.constant.MessageConst.DEVICE_ALREADY_RE
 public class RegistrationDeviceServiceImpl implements IRegistrationDeviceService {
     private static final Logger logger = LoggerFactory.getLogger(RegistrationDeviceServiceImpl.class);
     @Autowired
-    IDeviceCustomRepository deviceCustomRepository;
+    IDeviceRepository deviceRepository;
     @Autowired
     IUserService userService;
     @Autowired
@@ -90,7 +90,7 @@ public class RegistrationDeviceServiceImpl implements IRegistrationDeviceService
         // check if the user exist
         userService.checkIfUserExistsAndRetrieve(userId);
         logger.info("validation of request done");
-        ArrayList<DeviceEntity> devicesEntity = deviceCustomRepository.findAllByUserAndToActivate(userId);
+        ArrayList<DeviceEntity> devicesEntity = deviceRepository.findAllByUserAndToActivate(userId);
         ArrayList<Device> devices = deviceMapper.toModels(devicesEntity);
         logger.info("{}: found {} devices to activate for the user {}, devices ",methodName,userId,devices);
         return devices;
@@ -128,7 +128,7 @@ public class RegistrationDeviceServiceImpl implements IRegistrationDeviceService
         device.setInstallationStatus(DeviceInstallationStatusEnum.ACTIVE);
         device.setActivationDate(LocalDateTime.now());
         DeviceEntity deviceEntity = deviceMapper.toEntity(device);
-        deviceEntity = deviceCustomRepository.save(deviceEntity);
+        deviceEntity = deviceRepository.save(deviceEntity);
         device = deviceMapper.toModel(deviceEntity);
         logger.info("{}: the device with id {} and userId {} was activated - device {}",methodName,userId,deviceId,device);
         return device;
@@ -138,7 +138,7 @@ public class RegistrationDeviceServiceImpl implements IRegistrationDeviceService
     public Device getDeviceById(String deviceId) throws DeviceNotExistsException {
         String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         logger.info("{}: getting deviceId {}",methodName,deviceId);
-        DeviceEntity deviceEntity = deviceCustomRepository.findActiveById(deviceId);
+        DeviceEntity deviceEntity = deviceRepository.findActiveById(deviceId);
         if(deviceEntity==null){
             logger.error("user userId {} not exist",deviceId);
             throw new DeviceNotExistsException(deviceId);
@@ -151,7 +151,7 @@ public class RegistrationDeviceServiceImpl implements IRegistrationDeviceService
     private ArrayList<Device> getNotDeactivateDeviceByMacAddress(String macAddress){
         String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         logger.info("{}: getting device with macAddress {}",methodName,macAddress);
-        ArrayList<DeviceEntity> deviceEntities = deviceCustomRepository.findAllByMacAddressAndNotDeactivated(macAddress);
+        ArrayList<DeviceEntity> deviceEntities = deviceRepository.findAllByMacAddressAndNotDeactivated(macAddress);
         ArrayList<Device> foundDevices =  deviceMapper.toModels(deviceEntities);
         logger.info("{}: getting device with macAddress {} found",methodName,foundDevices);
         return foundDevices;
@@ -164,7 +164,7 @@ public class RegistrationDeviceServiceImpl implements IRegistrationDeviceService
         // to entity
         DeviceEntity deviceEntity = deviceMapper.toEntity(device);
         // save
-        DeviceEntity deviceEntityResult = deviceCustomRepository.save(deviceEntity);
+        DeviceEntity deviceEntityResult = deviceRepository.save(deviceEntity);
         // to model
         Device createdDevice = deviceMapper.toModel(deviceEntityResult);
         logger.info("{}: device creation finished, created device in to activate status  {}",methodName,createdDevice);

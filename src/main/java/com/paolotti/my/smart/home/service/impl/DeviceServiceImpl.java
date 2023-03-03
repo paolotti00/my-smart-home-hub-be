@@ -8,17 +8,13 @@ import com.paolotti.my.smart.home.factory.IBeanFactoryService;
 import com.paolotti.my.smart.home.mapper.ICommandMapper;
 import com.paolotti.my.smart.home.mapper.IDeviceMapper;
 import com.paolotti.my.smart.home.model.*;
-import com.paolotti.my.smart.home.repository.ICommandCustomRepository;
 import com.paolotti.my.smart.home.repository.ICommandRepository;
-import com.paolotti.my.smart.home.repository.IDeviceCustomRepository;
 import com.paolotti.my.smart.home.repository.IDeviceGroupCustomRepository;
+import com.paolotti.my.smart.home.repository.IDeviceRepository;
 import com.paolotti.my.smart.home.repository.entity.CommandEntity;
 import com.paolotti.my.smart.home.repository.entity.DeviceEntity;
 import com.paolotti.my.smart.home.repository.entity.DeviceGroupEntity;
-import com.paolotti.my.smart.home.service.IDeviceByBrandService;
-import com.paolotti.my.smart.home.service.IDeviceService;
-import com.paolotti.my.smart.home.service.IMqttMessagingService;
-import com.paolotti.my.smart.home.service.IValidationHelperService;
+import com.paolotti.my.smart.home.service.*;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,21 +29,23 @@ import java.util.Optional;
 @Service
 public class DeviceServiceImpl implements IDeviceService {
     @Autowired
-    IDeviceCustomRepository deviceCustomRepository;
-    @Autowired
-    IDeviceGroupCustomRepository deviceGroupCustomRepository;
-    @Autowired
     IValidationHelperService validationHelperService;
     @Autowired
     IDeviceMapper deviceMapper;
     @Autowired
     ICommandMapper commandMapper;
     @Autowired
-    ICommandRepository commandRepository;
-    @Autowired
     IBeanFactoryService beanFactoryService;
     @Autowired
     IMqttMessagingService mqttMessagingService;
+    @Autowired
+    IDeviceComponentService deviceComponentService;
+    @Autowired
+    IDeviceRepository deviceRepository;
+    @Autowired
+    IDeviceGroupCustomRepository deviceGroupCustomRepository;
+    @Autowired
+    ICommandRepository commandRepository;
 
     private static final Logger logger = LoggerFactory.getLogger(DeviceServiceImpl.class);
 
@@ -65,7 +63,7 @@ public class DeviceServiceImpl implements IDeviceService {
         device.setCreationDate(LocalDateTime.now());
         device.setInstallationStatus(DeviceInstallationStatusEnum.TO_ACTIVATE);
         DeviceEntity deviceEntity = deviceMapper.toEntity(device);
-        deviceEntity = deviceCustomRepository.save(deviceEntity);
+        deviceEntity = deviceRepository.save(deviceEntity);
         logger.info("entity saved with id {}",deviceEntity.getId());
         logger.debug("the entity saved is {}",deviceEntity);
         device = deviceMapper.toModel(deviceEntity);
@@ -90,7 +88,7 @@ public class DeviceServiceImpl implements IDeviceService {
     @Override
     public Device retrieveDeviceById(String deviceId) throws DeviceNotExistsException {
         logger.info("retrieving device with id {}", deviceId);
-        DeviceEntity deviceEntity = deviceCustomRepository.findActiveById(deviceId);
+        DeviceEntity deviceEntity = deviceRepository.findActiveById(deviceId);
         if (deviceEntity == null) {
             logger.warn("no device found with {} id", deviceId);
             throw new DeviceNotExistsException(deviceId);
@@ -134,48 +132,6 @@ public class DeviceServiceImpl implements IDeviceService {
         sendMqttCommand(topic,payloadToEncapsulate,null,deviceGroup);
     }
 
-    // status
-
-    @Override
-    public void updateDeviceStatusFromAckReceived(CommandAck commandAck) throws ValidationException {
-        logger.info("updating status of device id {} by ack received {}",commandAck.getDeviceId(),commandAck);
-        // validation
-        logger.info("validation started");
-        if (commandAck.getCommandId()==null || !StringUtils.hasText(commandAck.getCommandId())){
-            throw new ValidationException("commandId is null or empty. commandId =" +commandAck.getCommandId());
-        }
-        if (commandAck.getDeviceId()==null || !StringUtils.hasText(commandAck.getDeviceId()) ){
-            throw new ValidationException("deviceId is null or empty. deviceId =" + commandAck.getDeviceId());
-        }
-        if(commandAck.getAck()==null){
-            throw new ValidationException("command ack is null");
-        }
-        if(commandAck.getDeviceStatus()==null){
-            throw new ValidationException("deviceStatus is null");
-        }
-        logger.info("validation finished. all is ok.");
-        // execution
-        // getting command saved on db
-        Optional<CommandEntity> commandEntityOpt = commandRepository.findCommandEntitiesByCommandId(commandAck.getCommandId());
-        if (commandEntityOpt.isPresent()){
-            CommandEntity commandEntity = commandEntityOpt.get();
-            logger.info("for commandId {} command db entity id {} was retrieved",commandAck.getCommandId(), commandEntity.getId());
-            if(commandAck.getAck()== ResultStatusEnum.OK){
-                commandEntity.setStatusEnum(CommandStatusEnum.DONE);
-            } else {
-                commandEntity.setStatusEnum(CommandStatusEnum.ERROR);
-            }
-            commandEntity.setUpdateDate(LocalDateTime.now());
-            commandRepository.save(commandEntity);
-            logger.info("command entity id {} status correctly updated",commandEntity.getId());
-        } else {
-            logger.warn("no command db entity found for command id {}",commandAck.getCommandId());
-        }
-
-
-        logger.info("status of device id {} correctly updated",commandAck.getDeviceId());
-    }
-
     private void sendMqttCommand (String topic, String payloadToEncapsulate, Device device, DeviceGroup deviceGroup) throws GenericException {
         logger.info("sending mqtt command on topic {} with payloadToEncapsulate {} to deviceId {}",topic,payloadToEncapsulate,device!=null?device.getId():"all");
         String commandId = null;
@@ -210,6 +166,68 @@ public class DeviceServiceImpl implements IDeviceService {
         CommandEntity commandEntity = commandRepository.save(commandMapper.toEntity(command));
         logger.info("saved in db commandId {}, deviceId{} , groupId {} with id {}",command.getCommandId(),device!=null?device.getId():null,deviceGroup!=null?deviceGroup.getId():null,commandEntity.getId());
     }
+
+    // status
+
+    @Override
+    public void updateDeviceStatusFromAckReceived(CommandAck commandAck) throws ValidationException, DeviceNotExistsException {
+        logger.info("updating status of device id {} by ack received {}",commandAck.getDeviceId(),commandAck);
+        // validation
+        logger.info("validation started");
+        if (commandAck.getCommandId()==null || !StringUtils.hasText(commandAck.getCommandId())){
+            throw new ValidationException("commandId is null or empty. commandId =" +commandAck.getCommandId());
+        }
+        if (commandAck.getDeviceId()==null || !StringUtils.hasText(commandAck.getDeviceId()) ){
+            throw new ValidationException("deviceId is null or empty. deviceId =" + commandAck.getDeviceId());
+        }
+        if(commandAck.getAck()==null){
+            throw new ValidationException("command ack is null");
+        }
+        if(commandAck.getDeviceStatus()==null){
+            throw new ValidationException("deviceStatus is null");
+        }
+        logger.info("validation finished. all is ok.");
+        // execution
+        // update command status on db
+        updateCommandStatusOnDb(commandAck);
+        // getting device from db
+        Optional<DeviceEntity> deviceEntityOpt = deviceRepository.findById(commandAck.getDeviceId());
+        if(!deviceEntityOpt.isPresent()){
+            logger.error("device with id : {} not exists. can't update component status",commandAck.getDeviceId());
+            throw new DeviceNotExistsException(commandAck.getDeviceId());
+        }
+        DeviceEntity deviceEntity = deviceEntityOpt.get();
+        // updating components status
+        deviceComponentService.updateComponentsStatus(deviceEntity,commandAck.getDeviceStatus().getComponents());
+        deviceEntity.setUpdateDate(LocalDateTime.now());
+        deviceEntity.setStatus(DeviceConnectionStatusEnum.ONLINE);
+        logger.info("device id {} set update time and connection status {}",deviceEntity.getId(),DeviceConnectionStatusEnum.ONLINE);
+        deviceRepository.save(deviceEntity);
+        logger.info("status of device id {} correctly updated",commandAck.getDeviceId());
+    }
+
+    private void updateCommandStatusOnDb(CommandAck commandAck){
+        // getting command saved on db and update it
+        Optional<CommandEntity> commandEntityOpt = commandRepository.findCommandEntitiesByCommandId(commandAck.getCommandId());
+        if (commandEntityOpt.isPresent()){
+            CommandEntity commandEntity = commandEntityOpt.get();
+            logger.info("for commandId {} command db entity id {} was retrieved",commandAck.getCommandId(), commandEntity.getId());
+            if(commandAck.getAck()== ResultStatusEnum.OK){
+                commandEntity.setStatusEnum(CommandStatusEnum.DONE);
+            } else {
+                commandEntity.setStatusEnum(CommandStatusEnum.ERROR);
+            }
+            commandEntity.setUpdateDate(LocalDateTime.now());
+            commandRepository.save(commandEntity);
+            logger.info("command entity id {} status correctly updated",commandEntity.getId());
+        } else {
+            logger.warn("no command db entity found for command id {}",commandAck.getCommandId());
+        }
+    }
+
+
+
+
     // light
     @Override
     public void switchAllLights(String userId, String deviceId, OnOffStatusEnum desiredStatus) throws BrandNotSupportedException, DeviceNotExistsException {

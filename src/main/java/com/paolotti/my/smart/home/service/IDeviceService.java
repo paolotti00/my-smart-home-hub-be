@@ -27,7 +27,7 @@ public interface IDeviceService {
     void sendMqttCommandToDeviceGroup(String topic, String payloadToEncapsulate, DeviceGroup deviceGroup) throws GenericException;
 
     // status
-    void updateDeviceStatusFromAckReceived(CommandAck commandAck) throws ValidationException;
+    void updateDeviceStatusFromAckReceived(CommandAck commandAck) throws ValidationException, DeviceNotExistsException;
 
 
     // light
