@@ -8,9 +8,9 @@ import com.paolotti.my.smart.home.factory.IBeanFactoryService;
 import com.paolotti.my.smart.home.mapper.ICommandMapper;
 import com.paolotti.my.smart.home.mapper.IDeviceMapper;
 import com.paolotti.my.smart.home.model.*;
-import com.paolotti.my.smart.home.repository.ICommandRepository;
-import com.paolotti.my.smart.home.repository.IDeviceGroupCustomRepository;
-import com.paolotti.my.smart.home.repository.IDeviceRepository;
+import com.paolotti.my.smart.home.repository.CommandRepository;
+import com.paolotti.my.smart.home.repository.DeviceGroupRepository;
+import com.paolotti.my.smart.home.repository.DeviceRepository;
 import com.paolotti.my.smart.home.repository.entity.CommandEntity;
 import com.paolotti.my.smart.home.repository.entity.DeviceEntity;
 import com.paolotti.my.smart.home.repository.entity.DeviceGroupEntity;
@@ -41,11 +41,11 @@ public class DeviceServiceImpl implements IDeviceService {
     @Autowired
     IDeviceComponentService deviceComponentService;
     @Autowired
-    IDeviceRepository deviceRepository;
+    DeviceRepository deviceRepository;
     @Autowired
-    IDeviceGroupCustomRepository deviceGroupCustomRepository;
+    DeviceGroupRepository deviceGroupRepository;
     @Autowired
-    ICommandRepository commandRepository;
+    CommandRepository commandRepository;
 
     private static final Logger logger = LoggerFactory.getLogger(DeviceServiceImpl.class);
 
@@ -105,10 +105,11 @@ public class DeviceServiceImpl implements IDeviceService {
         logger.info("retrieving devices of the group with id {}", groupId);
         ArrayList<Device>devices = new ArrayList<>();
         logger.info("checking if group with id {} exists",groupId);
-        DeviceGroupEntity deviceGroupEntity = deviceGroupCustomRepository.findById(groupId);
-        if(deviceGroupEntity == null){
+        Optional<DeviceGroupEntity> deviceGroupEntityOpt = deviceGroupRepository.findById(groupId);
+        if(!deviceGroupEntityOpt.isPresent()){
             throw new GroupNotExistsException(groupId);
         }
+        DeviceGroupEntity deviceGroupEntity = deviceGroupEntityOpt.get();
         if (deviceGroupEntity.getDevices().isEmpty()) {
             logger.warn("no device in group id {} found", groupId);
         } else {
@@ -208,7 +209,7 @@ public class DeviceServiceImpl implements IDeviceService {
 
     private void updateCommandStatusOnDb(CommandAck commandAck){
         // getting command saved on db and update it
-        Optional<CommandEntity> commandEntityOpt = commandRepository.findCommandEntitiesByCommandId(commandAck.getCommandId());
+        Optional<CommandEntity> commandEntityOpt = commandRepository.findById(commandAck.getCommandId());
         if (commandEntityOpt.isPresent()){
             CommandEntity commandEntity = commandEntityOpt.get();
             logger.info("for commandId {} command db entity id {} was retrieved",commandAck.getCommandId(), commandEntity.getId());

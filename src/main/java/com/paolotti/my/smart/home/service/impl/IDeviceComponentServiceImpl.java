@@ -1,12 +1,11 @@
 package com.paolotti.my.smart.home.service.impl;
 
-import com.paolotti.my.smart.home.exception.DeviceNotExistsException;
 import com.paolotti.my.smart.home.exception.NotExistException;
 import com.paolotti.my.smart.home.mapper.IDeviceComponentLightMapper;
 import com.paolotti.my.smart.home.mapper.ILedMapper;
 import com.paolotti.my.smart.home.model.DeviceComponent;
 import com.paolotti.my.smart.home.model.DeviceComponentLight;
-import com.paolotti.my.smart.home.repository.IDeviceRepository;
+import com.paolotti.my.smart.home.repository.DeviceRepository;
 import com.paolotti.my.smart.home.repository.entity.DeviceEntity;
 import com.paolotti.my.smart.home.service.IDeviceComponentService;
 import org.slf4j.Logger;
@@ -22,7 +21,7 @@ import java.util.Optional;
 public class IDeviceComponentServiceImpl implements IDeviceComponentService {
     private static final Logger logger = LoggerFactory.getLogger(IDeviceComponentServiceImpl.class);
     @Autowired
-    IDeviceRepository deviceRepository;
+    DeviceRepository deviceRepository;
     @Autowired
     IDeviceComponentLightMapper deviceComponentLightMapper;
     @Autowired

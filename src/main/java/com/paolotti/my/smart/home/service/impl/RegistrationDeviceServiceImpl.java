@@ -7,7 +7,7 @@ import com.paolotti.my.smart.home.factory.IBeanFactoryService;
 import com.paolotti.my.smart.home.mapper.IDeviceMapper;
 import com.paolotti.my.smart.home.model.Device;
 import com.paolotti.my.smart.home.model.User;
-import com.paolotti.my.smart.home.repository.IDeviceRepository;
+import com.paolotti.my.smart.home.repository.DeviceRepository;
 import com.paolotti.my.smart.home.repository.entity.DeviceEntity;
 import com.paolotti.my.smart.home.service.IRegistrationDeviceService;
 import com.paolotti.my.smart.home.service.IUserService;
@@ -26,7 +26,7 @@ import static com.paolotti.my.smart.home.constant.MessageConst.DEVICE_ALREADY_RE
 public class RegistrationDeviceServiceImpl implements IRegistrationDeviceService {
     private static final Logger logger = LoggerFactory.getLogger(RegistrationDeviceServiceImpl.class);
     @Autowired
-    IDeviceRepository deviceRepository;
+    DeviceRepository deviceRepository;
     @Autowired
     IUserService userService;
     @Autowired
@@ -93,7 +93,7 @@ public class RegistrationDeviceServiceImpl implements IRegistrationDeviceService
         ArrayList<DeviceEntity> devicesEntity = deviceRepository.findAllByUserAndToActivate(userId);
         ArrayList<Device> devices = deviceMapper.toModels(devicesEntity);
         logger.info("{}: found {} devices to activate for the user {}, devices ",methodName,userId,devices);
-        return devices;
+        return null;
     }
     @Override
     public Device activate (String userId,String deviceId) throws MissingFieldException, UserNotExistException, DeviceNotExistsException, DeviceAlreadyActivated, DeviceWrongStatusException {

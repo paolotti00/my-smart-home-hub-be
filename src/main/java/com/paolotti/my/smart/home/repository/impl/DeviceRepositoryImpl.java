@@ -1,18 +1,17 @@
 package com.paolotti.my.smart.home.repository.impl;
 
 import com.paolotti.my.smart.home.enums.DeviceInstallationStatusEnum;
-import com.paolotti.my.smart.home.repository.IDeviceCustomRepository;
+import com.paolotti.my.smart.home.repository.DeviceRepositoryCustom;
 import com.paolotti.my.smart.home.repository.entity.DeviceEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 
-@Repository
-public class DeviceCustomRepositoryImpl implements IDeviceCustomRepository {
+
+public class DeviceRepositoryImpl implements DeviceRepositoryCustom {
     // all methods, if not differently specified, check silently also if the status is ACTIVE
     @Autowired
     MongoTemplate mongoTemplate;
