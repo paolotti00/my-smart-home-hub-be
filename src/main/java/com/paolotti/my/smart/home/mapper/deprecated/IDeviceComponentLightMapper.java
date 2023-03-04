@@ -1,6 +1,7 @@
-package com.paolotti.my.smart.home.mapper;
+package com.paolotti.my.smart.home.mapper.deprecated;
 
 import com.paolotti.my.smart.home.dto.rest.DeviceComponentLightDto;
+import com.paolotti.my.smart.home.mapper.IBaseMapper;
 import com.paolotti.my.smart.home.model.DeviceComponentLight;
 import com.paolotti.my.smart.home.repository.entity.DeviceEntity;
 import org.mapstruct.InjectionStrategy;

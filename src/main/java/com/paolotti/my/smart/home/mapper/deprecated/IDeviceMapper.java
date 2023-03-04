@@ -1,5 +1,6 @@
-package com.paolotti.my.smart.home.mapper;
+package com.paolotti.my.smart.home.mapper.deprecated;
 
+import com.paolotti.my.smart.home.mapper.IBaseMapper;
 import com.paolotti.my.smart.home.model.Device;
 import com.paolotti.my.smart.home.model.DeviceComponent;
 import com.paolotti.my.smart.home.model.DeviceComponentLight;

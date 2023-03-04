@@ -4,7 +4,7 @@ import com.paolotti.my.smart.home.constant.MessageConst;
 import com.paolotti.my.smart.home.enums.DeviceInstallationStatusEnum;
 import com.paolotti.my.smart.home.exception.*;
 import com.paolotti.my.smart.home.factory.IBeanFactoryService;
-import com.paolotti.my.smart.home.mapper.IDeviceMapper;
+import com.paolotti.my.smart.home.mapper.deprecated.IDeviceMapper;
 import com.paolotti.my.smart.home.model.Device;
 import com.paolotti.my.smart.home.model.User;
 import com.paolotti.my.smart.home.repository.DeviceRepository;

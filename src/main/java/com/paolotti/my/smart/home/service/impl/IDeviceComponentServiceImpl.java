@@ -1,8 +1,8 @@
 package com.paolotti.my.smart.home.service.impl;
 
 import com.paolotti.my.smart.home.exception.NotExistException;
-import com.paolotti.my.smart.home.mapper.IDeviceComponentLightMapper;
-import com.paolotti.my.smart.home.mapper.ILedMapper;
+import com.paolotti.my.smart.home.mapper.deprecated.IDeviceComponentLightMapper;
+import com.paolotti.my.smart.home.mapper.deprecated.ILedMapper;
 import com.paolotti.my.smart.home.model.DeviceComponent;
 import com.paolotti.my.smart.home.model.DeviceComponentLight;
 import com.paolotti.my.smart.home.repository.DeviceRepository;

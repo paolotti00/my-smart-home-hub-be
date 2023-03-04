@@ -3,20 +3,18 @@ package com.paolotti.my.smart.home.service.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.paolotti.my.smart.home.exception.GenericException;
-import com.paolotti.my.smart.home.mapper.ILightEffectMessageMapper;
+import com.paolotti.my.smart.home.mapper.deprecated.ILightEffectMessageMapper;
 import com.paolotti.my.smart.home.model.Device;
 import com.paolotti.my.smart.home.model.Action;
 import com.paolotti.my.smart.home.dto.ActionDto;
 import com.paolotti.my.smart.home.dto.EffectDataDto;
 import com.paolotti.my.smart.home.service.IDeviceByBrandService;
 import com.paolotti.my.smart.home.service.IDeviceService;
-import com.paolotti.my.smart.home.utility.Utility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 @Service

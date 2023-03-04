@@ -1,4 +1,4 @@
-package com.paolotti.my.smart.home.mapper;
+package com.paolotti.my.smart.home.mapper.deprecated;
 
 import com.paolotti.my.smart.home.dto.rest.LedDto;
 import com.paolotti.my.smart.home.model.Led;

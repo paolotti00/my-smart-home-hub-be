@@ -6,7 +6,7 @@ import com.paolotti.my.smart.home.enums.*;
 import com.paolotti.my.smart.home.exception.*;
 import com.paolotti.my.smart.home.factory.IBeanFactoryService;
 import com.paolotti.my.smart.home.mapper.ICommandMapper;
-import com.paolotti.my.smart.home.mapper.IDeviceMapper;
+import com.paolotti.my.smart.home.mapper.deprecated.IDeviceMapper;
 import com.paolotti.my.smart.home.model.*;
 import com.paolotti.my.smart.home.repository.CommandRepository;
 import com.paolotti.my.smart.home.repository.DeviceGroupRepository;

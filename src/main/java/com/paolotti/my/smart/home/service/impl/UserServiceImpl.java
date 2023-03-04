@@ -1,7 +1,7 @@
 package com.paolotti.my.smart.home.service.impl;
 
 import com.paolotti.my.smart.home.exception.UserNotExistException;
-import com.paolotti.my.smart.home.mapper.IUserMapper;
+import com.paolotti.my.smart.home.mapper.deprecated.IUserMapper;
 import com.paolotti.my.smart.home.model.User;
 import com.paolotti.my.smart.home.repository.UserRepository;
 import com.paolotti.my.smart.home.repository.entity.UserEntity;

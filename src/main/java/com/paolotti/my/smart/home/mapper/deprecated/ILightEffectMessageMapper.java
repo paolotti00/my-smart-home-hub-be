@@ -1,4 +1,4 @@
-package com.paolotti.my.smart.home.mapper;
+package com.paolotti.my.smart.home.mapper.deprecated;
 
 import com.paolotti.my.smart.home.model.Action;
 import com.paolotti.my.smart.home.dto.ActionDto;

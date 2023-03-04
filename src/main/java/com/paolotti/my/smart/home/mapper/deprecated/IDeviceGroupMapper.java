@@ -1,12 +1,11 @@
-package com.paolotti.my.smart.home.mapper;
+package com.paolotti.my.smart.home.mapper.deprecated;
 
+import com.paolotti.my.smart.home.mapper.IBaseMapper;
 import com.paolotti.my.smart.home.model.DeviceGroup;
 import com.paolotti.my.smart.home.repository.entity.DeviceGroupEntity;
-import org.bson.types.ObjectId;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.Named;
 
 import java.util.ArrayList;
 

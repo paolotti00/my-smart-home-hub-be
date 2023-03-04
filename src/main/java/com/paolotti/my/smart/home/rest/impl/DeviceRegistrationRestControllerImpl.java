@@ -2,7 +2,7 @@ package com.paolotti.my.smart.home.rest.impl;
 
 import com.paolotti.my.smart.home.constant.RestConst;
 import com.paolotti.my.smart.home.exception.*;
-import com.paolotti.my.smart.home.mapper.IDeviceMapper;
+import com.paolotti.my.smart.home.mapper.deprecated.IDeviceMapper;
 import com.paolotti.my.smart.home.model.Device;
 import com.paolotti.my.smart.home.rest.IDeviceRegistrationRestController;
 import com.paolotti.my.smart.home.dto.rest.DeviceDto;
