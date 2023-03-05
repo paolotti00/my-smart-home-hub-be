@@ -51,25 +51,39 @@ public class IDeviceComponentServiceImpl implements IDeviceComponentService {
             });
         }
     }
-    private void updateComponentLightStatus(DeviceEntity deviceEntity, DeviceEntity.DeviceComponentEntityLight deviceComponentEntityLight) throws NotExistException {
+    private void updateComponentLightStatus(DeviceEntity deviceEntity, DeviceEntity.DeviceComponentEntityLight deviceComponentEntityLightUpdated) throws NotExistException {
         // todo think if should be Device model instead of deviceEntity
-        logger.info("updating component light {} status of device {}",deviceComponentEntityLight.getId(),deviceEntity.getId());
+        logger.info("updating component light {} status of device {}",deviceComponentEntityLightUpdated.getId(),deviceEntity.getId());
         DeviceEntity.DeviceComponentEntityLight dComponentEntityLightToUpdate; // device component light to update
         /* todo understand how to assignee the id to component device (probably is better if is the iot device to choose and communicate)
             and in this flow if the component don't exist yet we will create it
             in this way we will have the component with component id sent by device*/
-        Optional<DeviceEntity.DeviceComponentEntity> deviceComponentEntityOpt = deviceEntity.getComponents().stream().filter(deviceComponent -> deviceComponent.getId().equals(deviceComponentEntityLight.getId())).findFirst();
+        Optional<DeviceEntity.DeviceComponentEntity> deviceComponentEntityOpt = deviceEntity.getComponents().stream().filter(deviceComponent -> deviceComponent.getId().equals(deviceComponentEntityLightUpdated.getId())).findFirst();
+        DeviceEntity.DeviceComponentEntityLight deviceComponentLight;
+        boolean componentAlreadyExist;
         if(!deviceComponentEntityOpt.isPresent()){
-            // todo if not exist we have to create it
-            throw new NotExistException(String.format("device component id %s not exist in device id %s",deviceComponentEntityLight.getId(),deviceEntity.getId()));
+            // the component doesn't exist , will create
+            logger.info("deviceComponentLight with id {} doesn't exist on device {}, will be created",deviceComponentEntityLightUpdated.getId(),deviceEntity.getId());
+            deviceComponentLight = new DeviceEntity.DeviceComponentEntityLight();
+            deviceComponentLight.setId(deviceComponentEntityLightUpdated.getId());
+            componentAlreadyExist = false;
+        } else {
+            logger.info("deviceComponentLight with id {} already exist on device {}",deviceComponentEntityLightUpdated.getId(),deviceEntity.getId());
+            deviceComponentLight = (DeviceEntity.DeviceComponentEntityLight) deviceComponentEntityOpt.get() ;
+            componentAlreadyExist = true;
         }
-        dComponentEntityLightToUpdate = (DeviceEntity.DeviceComponentEntityLight) deviceComponentEntityOpt.get() ;
+        // general
+        deviceComponentLight.setType(deviceComponentEntityLightUpdated.getType());
+        deviceComponentLight.setAction(deviceComponentEntityLightUpdated.getAction());
         // leds
-        dComponentEntityLightToUpdate.setLeds(deviceComponentEntityLight.getLeds());
-        dComponentEntityLightToUpdate.setAction(deviceComponentEntityLight.getAction());
+        deviceComponentLight.setLeds(deviceComponentEntityLightUpdated.getLeds());
+        // saving
+        if (!componentAlreadyExist){
+            deviceEntity.getComponents().add(deviceComponentLight);
+        }
         deviceEntity.setUpdateDate(LocalDateTime.now());
         deviceRepository.save(deviceEntity);
-        logger.info("component light {} status of device {} correctly updated",deviceComponentEntityLight.getId(),deviceEntity.getId());
+        logger.info("component light {} status of device {} correctly updated",deviceComponentEntityLightUpdated.getId(),deviceEntity.getId());
     }
     private void updateComponentSensorHeatStatus(DeviceEntity deviceEntity, DeviceComponent deviceComponent){
         logger.warn("updateComponentSensorHeatStatus is not implemented yet, so deviceComponent {} will not update",deviceComponent.getId());

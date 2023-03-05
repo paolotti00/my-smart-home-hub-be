@@ -209,7 +209,7 @@ public class DeviceServiceImpl implements IDeviceService {
 
     private void updateCommandStatusOnDb(CommandAck commandAck){
         // getting command saved on db and update it
-        Optional<CommandEntity> commandEntityOpt = commandRepository.findById(commandAck.getCommandId());
+        Optional<CommandEntity> commandEntityOpt = commandRepository.findByCommandId(commandAck.getCommandId());
         if (commandEntityOpt.isPresent()){
             CommandEntity commandEntity = commandEntityOpt.get();
             logger.info("for commandId {} command db entity id {} was retrieved",commandAck.getCommandId(), commandEntity.getId());

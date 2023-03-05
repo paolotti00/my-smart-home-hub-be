@@ -10,4 +10,5 @@ import java.util.Optional;
 @Repository
 public interface CommandRepository extends MongoRepository<CommandEntity,String>, CommandRepositoryCustom {
     Optional<CommandEntity> findById(ObjectId id);
+    Optional<CommandEntity> findByCommandId(String id);
 }
