@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 public interface IDeviceService {
     Device create(Device device) throws MissingFieldException;
+    Device getDevice(String deviceId) throws DeviceNotExistsException, ValidationException;
 
     void doFwActionsSchema(String deviceId, DeviceActionsSchema deviceActionsSchema);
 
@@ -15,7 +16,7 @@ public interface IDeviceService {
 
     void doCustomActionSchema(String deviceId, DeviceActionsSchema deviceActionsSchema);
 
-    Device retrieveDeviceById(String deviceId) throws DeviceNotExistsException;
+    Device getActiveDeviceById(String deviceId) throws DeviceNotExistsException;
 
     ArrayList<Device> retrieveDevicesByGroupId(String groupId) throws GroupNotExistsException;
 

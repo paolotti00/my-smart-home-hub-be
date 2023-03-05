@@ -58,9 +58,9 @@ public class DeviceRestControllerImpl implements IDeviceRestController {
         DeviceDto deviceDto = null;
         try {
             deviceDtoBaseResponseDto.setResultStatus(ResultStatusEnum.OK);
-//            Device device = deviceService.getDevice(deviceId);
-//            deviceDto = deviceMapper.toDto(device);
-//            deviceDtoBaseResponseDto.setData(deviceDto);
+            Device device = deviceService.getDevice(deviceId);
+            deviceDto = deviceMapper.toDto(device);
+            deviceDtoBaseResponseDto.setData(deviceDto);
             deviceDtoResponseEntity = new ResponseEntity<BaseResponseDto<DeviceDto>>(deviceDtoBaseResponseDto,HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();

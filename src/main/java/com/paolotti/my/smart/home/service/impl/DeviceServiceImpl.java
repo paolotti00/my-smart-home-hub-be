@@ -71,6 +71,24 @@ public class DeviceServiceImpl implements IDeviceService {
     }
 
     @Override
+    public Device getDevice(String deviceId) throws DeviceNotExistsException, ValidationException {
+        logger.info("retrieving device with id {}", deviceId);
+        if(StringUtils.isEmpty(deviceId)){
+            throw new ValidationException("deviceId cannot be null or empty");
+        }
+        Optional<DeviceEntity> deviceEntityOpt = deviceRepository.findById(deviceId);
+        if (!deviceEntityOpt.isPresent()) {
+            logger.warn("no active device found with {} id", deviceId);
+            throw new DeviceNotExistsException(deviceId);
+        }
+        DeviceEntity deviceEntity = deviceEntityOpt.get();
+        logger.info("device {} retrieved, converting to model", deviceId);
+        Device device = deviceMapper.toModel(deviceEntity);
+        logger.info("device converted to {}", device);
+        return device;
+    }
+
+    @Override
     public void doFwActionsSchema(String deviceId, DeviceActionsSchema deviceActionsSchema) {
 
     }
@@ -86,16 +104,16 @@ public class DeviceServiceImpl implements IDeviceService {
     }
 
     @Override
-    public Device retrieveDeviceById(String deviceId) throws DeviceNotExistsException {
-        logger.info("retrieving device with id {}", deviceId);
+    public Device getActiveDeviceById(String deviceId) throws DeviceNotExistsException {
+        logger.info("retrieving active device with id {}", deviceId);
         DeviceEntity deviceEntity = deviceRepository.findActiveById(deviceId);
         if (deviceEntity == null) {
-            logger.warn("no device found with {} id", deviceId);
+            logger.warn("no active device found with {} id", deviceId);
             throw new DeviceNotExistsException(deviceId);
         }
-        logger.info("device {} retrieved, converting to model", deviceId);
+        logger.info("active device {} retrieved, converting to model", deviceId);
         Device device = deviceMapper.toModel(deviceEntity);
-        logger.info("device converted to {}", device);
+        logger.info("active device converted to {}", device);
         return device;
     }
 
@@ -235,7 +253,7 @@ public class DeviceServiceImpl implements IDeviceService {
         logger.info("switching device lights by device : userId {} deviceId {} desiredStatus {}", userId, deviceId, desiredStatus);
         // todo retrieve the user
         // check if have the permission to do something
-        Device device = retrieveDeviceById(deviceId);
+        Device device = getActiveDeviceById(deviceId);
         logger.info("device retrieved {}", device);
         IDeviceByBrandService deviceLightByBrandService = beanFactoryService.getDeviceLightByBrandServiceImpl(device.getBrand());
         switch (desiredStatus) {
@@ -255,7 +273,7 @@ public class DeviceServiceImpl implements IDeviceService {
         logger.info("setting device lights color to : userId {} deviceId {} colorRgb {}", userId, deviceId, rgbColor);
         // todo retrieve the user
         // check if have the permission to do something
-        Device device = retrieveDeviceById(deviceId);
+        Device device = getActiveDeviceById(deviceId);
         logger.info("device retrieved {}", device);
         IDeviceByBrandService deviceLightByBrandService = beanFactoryService.getDeviceLightByBrandServiceImpl(device.getBrand());
         deviceLightByBrandService.setColor(device,rgbColor);
@@ -267,7 +285,7 @@ public class DeviceServiceImpl implements IDeviceService {
         logger.info("sending device action to do : userId {} deviceId {} lightEffectMessage {}", userId, deviceId, action);
         // todo retrieve the user
         // check if have the permission to do something
-        Device device = retrieveDeviceById(deviceId);
+        Device device = getActiveDeviceById(deviceId);
         logger.info("device retrieved {}", device);
         IDeviceByBrandService deviceLightByBrandService = beanFactoryService.getDeviceLightByBrandServiceImpl(device.getBrand());
         deviceLightByBrandService.doEffect(device, action);
