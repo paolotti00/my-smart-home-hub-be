@@ -1,6 +1,7 @@
 package com.paolotti.my.smart.home.rest.impl;
 
 import com.paolotti.my.smart.home.enums.OnOffStatusEnum;
+import com.paolotti.my.smart.home.enums.ResultStatusEnum;
 import com.paolotti.my.smart.home.exception.BrandNotSupportedException;
 import com.paolotti.my.smart.home.exception.DeviceNotExistsException;
 import com.paolotti.my.smart.home.exception.GenericException;
@@ -47,13 +48,34 @@ public class DeviceRestControllerImpl implements IDeviceRestController {
         logger.info("{}: device correctly created, deviceDto {}",methodName,deviceDto);
         return deviceDto;
     }
+
     @Override
-    public ResponseEntity<BaseResponseDto> switchOnAllLightsByDevice(String deviceId) throws DeviceNotExistsException, BrandNotSupportedException {
+    public ResponseEntity<BaseResponseDto<DeviceDto>> getDevice(String deviceId) {
+        String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
+        logger.info("{}: device retrieve request received, deviceId {}",methodName,deviceId);
+        ResponseEntity<BaseResponseDto<DeviceDto>> deviceDtoResponseEntity = null;
+        BaseResponseDto<DeviceDto> deviceDtoBaseResponseDto= new BaseResponseDto<>();
+        DeviceDto deviceDto = null;
+        try {
+            deviceDtoBaseResponseDto.setResultStatus(ResultStatusEnum.OK);
+//            Device device = deviceService.getDevice(deviceId);
+//            deviceDto = deviceMapper.toDto(device);
+//            deviceDtoBaseResponseDto.setData(deviceDto);
+            deviceDtoResponseEntity = new ResponseEntity<BaseResponseDto<DeviceDto>>(deviceDtoBaseResponseDto,HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        logger.info("{}: device correctly retrieved, deviceDto {}",methodName,deviceDto);
+        return deviceDtoResponseEntity;
+    }
+
+    @Override
+    public ResponseEntity<BaseResponseDto<?>> switchOnAllLightsByDevice(String deviceId) throws DeviceNotExistsException, BrandNotSupportedException {
         String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         logger.info("{}: device id {}", methodName, deviceId);
         String userId = "ex"; // todo should be retrieved from spring Principal?
-        ResponseEntity<BaseResponseDto> responseEntity;
-        BaseResponseDto baseResponseDto = new BaseResponseDto();
+        ResponseEntity<BaseResponseDto<?>> responseEntity;
+        BaseResponseDto<?> baseResponseDto = new BaseResponseDto<>();
         try {
             deviceService.switchAllLights(userId, deviceId, OnOffStatusEnum.ON);
             baseResponseDto.setMessage(String.format("device %s correctly switched %s", deviceId, OnOffStatusEnum.ON));
@@ -66,12 +88,12 @@ public class DeviceRestControllerImpl implements IDeviceRestController {
     }
 
     @Override
-    public ResponseEntity<BaseResponseDto> switchOffAllLights(String deviceId) throws DeviceNotExistsException, BrandNotSupportedException {
+    public ResponseEntity<BaseResponseDto<?>> switchOffAllLights(String deviceId) throws DeviceNotExistsException, BrandNotSupportedException {
         String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         logger.info("{}: device id {}", methodName, deviceId);
         String userId = "ex"; // todo should be retrieved from spring Principal?
-        ResponseEntity<BaseResponseDto> responseEntity;
-        BaseResponseDto baseResponseDto = new BaseResponseDto();
+        ResponseEntity<BaseResponseDto<?>> responseEntity;
+        BaseResponseDto<?> baseResponseDto = new BaseResponseDto<>();
         try {
             deviceService.switchAllLights(userId, deviceId, OnOffStatusEnum.OFF);
             baseResponseDto.setMessage(String.format("device %s correctly switched %s", deviceId, OnOffStatusEnum.OFF));
@@ -83,12 +105,12 @@ public class DeviceRestControllerImpl implements IDeviceRestController {
         return responseEntity;
     }
     @Override
-    public ResponseEntity<BaseResponseDto> setColor(String deviceId, String colorRgb) throws DeviceNotExistsException, BrandNotSupportedException, GenericException {
+    public ResponseEntity<BaseResponseDto<?>> setColor(String deviceId, String colorRgb) throws DeviceNotExistsException, BrandNotSupportedException, GenericException {
         String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         logger.info("{}: device id {} colorRgb {}", methodName, deviceId, colorRgb);
         String userId = "ex"; // todo should be retrieved from spring Principal?
-        ResponseEntity<BaseResponseDto> responseEntity;
-        BaseResponseDto baseResponseDto = new BaseResponseDto();
+        ResponseEntity<BaseResponseDto<?>> responseEntity;
+        BaseResponseDto<?> baseResponseDto = new BaseResponseDto<>();
         try {
             deviceService.setColor(userId, deviceId,colorRgb);
             baseResponseDto.setMessage(String.format("device %s correctly set color %s", deviceId, colorRgb));
@@ -100,12 +122,12 @@ public class DeviceRestControllerImpl implements IDeviceRestController {
         return responseEntity;
     }
     @Override
-    public ResponseEntity<BaseResponseDto> doAction(String deviceId, ActionDto actionDto) throws DeviceNotExistsException, BrandNotSupportedException, GenericException {
+    public ResponseEntity<BaseResponseDto<?>> doAction(String deviceId, ActionDto actionDto) throws DeviceNotExistsException, BrandNotSupportedException, GenericException {
         String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         logger.info("{}: device id {} lightEffectMessageDto {}", methodName, deviceId, actionDto);
         String userId = "ex"; // todo should be retrieved from spring Principal?
-        ResponseEntity<BaseResponseDto> responseEntity;
-        BaseResponseDto baseResponseDto = new BaseResponseDto();
+        ResponseEntity<BaseResponseDto<?>> responseEntity;
+        BaseResponseDto<?> baseResponseDto = new BaseResponseDto<>();
         try {
             deviceService.doAction(userId, deviceId, lightEffectMessageMapper.toModel(actionDto));
             baseResponseDto.setMessage(String.format("device %s correctly sent %s", deviceId, actionDto));

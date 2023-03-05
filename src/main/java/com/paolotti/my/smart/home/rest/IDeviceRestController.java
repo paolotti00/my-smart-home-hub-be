@@ -19,13 +19,14 @@ public interface IDeviceRestController {
     @PostMapping("")
     @JsonView(JsonViewConfig.HighDetail.class)
     DeviceDto create (@JsonView(JsonViewConfig.LowDetail.class) @RequestBody DeviceDto deviceDto) throws MissingFieldException;
+    @GetMapping("{deviceId}")
+    ResponseEntity<BaseResponseDto<DeviceDto>>getDevice(@PathVariable String deviceId);
     @PostMapping("{deviceId}/light/switch/on")
-    ResponseEntity<BaseResponseDto> switchOnAllLightsByDevice(@PathVariable String deviceId) throws DeviceNotExistsException, BrandNotSupportedException;
+    ResponseEntity<BaseResponseDto<?>> switchOnAllLightsByDevice(@PathVariable String deviceId) throws DeviceNotExistsException, BrandNotSupportedException;
     @PostMapping("{deviceId}/light/switch/off")
-    ResponseEntity<BaseResponseDto> switchOffAllLights(@PathVariable String deviceId) throws DeviceNotExistsException, BrandNotSupportedException;
+    ResponseEntity<BaseResponseDto<?>> switchOffAllLights(@PathVariable String deviceId) throws DeviceNotExistsException, BrandNotSupportedException;
     @PutMapping("{deviceId}/set/color")
-    ResponseEntity<BaseResponseDto> setColor(@PathVariable String deviceId, @RequestBody String rgbColor) throws DeviceNotExistsException, BrandNotSupportedException, GenericException;
-
+    ResponseEntity<BaseResponseDto<?>> setColor(@PathVariable String deviceId, @RequestBody String rgbColor) throws DeviceNotExistsException, BrandNotSupportedException, GenericException;
     @PutMapping("{deviceId}/do/action")
-    ResponseEntity<BaseResponseDto> doAction(@PathVariable String deviceId, @RequestBody ActionDto actionDto) throws DeviceNotExistsException, BrandNotSupportedException, GenericException;
+    ResponseEntity<BaseResponseDto<?>> doAction(@PathVariable String deviceId, @RequestBody ActionDto actionDto) throws DeviceNotExistsException, BrandNotSupportedException, GenericException;
 }
