@@ -172,14 +172,14 @@ public class DeviceServiceImpl implements IDeviceService {
 
     @Override
     public void updateDeviceStatusFromAckReceived(CommandAck commandAck) throws ValidationException, DeviceNotExistsException {
-        logger.info("updating status of device id {} by ack received {}",commandAck.getDeviceId(),commandAck);
+        logger.info("updating status of device id {} by ack received {}",commandAck.getThingId(),commandAck);
         // validation
         logger.info("validation started");
         if (commandAck.getCommandId()==null || !StringUtils.hasText(commandAck.getCommandId())){
             throw new ValidationException("commandId is null or empty. commandId =" +commandAck.getCommandId());
         }
-        if (commandAck.getDeviceId()==null || !StringUtils.hasText(commandAck.getDeviceId()) ){
-            throw new ValidationException("deviceId is null or empty. deviceId =" + commandAck.getDeviceId());
+        if (commandAck.getThingId()==null || !StringUtils.hasText(commandAck.getThingId()) ){
+            throw new ValidationException("deviceId is null or empty. thinkId =" + commandAck.getThingId());
         }
         if(commandAck.getAck()==null){
             throw new ValidationException("command ack is null");
@@ -192,10 +192,10 @@ public class DeviceServiceImpl implements IDeviceService {
         // update command status on db
         updateCommandStatusOnDb(commandAck);
         // getting device from db
-        Optional<DeviceEntity> deviceEntityOpt = deviceRepository.findById(commandAck.getDeviceId());
+        Optional<DeviceEntity> deviceEntityOpt = deviceRepository.findByThingId(commandAck.getThingId());
         if(!deviceEntityOpt.isPresent()){
-            logger.error("device with id : {} not exists. can't update component status",commandAck.getDeviceId());
-            throw new DeviceNotExistsException(commandAck.getDeviceId());
+            logger.error("device with thingId : {} not exists. can't update component status",commandAck.getThingId());
+            throw new DeviceNotExistsException("thingId: "+commandAck.getThingId());
         }
         DeviceEntity deviceEntity = deviceEntityOpt.get();
         // updating components status
@@ -204,7 +204,7 @@ public class DeviceServiceImpl implements IDeviceService {
         deviceEntity.setStatus(DeviceConnectionStatusEnum.ONLINE);
         logger.info("device id {} set update time and connection status {}",deviceEntity.getId(),DeviceConnectionStatusEnum.ONLINE);
         deviceRepository.save(deviceEntity);
-        logger.info("status of device id {} correctly updated",commandAck.getDeviceId());
+        logger.info("status of device id {} correctly updated",commandAck.getThingId());
     }
 
     private void updateCommandStatusOnDb(CommandAck commandAck){

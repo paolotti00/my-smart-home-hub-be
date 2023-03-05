@@ -5,17 +5,17 @@ import lombok.ToString;
 
 @ToString
 public class CommandAck {
-    private String deviceId;
+    private String thingId;
     private String commandId;
     private ResultStatusEnum ack;
     private DeviceStatus deviceStatus;
 
-    public String getDeviceId() {
-        return deviceId;
+    public String getThingId() {
+        return thingId;
     }
 
-    public void setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
+    public void setThingId(String thingId) {
+        this.thingId = thingId;
     }
 
     public String getCommandId() {
