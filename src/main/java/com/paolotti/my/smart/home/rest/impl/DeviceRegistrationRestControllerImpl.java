@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController()
 public class DeviceRegistrationRestControllerImpl implements IDeviceRegistrationRestController {
@@ -49,22 +50,22 @@ public class DeviceRegistrationRestControllerImpl implements IDeviceRegistration
         return deviceDtoResponseEntity;
     };
     @Override
-    public ResponseEntity<ArrayList<DeviceDto>> getDevicesToActivate(@RequestHeader(RestConst.HEADER_USER_ID) String userId) throws MissingFieldException, UserNotExistException {
+    public ResponseEntity<List<DeviceDto>> getDevicesToActivate(@RequestHeader(RestConst.HEADER_USER_ID) String userId) throws MissingFieldException, UserNotExistException {
         // todo get the user from the user that is logged in
         String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         logger.info("{}: received request , userId {}",methodName,userId);
-        ResponseEntity<ArrayList<DeviceDto>> responseEntity;
+        ResponseEntity<List<DeviceDto>> responseEntity;
         DeviceDto deviceDto = new DeviceDto();
-        ArrayList<DeviceDto> deviceDtos = new ArrayList<>();
+        List<DeviceDto> deviceDtosList = new ArrayList<>();
         try {
             ArrayList<Device> devices = deviceService.getDeviceToActivate(userId);
-            deviceDtos = deviceMapper.toDtos(devices);
-            responseEntity = new ResponseEntity<>(deviceDtos,HttpStatus.OK);
+            deviceDtosList = deviceMapper.toDtoList(devices);
+            responseEntity = new ResponseEntity<>(deviceDtosList,HttpStatus.OK);
         } catch (Exception e) {
             logger.error("{}: userId {} error {}",methodName,userId,e.getMessage());
             throw e;
         }
-        logger.info("{}: userId {} result : {} ",methodName,userId,deviceDtos);
+        logger.info("{}: userId {} result : {} ",methodName,userId,deviceDtosList);
         return responseEntity;
     }
     @Override

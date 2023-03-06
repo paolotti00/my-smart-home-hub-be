@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.paolotti.my.smart.home.constant.AttributeNameConst.*;
 import static com.paolotti.my.smart.home.constant.MessageConst.DEVICE_ALREADY_REGISTERED;
@@ -41,7 +42,7 @@ public class RegistrationDeviceServiceImpl implements IRegistrationDeviceService
         logger.info("{}: device auto register flow started, device to register {}",methodName,device);
         // request validation
         // checking if the device already exist
-        ArrayList<Device> retrievedDevices = getNotDeactivateDeviceByMacAddress(device.getNetworkData().getMacAddress());
+        List<Device> retrievedDevices = getNotDeactivateDeviceByMacAddress(device.getNetworkData().getMacAddress());
         logger.info("validation of request start");
         if(retrievedDevices!=null && !retrievedDevices.isEmpty()){
             // this device is already registered
@@ -51,12 +52,13 @@ public class RegistrationDeviceServiceImpl implements IRegistrationDeviceService
         // user
         User user = null;
         // enough one between user id or email is mandatory on this flow
-        if(userId==null && (device.getUser()==null || device.getUser().getEmail()==null) ){
+        // if(userId==null && (device.getUser()==null || device.getUser().getEmail()==null) ){
+        if(userId==null && (device.getUsersOwnersIds()==null) ){
             logger.error("the fields {} and {} are missing. enough one must be present", USER_ID_ATTRIBUTE_NAME, USER_ID_ATTRIBUTE_USER_EMAIL);
             throw new MissingFieldException(USER_ID_ATTRIBUTE_NAME + "and" +"USER_ID_ATTRIBUTE_USER_EMAIL");
         } else {
             // checking if user exist and if yes getting it
-            user= userService.checkIfUserExistsByIdOrEmailAndRetrieve(userId, device.getUser().getEmail());
+            user= userService.checkIfUserExistsByIdOrEmailAndRetrieve(userId, null);
         }
         if(device.getNetworkData() == null || device.getNetworkData().getMacAddress()==null){
             logger.error("the field {} is missing", DEVICE_REG_REQ_MAC_ADDRESS_ATTRIBUTE_NAME);
@@ -65,7 +67,7 @@ public class RegistrationDeviceServiceImpl implements IRegistrationDeviceService
         logger.info("validation of request done");
         // create and registering the device
         try {
-            device.setUser(user);
+            //device.setUser(user);
             device.setCreationDate(LocalDateTime.now());
             device = createDeviceInToActivateStatus(device);
         } catch (DeviceCreationException e) {
@@ -90,8 +92,8 @@ public class RegistrationDeviceServiceImpl implements IRegistrationDeviceService
         // check if the user exist
         userService.checkIfUserExistsAndRetrieve(userId);
         logger.info("validation of request done");
-        ArrayList<DeviceEntity> devicesEntity = deviceRepository.findAllByUserAndToActivate(userId);
-        ArrayList<Device> devices = deviceMapper.toModels(devicesEntity);
+        List<DeviceEntity> devicesEntity = deviceRepository.findAllByUserAndToActivate(userId);
+        List<Device> devices = deviceMapper.toModelList(devicesEntity);
         logger.info("{}: found {} devices to activate for the user {}, devices ",methodName,userId,devices);
         return null;
     }
@@ -148,11 +150,11 @@ public class RegistrationDeviceServiceImpl implements IRegistrationDeviceService
         return device;
     }
 
-    private ArrayList<Device> getNotDeactivateDeviceByMacAddress(String macAddress){
+    private List<Device> getNotDeactivateDeviceByMacAddress(String macAddress){
         String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         logger.info("{}: getting device with macAddress {}",methodName,macAddress);
         ArrayList<DeviceEntity> deviceEntities = deviceRepository.findAllByMacAddressAndNotDeactivated(macAddress);
-        ArrayList<Device> foundDevices =  deviceMapper.toModels(deviceEntities);
+        List<Device> foundDevices =  deviceMapper.toModelList(deviceEntities);
         logger.info("{}: getting device with macAddress {} found",methodName,foundDevices);
         return foundDevices;
     };

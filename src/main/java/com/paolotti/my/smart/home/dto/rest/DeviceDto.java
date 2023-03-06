@@ -8,6 +8,7 @@ import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 @ToString
 public class DeviceDto {
@@ -16,7 +17,7 @@ public class DeviceDto {
     @JsonView(JsonViewConfig.LowDetail.class)
     private String thingId;;
     @JsonView(JsonViewConfig.LowDetail.class)
-    private UserDto user;
+    private List<String> usersOwnersIds;
     @JsonView(JsonViewConfig.LowDetail.class)
     private NetworkDataDto networkData;
     @JsonView(JsonViewConfig.LowDetail.class)
@@ -54,12 +55,12 @@ public class DeviceDto {
         this.thingId = thingId;
     }
 
-    public UserDto getUser() {
-        return user;
+    public List<String> getUsersOwnersIds() {
+        return usersOwnersIds;
     }
 
-    public void setUser(UserDto user) {
-        this.user = user;
+    public void setUsersOwnersIds(List<String> usersOwnersIds) {
+        this.usersOwnersIds = usersOwnersIds;
     }
 
     public NetworkDataDto getNetworkData() {

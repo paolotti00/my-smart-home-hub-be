@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @RequestMapping("registration/device/")
 public interface IDeviceRegistrationRestController {
@@ -18,7 +19,7 @@ public interface IDeviceRegistrationRestController {
 
     @GetMapping("toactivate")
     @JsonView(JsonViewConfig.HighDetail.class)
-    ResponseEntity<ArrayList<DeviceDto>> getDevicesToActivate(@RequestHeader(RestConst.HEADER_USER_ID) String userId) throws MissingFieldException, UserNotExistException;
+    ResponseEntity<List<DeviceDto>> getDevicesToActivate(@RequestHeader(RestConst.HEADER_USER_ID) String userId) throws MissingFieldException, UserNotExistException;
 
     @PutMapping("/{deviceId}/activate")
     @JsonView(JsonViewConfig.HighDetail.class)

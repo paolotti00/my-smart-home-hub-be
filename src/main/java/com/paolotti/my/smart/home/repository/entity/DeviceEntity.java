@@ -8,13 +8,14 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @ToString
 @Document(collection = "devices")
 public class DeviceEntity extends BaseEntity {
     private String thingId;
-    private UserEntity user;
+    private List<String> usersOwnersIds;
     private NetworkData networkData;
     private String name;
     private ArrayList<DeviceComponentEntity> components;
@@ -33,12 +34,12 @@ public class DeviceEntity extends BaseEntity {
         this.thingId = thingId;
     }
 
-    public UserEntity getUser() {
-        return user;
+    public List<String> getUsersOwnersIds() {
+        return usersOwnersIds;
     }
 
-    public void setUser(UserEntity user) {
-        this.user = user;
+    public void setUsersOwnersIds(List<String> usersOwnersIds) {
+        this.usersOwnersIds = usersOwnersIds;
     }
 
     public NetworkData getNetworkData() {

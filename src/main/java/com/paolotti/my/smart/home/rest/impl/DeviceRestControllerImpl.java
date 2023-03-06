@@ -6,6 +6,7 @@ import com.paolotti.my.smart.home.exception.BrandNotSupportedException;
 import com.paolotti.my.smart.home.exception.DeviceNotExistsException;
 import com.paolotti.my.smart.home.exception.GenericException;
 import com.paolotti.my.smart.home.exception.MissingFieldException;
+import com.paolotti.my.smart.home.interceptor.InterceptorRestControllerExceptionHandler;
 import com.paolotti.my.smart.home.mapper.deprecated.IDeviceMapper;
 import com.paolotti.my.smart.home.mapper.deprecated.ILightEffectMessageMapper;
 import com.paolotti.my.smart.home.model.Device;
@@ -23,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController()
-public class DeviceRestControllerImpl implements IDeviceRestController {
+public class DeviceRestControllerImpl extends InterceptorRestControllerExceptionHandler implements IDeviceRestController {
     @Autowired
     IDeviceService deviceService;
     @Autowired

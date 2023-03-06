@@ -37,12 +37,9 @@ public interface IDeviceMapper {
     Device toModel (DeviceDto deviceDto);
     @Mapping(source = "components", target = "components", qualifiedByName = "toComponentsListModelDto")
     DeviceDto toDto (Device device);
-    @Deprecated
     @Mapping(source = "id", target = "id", qualifiedByName = "toStringId")
-    ArrayList<Device> toModels (ArrayList<DeviceEntity> deviceList);
-    @Mapping(source = "id", target = "id", qualifiedByName = "toStringId")
-    ArrayList<Device> toModels (List<DeviceEntity> deviceList);
-    ArrayList<DeviceDto> toDtos (ArrayList<Device>devices);
+    List<Device> toModelList(List<DeviceEntity> deviceList);
+    List<DeviceDto> toDtoList(List<Device>devices);
     DeviceComponentLightDto toDto (DeviceComponentLight deviceComponentLight);
     DeviceComponentLight toModel (DeviceComponentLightDto deviceComponentLightDto);
     DeviceComponentSensorTemperatureDto toDto (DeviceComponentSensorTemperature deviceComponentSensorTemperature);

@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GroupServiceImpl implements IGroupService {
     @Autowired
@@ -23,7 +24,7 @@ public class GroupServiceImpl implements IGroupService {
         logger.info("switching device lights by group : userId {} groupId {} desiredStatus {}", userId, groupId, desiredStatus);
         // todo retrieve the user
         // check if it have the permission to do something
-        ArrayList<Device> devices = deviceService.retrieveDevicesByGroupId(groupId);
+        List<Device> devices = deviceService.retrieveDevicesByGroupId(groupId);
         if (devices != null && !devices.isEmpty()) {
             devices.forEach(device -> {
                 try {

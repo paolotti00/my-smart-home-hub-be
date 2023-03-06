@@ -24,6 +24,7 @@ import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -89,6 +90,25 @@ public class DeviceServiceImpl implements IDeviceService {
     }
 
     @Override
+    public List<Device> getDevicesByUserId(String userId) throws ValidationException {
+        logger.info("retrieving device for user with id {}", userId);
+        List<Device>devices = new ArrayList<>();
+        if(StringUtils.isEmpty(userId)){
+            throw new ValidationException("userId cannot be null or empty");
+        }
+        Optional<List<DeviceEntity>> devicesOpt = deviceRepository.findByUsersOwnersIdsContaining(userId);
+        if(devicesOpt.isPresent()){
+            List<DeviceEntity> deviceEntities = devicesOpt.get();
+            devices = deviceMapper.toModelList(deviceEntities);
+        } else {
+            logger.warn("no devices found for user with id {}",userId);
+        }
+
+        logger.info("retrieved {} devices for user with id {}",devices.size(), userId);
+        return devices;
+    }
+
+    @Override
     public void doFwActionsSchema(String deviceId, DeviceActionsSchema deviceActionsSchema) {
 
     }
@@ -118,10 +138,10 @@ public class DeviceServiceImpl implements IDeviceService {
     }
 
     @Override
-    public ArrayList<Device> retrieveDevicesByGroupId(String groupId) throws GroupNotExistsException {
+    public List<Device> retrieveDevicesByGroupId(String groupId) throws GroupNotExistsException {
         // todo pt check if this user is the owner of this group or if can be read it
         logger.info("retrieving devices of the group with id {}", groupId);
-        ArrayList<Device>devices = new ArrayList<>();
+        List<Device>devices = new ArrayList<>();
         logger.info("checking if group with id {} exists",groupId);
         Optional<DeviceGroupEntity> deviceGroupEntityOpt = deviceGroupRepository.findById(groupId);
         if(!deviceGroupEntityOpt.isPresent()){
@@ -132,7 +152,7 @@ public class DeviceServiceImpl implements IDeviceService {
             logger.warn("no device in group id {} found", groupId);
         } else {
             logger.debug("converting deviceEntity to device model");
-            devices = deviceMapper.toModels(deviceGroupEntity.getDevices());
+            devices = deviceMapper.toModelList(deviceGroupEntity.getDevices());
         }
         logger.info("retrieved {} devices in the group with id {} and name",devices.size(),groupId);
         return devices;

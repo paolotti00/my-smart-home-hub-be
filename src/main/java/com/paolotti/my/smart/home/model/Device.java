@@ -5,12 +5,13 @@ import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 @ToString
 public class Device extends BaseModel{
 
     private String thingId;
-    private User user;
+    private List<String> usersOwnersIds;
     private NetworkData networkData;
     private String name;
     private ArrayList<DeviceComponent> components;
@@ -29,12 +30,12 @@ public class Device extends BaseModel{
         this.thingId = thingId;
     }
 
-    public User getUser() {
-        return user;
+    public List<String> getUsersOwnersIds() {
+        return usersOwnersIds;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUsersOwnersIds(List<String> usersOwnersIds) {
+        this.usersOwnersIds = usersOwnersIds;
     }
 
     public NetworkData getNetworkData() {
