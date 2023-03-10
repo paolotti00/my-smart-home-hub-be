@@ -43,7 +43,7 @@ public class IDeviceComponentServiceImpl implements IDeviceComponentService {
                             // todo
                             e.printStackTrace();
                         }
-                    case SENSOR_HEAT:
+                    case SENSOR_TEMPERATURE:
                         break;
                     case SENSOR_HUMIDITY:
                         break;
