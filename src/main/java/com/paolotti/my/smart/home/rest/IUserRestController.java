@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.ArrayList;
 import java.util.List;
 
-@RequestMapping("user")
+@RequestMapping("users")
 @Tag(name = "user")
 public interface IUserRestController {
     @Tag(name = "user")

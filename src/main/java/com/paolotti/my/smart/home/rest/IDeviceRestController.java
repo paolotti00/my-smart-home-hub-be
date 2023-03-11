@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.awt.*;
 import java.util.ArrayList;
 
-@RequestMapping("device")
+@RequestMapping("devices")
 @Tag(name = "device")
 public interface IDeviceRestController {
     @PostMapping("")
