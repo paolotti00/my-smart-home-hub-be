@@ -4,7 +4,6 @@ import com.paolotti.my.smart.home.enums.OnOffStatusEnum;
 import com.paolotti.my.smart.home.exception.*;
 import com.paolotti.my.smart.home.model.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public interface IDeviceService {
@@ -14,7 +13,7 @@ public interface IDeviceService {
 
     void doFwActionsSchema(String deviceId, DeviceActionsSchema deviceActionsSchema);
 
-    ArrayList<DeviceActionsSchema> getSupportedActionsSchemas(String deviceId);
+    List<Action> getSupportedActionsSchemas(String deviceId);
 
     void doCustomActionSchema(String deviceId, DeviceActionsSchema deviceActionsSchema);
 

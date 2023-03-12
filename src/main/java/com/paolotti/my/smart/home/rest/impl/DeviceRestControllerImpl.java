@@ -7,8 +7,10 @@ import com.paolotti.my.smart.home.exception.DeviceNotExistsException;
 import com.paolotti.my.smart.home.exception.GenericException;
 import com.paolotti.my.smart.home.exception.MissingFieldException;
 import com.paolotti.my.smart.home.interceptor.InterceptorRestControllerExceptionHandler;
+import com.paolotti.my.smart.home.mapper.IActionMapper;
 import com.paolotti.my.smart.home.mapper.deprecated.IDeviceMapper;
 import com.paolotti.my.smart.home.mapper.deprecated.ILightEffectMessageMapper;
+import com.paolotti.my.smart.home.model.Action;
 import com.paolotti.my.smart.home.model.Device;
 import com.paolotti.my.smart.home.dto.ActionDto;
 import com.paolotti.my.smart.home.rest.IDeviceRestController;
@@ -23,12 +25,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController()
 public class DeviceRestControllerImpl extends InterceptorRestControllerExceptionHandler implements IDeviceRestController {
     @Autowired
     IDeviceService deviceService;
     @Autowired
     IDeviceMapper deviceMapper;
+    @Autowired
+    IActionMapper actionMapper;
     @Autowired
     ILightEffectMessageMapper lightEffectMessageMapper;
     private static final Logger logger = LoggerFactory.getLogger(DeviceRestControllerImpl.class);
@@ -115,6 +121,26 @@ public class DeviceRestControllerImpl extends InterceptorRestControllerException
         try {
             deviceService.setColor(userId, deviceId,colorRgb);
             baseResponseDto.setMessage(String.format("device %s correctly set color %s", deviceId, colorRgb));
+            responseEntity = new ResponseEntity<>(baseResponseDto, HttpStatus.OK);
+        } catch (Exception e) {
+            logger.error("{} error", methodName);
+            throw e;
+        }
+        return responseEntity;
+    }
+    @Override
+    public ResponseEntity<BaseResponseDto<List<ActionDto>>> getSupportedActions(String deviceId) throws DeviceNotExistsException,GenericException {
+        String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
+        logger.info("{}: getting supported actions for device id {}", methodName, deviceId);
+        String userId = "ex"; // todo should be retrieved from spring Principal?
+        ResponseEntity<BaseResponseDto<List<ActionDto>>> responseEntity;
+        BaseResponseDto<List<ActionDto>> baseResponseDto = new BaseResponseDto<>();
+        List<ActionDto> actionDtoList;
+        try {
+            baseResponseDto.setResultStatus(ResultStatusEnum.OK);
+            List<Action> actionList = deviceService.getSupportedActionsSchemas(deviceId);
+            actionDtoList = actionMapper.toDtoList(actionList);
+            baseResponseDto.setData(actionDtoList);
             responseEntity = new ResponseEntity<>(baseResponseDto, HttpStatus.OK);
         } catch (Exception e) {
             logger.error("{} error", methodName);

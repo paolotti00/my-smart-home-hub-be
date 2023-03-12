@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.List;
 
 @RequestMapping("devices")
 @Tag(name = "device")
@@ -35,6 +36,11 @@ public interface IDeviceRestController {
     @PutMapping("{deviceId}/set/color")
     @Tag(name = "device")
     ResponseEntity<BaseResponseDto<?>> setColor(@PathVariable String deviceId, @RequestBody String rgbColor) throws DeviceNotExistsException, BrandNotSupportedException, GenericException;
+
+    @GetMapping("{deviceId}/actions")
+    @Tag(name = "device")
+    ResponseEntity<BaseResponseDto<List<ActionDto>>> getSupportedActions(@PathVariable  String deviceId) throws DeviceNotExistsException,GenericException;
+
     @PutMapping("{deviceId}/do/action")
     @Tag(name = "device")
     ResponseEntity<BaseResponseDto<?>> doAction(@PathVariable String deviceId, @RequestBody ActionDto actionDto) throws DeviceNotExistsException, BrandNotSupportedException, GenericException;

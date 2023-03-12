@@ -1,6 +1,7 @@
 package com.paolotti.my.smart.home.dto.rest;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.paolotti.my.smart.home.dto.ActionDto;
 import com.paolotti.my.smart.home.dto.DeviceComponentDto;
 import com.paolotti.my.smart.home.enums.*;
 import com.paolotti.my.smart.home.dto.rest.view.JsonViewConfig;
@@ -14,7 +15,7 @@ import java.util.List;
 public class DeviceDto {
     @JsonView(JsonViewConfig.HighDetail.class)
     private String id;
-    @JsonView(JsonViewConfig.LowDetail.class)
+    @JsonView(JsonViewConfig.HighDetail.class)
     private String thingId;;
     @JsonView(JsonViewConfig.LowDetail.class)
     private List<String> usersOwnersIds;
@@ -38,6 +39,8 @@ public class DeviceDto {
     private DeviceBrandEnum brand;
     @JsonView(JsonViewConfig.MediumDetail.class)
     private String firmwareVersion;
+    @JsonView(JsonViewConfig.HighDetail.class)
+    private List<ActionDto> supportedActions;
 
     public String getId() {
         return id;
@@ -141,5 +144,13 @@ public class DeviceDto {
 
     public void setFirmwareVersion(String firmwareVersion) {
         this.firmwareVersion = firmwareVersion;
+    }
+
+    public List<ActionDto> getSupportedActions() {
+        return supportedActions;
+    }
+
+    public void setSupportedActions(List<ActionDto> supportedActions) {
+        this.supportedActions = supportedActions;
     }
 }

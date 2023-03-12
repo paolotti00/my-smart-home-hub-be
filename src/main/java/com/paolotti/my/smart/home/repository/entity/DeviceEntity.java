@@ -25,6 +25,7 @@ public class DeviceEntity extends BaseEntity {
     private LocalDateTime activationDate;
     private DeviceBrandEnum brand;
     private String firmwareVersion;
+    private List<ActionEntity> supportedActions;
 
     public String getThingId() {
         return thingId;
@@ -114,6 +115,14 @@ public class DeviceEntity extends BaseEntity {
         this.firmwareVersion = firmwareVersion;
     }
 
+    public List<ActionEntity> getSupportedActions() {
+        return supportedActions;
+    }
+
+    public void setSupportedActions(List<ActionEntity> supportedActions) {
+        this.supportedActions = supportedActions;
+    }
+
     @ToString
     public abstract static class DeviceComponentEntity {
         private String id;
@@ -153,6 +162,47 @@ public class DeviceEntity extends BaseEntity {
             this.description = description;
         }
     }
+    public static class ActionEntity {
+        private String name;
+        private EffectDataEntity effectData;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public EffectDataEntity getEffectData() {
+            return effectData;
+        }
+
+        public void setEffectData(EffectDataEntity effectData) {
+            this.effectData = effectData;
+        }
+
+        public static class EffectDataEntity{
+            private String wait;
+            private ArrayList<String> rgbColors;
+
+            public String getWait() {
+                return wait;
+            }
+
+            public void setWait(String wait) {
+                this.wait = wait;
+            }
+
+            public ArrayList<String> getRgbColors() {
+                return rgbColors;
+            }
+
+            public void setRgbColors(ArrayList<String> rgbColors) {
+                this.rgbColors = rgbColors;
+            }
+        }
+    }
 
     @ToString
     @Document(collection = "devices")
@@ -173,47 +223,6 @@ public class DeviceEntity extends BaseEntity {
 
         public void setAction(ActionEntity action) {
             this.action = action;
-        }
-
-        public static class ActionEntity {
-            private String name;
-            private EffectDataEntity effectData;
-
-            public String getName() {
-                return name;
-            }
-
-            public void setName(String name) {
-                this.name = name;
-            }
-
-            public EffectDataEntity getEffectData() {
-                return effectData;
-            }
-
-            public void setEffectData(EffectDataEntity effectData) {
-                this.effectData = effectData;
-            }
-        }
-        public static class EffectDataEntity{
-            private String wait;
-            private ArrayList<String> rgbColors;
-
-            public String getWait() {
-                return wait;
-            }
-
-            public void setWait(String wait) {
-                this.wait = wait;
-            }
-
-            public ArrayList<String> getRgbColors() {
-                return rgbColors;
-            }
-
-            public void setRgbColors(ArrayList<String> rgbColors) {
-                this.rgbColors = rgbColors;
-            }
         }
     }
 

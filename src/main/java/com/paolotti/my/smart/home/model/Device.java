@@ -21,6 +21,7 @@ public class Device extends BaseModel{
     private LocalDateTime activationDate;
     private DeviceBrandEnum brand;
     private String firmwareVersion;
+    private List<Action> supportedActions;
 
     public String getThingId() {
         return thingId;
@@ -108,5 +109,13 @@ public class Device extends BaseModel{
 
     public void setFirmwareVersion(String firmwareVersion) {
         this.firmwareVersion = firmwareVersion;
+    }
+
+    public List<Action> getSupportedActions() {
+        return supportedActions;
+    }
+
+    public void setSupportedActions(List<Action> supportedActions) {
+        this.supportedActions = supportedActions;
     }
 }

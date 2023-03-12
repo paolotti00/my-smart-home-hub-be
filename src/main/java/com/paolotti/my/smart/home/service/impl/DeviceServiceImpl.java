@@ -2,6 +2,7 @@ package com.paolotti.my.smart.home.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.paolotti.my.smart.home.dto.ActionDto;
 import com.paolotti.my.smart.home.enums.*;
 import com.paolotti.my.smart.home.exception.*;
 import com.paolotti.my.smart.home.factory.IBeanFactoryService;
@@ -114,7 +115,7 @@ public class DeviceServiceImpl implements IDeviceService {
     }
 
     @Override
-    public ArrayList<DeviceActionsSchema> getSupportedActionsSchemas(String deviceId) {
+    public List<Action> getSupportedActionsSchemas(String deviceId) {
         return null;
     }
 
