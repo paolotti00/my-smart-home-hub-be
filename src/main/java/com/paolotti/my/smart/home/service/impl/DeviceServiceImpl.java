@@ -2,7 +2,6 @@ package com.paolotti.my.smart.home.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.paolotti.my.smart.home.dto.ActionDto;
 import com.paolotti.my.smart.home.enums.*;
 import com.paolotti.my.smart.home.exception.*;
 import com.paolotti.my.smart.home.factory.IBeanFactoryService;
@@ -210,49 +209,62 @@ public class DeviceServiceImpl implements IDeviceService {
     // status
 
     @Override
-    public void updateDeviceStatusFromAckReceived(CommandAck commandAck) throws ValidationException, DeviceNotExistsException {
-        logger.info("updating status of device id {} by ack received {}",commandAck.getThingId(),commandAck);
+    public void updateDeviceStatusFromAckReceived(AckCommand ackCommand) throws ValidationException, DeviceNotExistsException {
+        logger.info("updating status of device id {} by ack received {}", ackCommand.getThingId(), ackCommand);
         // validation
         logger.info("validation started");
-        if (commandAck.getCommandId()==null || !StringUtils.hasText(commandAck.getCommandId())){
-            throw new ValidationException("commandId is null or empty. commandId =" +commandAck.getCommandId());
+        if (ackCommand.getCommandId()==null || !StringUtils.hasText(ackCommand.getCommandId())){
+            throw new ValidationException("commandId is null or empty. commandId =" + ackCommand.getCommandId());
         }
-        if (commandAck.getThingId()==null || !StringUtils.hasText(commandAck.getThingId()) ){
-            throw new ValidationException("deviceId is null or empty. thinkId =" + commandAck.getThingId());
+        if (ackCommand.getThingId()==null || !StringUtils.hasText(ackCommand.getThingId()) ){
+            throw new ValidationException("deviceId is null or empty. thinkId =" + ackCommand.getThingId());
         }
-        if(commandAck.getAck()==null){
+        if(ackCommand.getAck()==null){
             throw new ValidationException("command ack is null");
         }
-        if(commandAck.getDeviceStatus()==null){
+        if(ackCommand.getDeviceStatus()==null){
             throw new ValidationException("deviceStatus is null");
         }
         logger.info("validation finished. all is ok.");
         // execution
         // update command status on db
-        updateCommandStatusOnDb(commandAck);
+        updateCommandStatusOnDb(ackCommand);
+        // update device status on db
+        updateDeviceStatus(ackCommand.getThingId(), ackCommand.getDeviceStatus());
+        logger.info("status of device id {} correctly updated", ackCommand.getThingId());
+    }
+
+    @Override
+    public void updateDeviceStatusFromPingReceived(PingDeviceStatus pingDeviceStatus) throws ValidationException, DeviceNotExistsException {
+        logger.info("updating status of device id {} by ping received {}", pingDeviceStatus.getThingId(), pingDeviceStatus);
+        // update device status on db
+        updateDeviceStatus(pingDeviceStatus.getThingId(), pingDeviceStatus.getDeviceStatus());
+        logger.info("status of device id {} correctly updated", pingDeviceStatus.getThingId());
+    }
+
+    private void updateDeviceStatus(String thingId, DeviceStatus deviceStatus) throws DeviceNotExistsException {
         // getting device from db
-        Optional<DeviceEntity> deviceEntityOpt = deviceRepository.findByThingId(commandAck.getThingId());
+        Optional<DeviceEntity> deviceEntityOpt = deviceRepository.findByThingId(thingId);
         if(!deviceEntityOpt.isPresent()){
-            logger.error("device with thingId : {} not exists. can't update component status",commandAck.getThingId());
-            throw new DeviceNotExistsException("thingId: "+commandAck.getThingId());
+            logger.error("device with thingId : {} not exists. can't update component status", thingId);
+            throw new DeviceNotExistsException("thingId: "+ thingId);
         }
         DeviceEntity deviceEntity = deviceEntityOpt.get();
         // updating components status
-        deviceComponentService.updateComponentsStatus(deviceEntity,commandAck.getDeviceStatus().getComponents());
+        deviceComponentService.updateComponentsStatus(deviceEntity, deviceStatus.getComponents());
         deviceEntity.setUpdateDate(LocalDateTime.now());
         deviceEntity.setStatus(DeviceConnectionStatusEnum.ONLINE);
         logger.info("device id {} set update time and connection status {}",deviceEntity.getId(),DeviceConnectionStatusEnum.ONLINE);
         deviceRepository.save(deviceEntity);
-        logger.info("status of device id {} correctly updated",commandAck.getThingId());
     }
 
-    private void updateCommandStatusOnDb(CommandAck commandAck){
+    private void updateCommandStatusOnDb(AckCommand ackCommand){
         // getting command saved on db and update it
-        Optional<CommandEntity> commandEntityOpt = commandRepository.findByCommandId(commandAck.getCommandId());
+        Optional<CommandEntity> commandEntityOpt = commandRepository.findByCommandId(ackCommand.getCommandId());
         if (commandEntityOpt.isPresent()){
             CommandEntity commandEntity = commandEntityOpt.get();
-            logger.info("for commandId {} command db entity id {} was retrieved",commandAck.getCommandId(), commandEntity.getId());
-            if(commandAck.getAck()== ResultStatusEnum.OK){
+            logger.info("for commandId {} command db entity id {} was retrieved", ackCommand.getCommandId(), commandEntity.getId());
+            if(ackCommand.getAck()== ResultStatusEnum.OK){
                 commandEntity.setStatusEnum(CommandStatusEnum.DONE);
             } else {
                 commandEntity.setStatusEnum(CommandStatusEnum.ERROR);
@@ -261,7 +273,7 @@ public class DeviceServiceImpl implements IDeviceService {
             commandRepository.save(commandEntity);
             logger.info("command entity id {} status correctly updated",commandEntity.getId());
         } else {
-            logger.warn("no command db entity found for command id {}",commandAck.getCommandId());
+            logger.warn("no command db entity found for command id {}", ackCommand.getCommandId());
         }
     }
 

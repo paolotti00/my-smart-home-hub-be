@@ -4,19 +4,10 @@ import com.paolotti.my.smart.home.enums.ResultStatusEnum;
 import lombok.ToString;
 
 @ToString
-public class CommandAck {
-    private String thingId;
+public class AckCommand extends AckBase {
     private String commandId;
     private ResultStatusEnum ack;
     private DeviceStatus deviceStatus;
-
-    public String getThingId() {
-        return thingId;
-    }
-
-    public void setThingId(String thingId) {
-        this.thingId = thingId;
-    }
 
     public String getCommandId() {
         return commandId;

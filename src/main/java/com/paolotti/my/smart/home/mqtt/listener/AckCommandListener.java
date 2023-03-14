@@ -1,9 +1,9 @@
 package com.paolotti.my.smart.home.mqtt.listener;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.paolotti.my.smart.home.dto.mqtt.CommandAckDto;
-import com.paolotti.my.smart.home.mapper.ICommandAckMapper;
-import com.paolotti.my.smart.home.model.CommandAck;
+import com.paolotti.my.smart.home.dto.mqtt.AckCommandDto;
+import com.paolotti.my.smart.home.mapper.IAckCommandMapper;
+import com.paolotti.my.smart.home.model.AckCommand;
 import com.paolotti.my.smart.home.service.IDeviceService;
 import org.eclipse.paho.client.mqttv3.*;
 import org.slf4j.Logger;
@@ -15,15 +15,15 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AckListener {
+public class AckCommandListener {
     @Autowired
     private MqttAsyncClient mqttAsyncClient;
     @Autowired
     private IDeviceService deviceService;
     @Autowired
-    private ICommandAckMapper commandAckMapper;
-    private static final Logger logger = LoggerFactory.getLogger(AckListener.class);
-    @Value("${mqtt.topic.command.ack}")
+    private IAckCommandMapper commandAckMapper;
+    private static final Logger logger = LoggerFactory.getLogger(AckCommandListener.class);
+    @Value("${mqtt.topic.ack.command}")
     private String ackTopic;
 
     @EventListener(ApplicationReadyEvent.class)
@@ -48,9 +48,9 @@ public class AckListener {
     void handle(String message) throws MqttException {
         logger.info("received: {} on topic {} : ",message,ackTopic);
         try {
-            CommandAckDto commandAckDto = new ObjectMapper().readValue(message, CommandAckDto.class);
-            CommandAck commandAck = commandAckMapper.toModel(commandAckDto);
-            deviceService.updateDeviceStatusFromAckReceived(commandAck);
+            AckCommandDto ackCommandDto = new ObjectMapper().readValue(message, AckCommandDto.class);
+            AckCommand ackCommand = commandAckMapper.toModel(ackCommandDto);
+            deviceService.updateDeviceStatusFromAckReceived(ackCommand);
         } catch (Exception e) {
             // todo
             e.printStackTrace();
