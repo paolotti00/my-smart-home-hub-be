@@ -2,10 +2,12 @@ package com.paolotti.my.smart.home.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.paolotti.my.smart.home.dto.mqtt.DeviceStatusDto;
 import com.paolotti.my.smart.home.enums.*;
 import com.paolotti.my.smart.home.exception.*;
 import com.paolotti.my.smart.home.factory.IBeanFactoryService;
 import com.paolotti.my.smart.home.mapper.ICommandMapper;
+import com.paolotti.my.smart.home.mapper.IDeviceStatusMapper;
 import com.paolotti.my.smart.home.mapper.deprecated.IDeviceMapper;
 import com.paolotti.my.smart.home.model.*;
 import com.paolotti.my.smart.home.repository.CommandRepository;
@@ -19,6 +21,7 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -36,6 +39,8 @@ public class DeviceServiceImpl implements IDeviceService {
     @Autowired
     ICommandMapper commandMapper;
     @Autowired
+    IDeviceStatusMapper deviceStatusMapper;
+    @Autowired
     IBeanFactoryService beanFactoryService;
     @Autowired
     IMqttMessagingService mqttMessagingService;
@@ -47,13 +52,16 @@ public class DeviceServiceImpl implements IDeviceService {
     DeviceGroupRepository deviceGroupRepository;
     @Autowired
     CommandRepository commandRepository;
+    @Autowired
+    SimpMessagingTemplate simpMessagingTemplate;
 
     private static final Logger logger = LoggerFactory.getLogger(DeviceServiceImpl.class);
+    private static final String DEVICE_STATUS_UPDATED_WEBSOCKET_TOPIC = "/topic/device/{deviceId}/status";
 
     @Override
-    public Device create(Device device) throws  MissingFieldException {
+    public Device create(Device device) throws MissingFieldException {
         String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
-        logger.info("{}: creation device started, device to create {}",methodName,device);
+        logger.info("{}: creation device started, device to create {}", methodName, device);
         Device finalDevice = device;
         // validation
         ArrayList<ValidationHelperObject> toValidateItems = new ArrayList<>();
@@ -65,8 +73,8 @@ public class DeviceServiceImpl implements IDeviceService {
         device.setInstallationStatus(DeviceInstallationStatusEnum.TO_ACTIVATE);
         DeviceEntity deviceEntity = deviceMapper.toEntity(device);
         deviceEntity = deviceRepository.save(deviceEntity);
-        logger.info("entity saved with id {}",deviceEntity.getId());
-        logger.debug("the entity saved is {}",deviceEntity);
+        logger.info("entity saved with id {}", deviceEntity.getId());
+        logger.debug("the entity saved is {}", deviceEntity);
         device = deviceMapper.toModel(deviceEntity);
         return device;
     }
@@ -74,7 +82,7 @@ public class DeviceServiceImpl implements IDeviceService {
     @Override
     public Device getDevice(String deviceId) throws DeviceNotExistsException, ValidationException {
         logger.info("retrieving device with id {}", deviceId);
-        if(StringUtils.isEmpty(deviceId)){
+        if (StringUtils.isEmpty(deviceId)) {
             throw new ValidationException("deviceId cannot be null or empty");
         }
         Optional<DeviceEntity> deviceEntityOpt = deviceRepository.findById(deviceId);
@@ -92,19 +100,19 @@ public class DeviceServiceImpl implements IDeviceService {
     @Override
     public List<Device> getDevicesByUserId(String userId) throws ValidationException {
         logger.info("retrieving device for user with id {}", userId);
-        List<Device>devices = new ArrayList<>();
-        if(StringUtils.isEmpty(userId)){
+        List<Device> devices = new ArrayList<>();
+        if (StringUtils.isEmpty(userId)) {
             throw new ValidationException("userId cannot be null or empty");
         }
         Optional<List<DeviceEntity>> devicesOpt = deviceRepository.findByUsersOwnersIdsContaining(userId);
-        if(devicesOpt.isPresent()){
+        if (devicesOpt.isPresent()) {
             List<DeviceEntity> deviceEntities = devicesOpt.get();
             devices = deviceMapper.toModelList(deviceEntities);
         } else {
-            logger.warn("no devices found for user with id {}",userId);
+            logger.warn("no devices found for user with id {}", userId);
         }
 
-        logger.info("retrieved {} devices for user with id {}",devices.size(), userId);
+        logger.info("retrieved {} devices for user with id {}", devices.size(), userId);
         return devices;
     }
 
@@ -141,10 +149,10 @@ public class DeviceServiceImpl implements IDeviceService {
     public List<Device> retrieveDevicesByGroupId(String groupId) throws GroupNotExistsException {
         // todo pt check if this user is the owner of this group or if can be read it
         logger.info("retrieving devices of the group with id {}", groupId);
-        List<Device>devices = new ArrayList<>();
-        logger.info("checking if group with id {} exists",groupId);
+        List<Device> devices = new ArrayList<>();
+        logger.info("checking if group with id {} exists", groupId);
         Optional<DeviceGroupEntity> deviceGroupEntityOpt = deviceGroupRepository.findById(groupId);
-        if(!deviceGroupEntityOpt.isPresent()){
+        if (!deviceGroupEntityOpt.isPresent()) {
             throw new GroupNotExistsException(groupId);
         }
         DeviceGroupEntity deviceGroupEntity = deviceGroupEntityOpt.get();
@@ -154,25 +162,28 @@ public class DeviceServiceImpl implements IDeviceService {
             logger.debug("converting deviceEntity to device model");
             devices = deviceMapper.toModelList(deviceGroupEntity.getDevices());
         }
-        logger.info("retrieved {} devices in the group with id {} and name",devices.size(),groupId);
+        logger.info("retrieved {} devices in the group with id {} and name", devices.size(), groupId);
         return devices;
     }
+
     // command
     @Override
     public void sendMqttCommandToAll(String topic, String payloadToEncapsulate) throws GenericException {
-        sendMqttCommand(topic,payloadToEncapsulate,null,null);
-    }
-    @Override
-    public void sendMqttCommandToDevice(String topic, String payloadToEncapsulate, Device device) throws GenericException {
-        sendMqttCommand(topic,payloadToEncapsulate,device,null);
-    }
-    @Override
-    public void sendMqttCommandToDeviceGroup(String topic, String payloadToEncapsulate, DeviceGroup deviceGroup) throws GenericException {
-        sendMqttCommand(topic,payloadToEncapsulate,null,deviceGroup);
+        sendMqttCommand(topic, payloadToEncapsulate, null, null);
     }
 
-    private void sendMqttCommand (String topic, String payloadToEncapsulate, Device device, DeviceGroup deviceGroup) throws GenericException {
-        logger.info("sending mqtt command on topic {} with payloadToEncapsulate {} to deviceId {}",topic,payloadToEncapsulate,device!=null?device.getId():"all");
+    @Override
+    public void sendMqttCommandToDevice(String topic, String payloadToEncapsulate, Device device) throws GenericException {
+        sendMqttCommand(topic, payloadToEncapsulate, device, null);
+    }
+
+    @Override
+    public void sendMqttCommandToDeviceGroup(String topic, String payloadToEncapsulate, DeviceGroup deviceGroup) throws GenericException {
+        sendMqttCommand(topic, payloadToEncapsulate, null, deviceGroup);
+    }
+
+    private void sendMqttCommand(String topic, String payloadToEncapsulate, Device device, DeviceGroup deviceGroup) throws GenericException {
+        logger.info("sending mqtt command on topic {} with payloadToEncapsulate {} to deviceId {}", topic, payloadToEncapsulate, device != null ? device.getId() : "all");
         String commandId = null;
         String payload = null;
         try {
@@ -183,27 +194,28 @@ public class DeviceServiceImpl implements IDeviceService {
             command.setData(payloadToEncapsulate);
             payload = objectMapper.writeValueAsString(commandMapper.toDto(command));
             mqttMessagingService.publish(topic, payload, 1, true);
-            saveCommandInDb(command,device,deviceGroup);
+            saveCommandInDb(command, device, deviceGroup);
             // todo save command on db - create entity
         } catch (JsonProcessingException | MqttException e) {
             e.printStackTrace();
             throw new GenericException("error occurred: " + e.getMessage());
         }
-        logger.info("sent - mqtt commandId {} on topic {} with payload {} to deviceId {}",commandId,topic,payload,device!=null?device.getId():"all");
+        logger.info("sent - mqtt commandId {} on topic {} with payload {} to deviceId {}", commandId, topic, payload, device != null ? device.getId() : "all");
     }
-    private void saveCommandInDb(Command command,Device device, DeviceGroup deviceGroup){
+
+    private void saveCommandInDb(Command command, Device device, DeviceGroup deviceGroup) {
         // save sent command in db
-        logger.info("saving in db commandId {}, deviceId{}, groupId {}",command.getCommandId(),device!=null?device.getId():null,deviceGroup!=null?deviceGroup.getId():null);
+        logger.info("saving in db commandId {}, deviceId{}, groupId {}", command.getCommandId(), device != null ? device.getId() : null, deviceGroup != null ? deviceGroup.getId() : null);
         command.setStatusEnum(CommandStatusEnum.PENDING);
         command.setCreationDate(LocalDateTime.now());
-        if(device!=null){
+        if (device != null) {
             // is a command to specific device
             command.setDeviceId(device.getId());
             command.setThingId(device.getThingId());
             command.setDestinationType(CommandDestinationTypeEnum.TO_DEVICE);
         } // todo check other case
         CommandEntity commandEntity = commandRepository.save(commandMapper.toEntity(command));
-        logger.info("saved in db commandId {}, deviceId{} , groupId {} with id {}",command.getCommandId(),device!=null?device.getId():null,deviceGroup!=null?deviceGroup.getId():null,commandEntity.getId());
+        logger.info("saved in db commandId {}, deviceId{} , groupId {} with id {}", command.getCommandId(), device != null ? device.getId() : null, deviceGroup != null ? deviceGroup.getId() : null, commandEntity.getId());
     }
 
     // status
@@ -213,16 +225,16 @@ public class DeviceServiceImpl implements IDeviceService {
         logger.info("updating status of device id {} by ack received {}", ackCommand.getThingId(), ackCommand);
         // validation
         logger.info("validation started");
-        if (ackCommand.getCommandId()==null || !StringUtils.hasText(ackCommand.getCommandId())){
+        if (ackCommand.getCommandId() == null || !StringUtils.hasText(ackCommand.getCommandId())) {
             throw new ValidationException("commandId is null or empty. commandId =" + ackCommand.getCommandId());
         }
-        if (ackCommand.getThingId()==null || !StringUtils.hasText(ackCommand.getThingId()) ){
+        if (ackCommand.getThingId() == null || !StringUtils.hasText(ackCommand.getThingId())) {
             throw new ValidationException("deviceId is null or empty. thinkId =" + ackCommand.getThingId());
         }
-        if(ackCommand.getAck()==null){
+        if (ackCommand.getAck() == null) {
             throw new ValidationException("command ack is null");
         }
-        if(ackCommand.getDeviceStatus()==null){
+        if (ackCommand.getDeviceStatus() == null) {
             throw new ValidationException("deviceStatus is null");
         }
         logger.info("validation finished. all is ok.");
@@ -235,49 +247,66 @@ public class DeviceServiceImpl implements IDeviceService {
     }
 
     @Override
-    public void updateDeviceStatusFromPingReceived(PingDeviceStatus pingDeviceStatus) throws ValidationException, DeviceNotExistsException {
-        logger.info("updating status of device id {} by ping received {}", pingDeviceStatus.getThingId(), pingDeviceStatus);
+    public void handleDeviceStatusFromPingReceived(PingDeviceStatus pingDeviceStatus) throws ValidationException, DeviceNotExistsException {
+        logger.info("handling update status of device id {} by ping received {}", pingDeviceStatus.getThingId(), pingDeviceStatus);
+
         // update device status on db
         updateDeviceStatus(pingDeviceStatus.getThingId(), pingDeviceStatus.getDeviceStatus());
-        logger.info("status of device id {} correctly updated", pingDeviceStatus.getThingId());
+        // sending websocket update
+        sendUpdatedDeviceStatusByWebsocket(pingDeviceStatus.getThingId(), pingDeviceStatus.getDeviceStatus());
+
+        logger.info("update status of device id {} by ping correctly handled", pingDeviceStatus.getThingId());
     }
 
     private void updateDeviceStatus(String thingId, DeviceStatus deviceStatus) throws DeviceNotExistsException {
+        logger.info("updating status of device id {} by ping received {}", thingId, deviceStatus);
         // getting device from db
         Optional<DeviceEntity> deviceEntityOpt = deviceRepository.findByThingId(thingId);
-        if(!deviceEntityOpt.isPresent()){
+        if (!deviceEntityOpt.isPresent()) {
             logger.error("device with thingId : {} not exists. can't update component status", thingId);
-            throw new DeviceNotExistsException("thingId: "+ thingId);
+            throw new DeviceNotExistsException("thingId: " + thingId);
         }
         DeviceEntity deviceEntity = deviceEntityOpt.get();
         // updating components status
         deviceComponentService.updateComponentsStatus(deviceEntity, deviceStatus.getComponents());
         deviceEntity.setUpdateDate(LocalDateTime.now());
         deviceEntity.setStatus(DeviceConnectionStatusEnum.ONLINE);
-        logger.info("device id {} set update time and connection status {}",deviceEntity.getId(),DeviceConnectionStatusEnum.ONLINE);
+        logger.info("device id {} set update time and connection status {}", deviceEntity.getId(), DeviceConnectionStatusEnum.ONLINE);
+        logger.info("status of device id {} correctly updated", thingId);
         deviceRepository.save(deviceEntity);
     }
 
-    private void updateCommandStatusOnDb(AckCommand ackCommand){
+    private void sendUpdatedDeviceStatusByWebsocket(String thingId, DeviceStatus deviceStatus) throws DeviceNotExistsException {
+        logger.info("sending updateStatus {} by websocket for thingId {}", deviceStatus, thingId);
+        Optional<DeviceEntity> deviceEntityOpt = deviceRepository.findByThingId(thingId);
+        if (!deviceEntityOpt.isPresent()) {
+            logger.error("device with thingId : {} not exists. can't update component status", thingId);
+            throw new DeviceNotExistsException("thingId: " + thingId);
+        }
+        DeviceEntity deviceEntity = deviceEntityOpt.get();
+        DeviceStatusDto deviceStatusDto = deviceStatusMapper.toDto(deviceStatus);
+        simpMessagingTemplate.convertAndSend(DEVICE_STATUS_UPDATED_WEBSOCKET_TOPIC.replace("{deviceId}", deviceEntity.getId().toHexString()), deviceStatusDto);
+        logger.info("updateStatus {} by websocket for thingId {} was sent correctly", deviceStatus, thingId);
+    }
+
+    private void updateCommandStatusOnDb(AckCommand ackCommand) {
         // getting command saved on db and update it
         Optional<CommandEntity> commandEntityOpt = commandRepository.findByCommandId(ackCommand.getCommandId());
-        if (commandEntityOpt.isPresent()){
+        if (commandEntityOpt.isPresent()) {
             CommandEntity commandEntity = commandEntityOpt.get();
             logger.info("for commandId {} command db entity id {} was retrieved", ackCommand.getCommandId(), commandEntity.getId());
-            if(ackCommand.getAck()== ResultStatusEnum.OK){
+            if (ackCommand.getAck() == ResultStatusEnum.OK) {
                 commandEntity.setStatusEnum(CommandStatusEnum.DONE);
             } else {
                 commandEntity.setStatusEnum(CommandStatusEnum.ERROR);
             }
             commandEntity.setUpdateDate(LocalDateTime.now());
             commandRepository.save(commandEntity);
-            logger.info("command entity id {} status correctly updated",commandEntity.getId());
+            logger.info("command entity id {} status correctly updated", commandEntity.getId());
         } else {
             logger.warn("no command db entity found for command id {}", ackCommand.getCommandId());
         }
     }
-
-
 
 
     // light
@@ -309,7 +338,7 @@ public class DeviceServiceImpl implements IDeviceService {
         Device device = getActiveDeviceById(deviceId);
         logger.info("device retrieved {}", device);
         IDeviceByBrandService deviceLightByBrandService = beanFactoryService.getDeviceLightByBrandServiceImpl(device.getBrand());
-        deviceLightByBrandService.setColor(device,rgbColor);
+        deviceLightByBrandService.setColor(device, rgbColor);
         logger.info("colorRgb {} correctly set", rgbColor);
     }
 

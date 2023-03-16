@@ -1,10 +1,8 @@
 package com.paolotti.my.smart.home.mqtt.listener;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.paolotti.my.smart.home.dto.mqtt.AckCommandDto;
 import com.paolotti.my.smart.home.dto.mqtt.PingDeviceStatusDto;
 import com.paolotti.my.smart.home.mapper.IPingDeviceStatusMapper;
-import com.paolotti.my.smart.home.model.AckCommand;
 import com.paolotti.my.smart.home.model.PingDeviceStatus;
 import com.paolotti.my.smart.home.service.IDeviceService;
 import org.eclipse.paho.client.mqttv3.*;
@@ -53,7 +51,7 @@ public class PingDeviceStatusListener {
         try {
             PingDeviceStatusDto pingDeviceStatusDto = new ObjectMapper().readValue(message, PingDeviceStatusDto.class);
             PingDeviceStatus pingDeviceStatus = pingDeviceStatusMapper.toModel(pingDeviceStatusDto);
-            deviceService.updateDeviceStatusFromPingReceived(pingDeviceStatus);
+            deviceService.handleDeviceStatusFromPingReceived(pingDeviceStatus);
         } catch (Exception e) {
             // todo
             e.printStackTrace();
