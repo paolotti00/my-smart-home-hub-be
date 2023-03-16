@@ -277,7 +277,7 @@ public class DeviceServiceImpl implements IDeviceService {
     }
 
     private void sendUpdatedDeviceStatusByWebsocket(String thingId, DeviceStatus deviceStatus) throws DeviceNotExistsException {
-        logger.info("sending updateStatus {} by websocket for thingId {}", deviceStatus, thingId);
+        logger.info("sending, by websocket, for thingId {} updateStatus {}", thingId, deviceStatus);
         Optional<DeviceEntity> deviceEntityOpt = deviceRepository.findByThingId(thingId);
         if (!deviceEntityOpt.isPresent()) {
             logger.error("device with thingId : {} not exists. can't update component status", thingId);
@@ -286,7 +286,8 @@ public class DeviceServiceImpl implements IDeviceService {
         DeviceEntity deviceEntity = deviceEntityOpt.get();
         DeviceStatusDto deviceStatusDto = deviceStatusMapper.toDto(deviceStatus);
         simpMessagingTemplate.convertAndSend(DEVICE_STATUS_UPDATED_WEBSOCKET_TOPIC.replace("{deviceId}", deviceEntity.getId().toHexString()), deviceStatusDto);
-        logger.info("updateStatus {} by websocket for thingId {} was sent correctly", deviceStatus, thingId);
+        // logger.info("updateStatus {} by websocket for thingId {} was sent correctly", deviceStatusDto, thingId); // todo understand why in the log just DeviceComponentDto is logged and not DeviceComponentLightDto
+        logger.info("updateStatus by websocket for thingId {} was sent correctly", thingId);
     }
 
     private void updateCommandStatusOnDb(AckCommand ackCommand) {

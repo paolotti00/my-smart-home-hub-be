@@ -5,7 +5,7 @@ import com.paolotti.my.smart.home.model.PingDeviceStatus;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 
-@Mapper( componentModel = "spring" , injectionStrategy = InjectionStrategy.CONSTRUCTOR,uses = {IBaseMapper.class, IAckCommandDeviceStatusMapper.class})
+@Mapper( componentModel = "spring" , injectionStrategy = InjectionStrategy.CONSTRUCTOR,uses = {IBaseMapper.class, IDeviceComponentMapper.class})
 public interface IPingDeviceStatusMapper {
     PingDeviceStatusDto toDto (PingDeviceStatus pingDeviceStatus);
     PingDeviceStatus toModel (PingDeviceStatusDto ackDeviceStatusDto);
