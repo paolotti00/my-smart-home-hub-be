@@ -1,0 +1,8 @@
+version: '2'
+services:
+  mysmarthommybe:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    image: paolotti/iot/mysmarthommy/backend
+# push `docker tag paolotti/iot/mysmarthommy/backend:latest 192.168.50.32:5000/paolotti/iot/mysmarthommy/backend:latest && docker push 192.168.50.32:5000/paolotti/iot/mysmarthommy/backend:latest`
