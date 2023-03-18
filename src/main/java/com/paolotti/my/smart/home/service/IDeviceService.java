@@ -10,6 +10,7 @@ public interface IDeviceService {
     Device create(Device device) throws MissingFieldException;
     Device getDevice(String deviceId) throws DeviceNotExistsException, ValidationException;
     List<Device> getDevicesByUserId(String userId) throws ValidationException;
+    List<Device> getDevicesByRoomId(String roomId) throws ValidationException, RoomNotExistsException;
 
     void doFwActionsSchema(String deviceId, DeviceActionsSchema deviceActionsSchema);
 
@@ -18,8 +19,6 @@ public interface IDeviceService {
     void doCustomActionSchema(String deviceId, DeviceActionsSchema deviceActionsSchema);
 
     Device getActiveDeviceById(String deviceId) throws DeviceNotExistsException;
-
-    List<Device> retrieveDevicesByGroupId(String groupId) throws GroupNotExistsException;
 
     // command
     void sendMqttCommandToAll(String topic, String payloadToEncapsulate) throws GenericException;

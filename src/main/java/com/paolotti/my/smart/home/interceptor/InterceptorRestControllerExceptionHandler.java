@@ -33,7 +33,7 @@ public class InterceptorRestControllerExceptionHandler extends ResponseEntityExc
             DeviceAlreadyRegisteredException.class,
             DeviceNotExistsException.class,
             DeviceWrongStatusException.class,
-            GroupNotExistsException.class,
+            RoomNotExistsException.class,
             UserNotExistException.class
     })
     protected ResponseEntity<Object> handleManagedErrorsExceptions(Exception ex, WebRequest request){

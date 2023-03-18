@@ -1,7 +1,6 @@
 package com.paolotti.my.smart.home.interceptor;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.paolotti.my.smart.home.rest.impl.UserRestControllerImplRestControllerExceptionHandler;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;

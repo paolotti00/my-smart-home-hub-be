@@ -11,11 +11,11 @@ import com.paolotti.my.smart.home.mapper.IDeviceStatusMapper;
 import com.paolotti.my.smart.home.mapper.deprecated.IDeviceMapper;
 import com.paolotti.my.smart.home.model.*;
 import com.paolotti.my.smart.home.repository.CommandRepository;
-import com.paolotti.my.smart.home.repository.DeviceGroupRepository;
+import com.paolotti.my.smart.home.repository.RoomRepository;
 import com.paolotti.my.smart.home.repository.DeviceRepository;
 import com.paolotti.my.smart.home.repository.entity.CommandEntity;
 import com.paolotti.my.smart.home.repository.entity.DeviceEntity;
-import com.paolotti.my.smart.home.repository.entity.DeviceGroupEntity;
+import com.paolotti.my.smart.home.repository.entity.RoomEntity;
 import com.paolotti.my.smart.home.service.*;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.slf4j.Logger;
@@ -49,7 +49,7 @@ public class DeviceServiceImpl implements IDeviceService {
     @Autowired
     DeviceRepository deviceRepository;
     @Autowired
-    DeviceGroupRepository deviceGroupRepository;
+    RoomRepository roomRepository;
     @Autowired
     CommandRepository commandRepository;
     @Autowired
@@ -146,23 +146,23 @@ public class DeviceServiceImpl implements IDeviceService {
     }
 
     @Override
-    public List<Device> retrieveDevicesByGroupId(String groupId) throws GroupNotExistsException {
-        // todo pt check if this user is the owner of this group or if can be read it
-        logger.info("retrieving devices of the group with id {}", groupId);
+    public List<Device> getDevicesByRoomId(String roomId) throws RoomNotExistsException {
+        // todo pt check if this user is the owner of this room or if can be read it
+        logger.info("retrieving devices of the room with id {}", roomId);
         List<Device> devices = new ArrayList<>();
-        logger.info("checking if group with id {} exists", groupId);
-        Optional<DeviceGroupEntity> deviceGroupEntityOpt = deviceGroupRepository.findById(groupId);
-        if (!deviceGroupEntityOpt.isPresent()) {
-            throw new GroupNotExistsException(groupId);
+        logger.info("checking if room with id {} exists", roomId);
+        Optional<RoomEntity> roomEntityOpt = roomRepository.findById(roomId);
+        if (!roomEntityOpt.isPresent()) {
+            throw new RoomNotExistsException(roomId);
         }
-        DeviceGroupEntity deviceGroupEntity = deviceGroupEntityOpt.get();
-        if (deviceGroupEntity.getDevices().isEmpty()) {
-            logger.warn("no device in group id {} found", groupId);
+        RoomEntity roomEntity = roomEntityOpt.get();
+        if (roomEntity.getDevices().isEmpty()) {
+            logger.warn("no device in room id {} found", roomId);
         } else {
             logger.debug("converting deviceEntity to device model");
-            devices = deviceMapper.toModelList(deviceGroupEntity.getDevices());
+            devices = deviceMapper.toModelList(roomEntity.getDevices());
         }
-        logger.info("retrieved {} devices in the group with id {} and name", devices.size(), groupId);
+        logger.info("retrieved {} devices in the room with id {} and name", devices.size(), roomId);
         return devices;
     }
 
