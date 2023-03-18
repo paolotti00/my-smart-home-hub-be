@@ -229,13 +229,13 @@ public class DeviceEntity extends BaseEntity {
     @ToString
     @Document(collection = "devices")
     public static class DeviceComponentEntitySensorTemperature extends DeviceComponentEntity {
-        private String temp;
+        private Double temp;
 
-        public String getTemp() {
+        public Double getTemp() {
             return temp;
         }
 
-        public void setTemp(String temp) {
+        public void setTemp(Double temp) {
             this.temp = temp;
         }
     }

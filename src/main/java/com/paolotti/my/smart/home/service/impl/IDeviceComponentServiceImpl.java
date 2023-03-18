@@ -1,7 +1,7 @@
 package com.paolotti.my.smart.home.service.impl;
 
 import com.paolotti.my.smart.home.exception.NotExistException;
-import com.paolotti.my.smart.home.mapper.deprecated.IDeviceComponentLightMapper;
+import com.paolotti.my.smart.home.mapper.IDeviceComponentMapper;
 import com.paolotti.my.smart.home.mapper.deprecated.ILedMapper;
 import com.paolotti.my.smart.home.model.DeviceComponent;
 import com.paolotti.my.smart.home.model.DeviceComponentLight;
@@ -23,7 +23,7 @@ public class IDeviceComponentServiceImpl implements IDeviceComponentService {
     @Autowired
     DeviceRepository deviceRepository;
     @Autowired
-    IDeviceComponentLightMapper deviceComponentLightMapper;
+    IDeviceComponentMapper deviceComponentMapper;
     @Autowired
     ILedMapper ledMapper;
 
@@ -38,7 +38,7 @@ public class IDeviceComponentServiceImpl implements IDeviceComponentService {
                 switch (deviceComponent.getType()){
                     case LIGHT:
                         try {
-                            updateComponentLightStatus(deviceEntity, deviceComponentLightMapper.toEntity((DeviceComponentLight) deviceComponent));
+                            updateComponentLightStatus(deviceEntity, deviceComponentMapper.toEntity((DeviceComponentLight) deviceComponent));
                         } catch (NotExistException e) {
                             // todo
                             e.printStackTrace();
