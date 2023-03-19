@@ -26,4 +26,7 @@ public interface IRoomMapper {
 
     @Mapping(source = "id", target = "id", qualifiedByName = "toStringId")
     List<RoomDto> toDtoList(List<Room> deviceList);
+
+    @Mapping(source = "id", target = "id", qualifiedByName = "toStringId")
+    List<Room> toModelList(List<RoomEntity> roomEntityList);
 }

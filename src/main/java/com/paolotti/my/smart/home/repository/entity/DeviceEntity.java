@@ -16,6 +16,7 @@ import java.util.Map;
 public class DeviceEntity extends BaseEntity {
     private String thingId;
     private List<String> usersOwnersIds;
+    private String roomId;
     private NetworkData networkData;
     private String name;
     private ArrayList<DeviceComponentEntity> components;
@@ -41,6 +42,14 @@ public class DeviceEntity extends BaseEntity {
 
     public void setUsersOwnersIds(List<String> usersOwnersIds) {
         this.usersOwnersIds = usersOwnersIds;
+    }
+
+    public String getRoomId() {
+        return roomId;
+    }
+
+    public void setRoomId(String roomId) {
+        this.roomId = roomId;
     }
 
     public NetworkData getNetworkData() {

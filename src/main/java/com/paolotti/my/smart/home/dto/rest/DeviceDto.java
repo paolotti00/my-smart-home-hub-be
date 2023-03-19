@@ -20,6 +20,8 @@ public class DeviceDto {
     @JsonView(JsonViewConfig.LowDetail.class)
     private List<String> usersOwnersIds;
     @JsonView(JsonViewConfig.LowDetail.class)
+    private String roomId;
+    @JsonView(JsonViewConfig.LowDetail.class)
     private NetworkDataDto networkData;
     @JsonView(JsonViewConfig.LowDetail.class)
     private String name;
@@ -64,6 +66,14 @@ public class DeviceDto {
 
     public void setUsersOwnersIds(List<String> usersOwnersIds) {
         this.usersOwnersIds = usersOwnersIds;
+    }
+
+    public String getRoomId() {
+        return roomId;
+    }
+
+    public void setRoomId(String roomId) {
+        this.roomId = roomId;
     }
 
     public NetworkDataDto getNetworkData() {

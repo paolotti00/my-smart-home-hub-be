@@ -13,4 +13,5 @@ public interface DeviceRepository extends MongoRepository<DeviceEntity,String>, 
     Optional<DeviceEntity> findById(ObjectId id);
     Optional<DeviceEntity> findByThingId(String thingId);
     Optional<List<DeviceEntity>> findByUsersOwnersIdsContaining(String userId);
+    Optional<List<DeviceEntity>> findByRoomId(String roomId);
 }

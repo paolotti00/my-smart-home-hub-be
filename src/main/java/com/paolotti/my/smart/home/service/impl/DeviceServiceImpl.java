@@ -155,12 +155,12 @@ public class DeviceServiceImpl implements IDeviceService {
         if (!roomEntityOpt.isPresent()) {
             throw new RoomNotExistsException(roomId);
         }
-        RoomEntity roomEntity = roomEntityOpt.get();
-        if (roomEntity.getDevices().isEmpty()) {
+        Optional<List<DeviceEntity>> deviceEntityListOpt = deviceRepository.findByRoomId(roomId);
+        if (!deviceEntityListOpt.isPresent()) {
             logger.warn("no device in room id {} found", roomId);
         } else {
             logger.debug("converting deviceEntity to device model");
-            devices = deviceMapper.toModelList(roomEntity.getDevices());
+            devices = deviceMapper.toModelList(deviceEntityListOpt.get());
         }
         logger.info("retrieved {} devices in the room with id {} and name", devices.size(), roomId);
         return devices;

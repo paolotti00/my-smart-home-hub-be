@@ -8,7 +8,6 @@ public class RoomDto {
     private String id;
     private List<String> usersOwnersIds;
     private String name;
-    List<DeviceDto> devices;
     private double humidity;
     private double temp;
 
@@ -34,14 +33,6 @@ public class RoomDto {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public List<DeviceDto> getDevices() {
-        return devices;
-    }
-
-    public void setDevices(List<DeviceDto> devices) {
-        this.devices = devices;
     }
 
     public double getHumidity() {

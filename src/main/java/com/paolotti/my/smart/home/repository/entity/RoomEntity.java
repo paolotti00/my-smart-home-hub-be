@@ -10,7 +10,6 @@ import java.util.List;
 public class RoomEntity extends BaseEntity{
     private List<String> usersOwnersIds;
     private String name;
-    List<DeviceEntity> devices;
 
     public List<String> getUsersOwnersIds() {
         return usersOwnersIds;
@@ -26,13 +25,5 @@ public class RoomEntity extends BaseEntity{
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public List<DeviceEntity> getDevices() {
-        return devices;
-    }
-
-    public void setDevices(List<DeviceEntity> devices) {
-        this.devices = devices;
     }
 }

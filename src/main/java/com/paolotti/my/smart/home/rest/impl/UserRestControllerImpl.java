@@ -44,7 +44,7 @@ public class UserRestControllerImpl extends InterceptorRestControllerExceptionHa
         ResponseEntity<BaseResponseDto<List<RoomDto>>> dtoResponseEntity = null;
         BaseResponseDto<List<RoomDto>> baseResponseDto = new BaseResponseDto<>();
         try {
-            List<Room> deviceList = roomService.getRooms(userId);
+            List<Room> deviceList = roomService.getRoomsByUserId(userId);
             roomDtoList = roomMapper.toDtoList(deviceList);
             baseResponseDto.setData(roomDtoList);
             baseResponseDto.setResultStatus(ResultStatusEnum.OK);

@@ -12,6 +12,7 @@ public class Device extends BaseModel{
 
     private String thingId;
     private List<String> usersOwnersIds;
+    private String roomId;
     private NetworkData networkData;
     private String name;
     private ArrayList<DeviceComponent> components;
@@ -37,6 +38,14 @@ public class Device extends BaseModel{
 
     public void setUsersOwnersIds(List<String> usersOwnersIds) {
         this.usersOwnersIds = usersOwnersIds;
+    }
+
+    public String getRoomId() {
+        return roomId;
+    }
+
+    public void setRoomId(String roomId) {
+        this.roomId = roomId;
     }
 
     public NetworkData getNetworkData() {

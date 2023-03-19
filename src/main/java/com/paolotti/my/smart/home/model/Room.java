@@ -8,7 +8,6 @@ import java.util.List;
 public class Room extends BaseModel {
     private List<String> usersOwnersIds;
     private String name;
-    List<Device> devices;
     private double humidity;
     private double temp;
 
@@ -26,14 +25,6 @@ public class Room extends BaseModel {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public List<Device> getDevices() {
-        return devices;
-    }
-
-    public void setDevices(List<Device> devices) {
-        this.devices = devices;
     }
 
     public double getHumidity() {
