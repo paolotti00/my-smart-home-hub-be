@@ -136,7 +136,7 @@ public class DeviceEntity extends BaseEntity {
     public abstract static class DeviceComponentEntity {
         private String id;
         private DeviceComponentTypeEnum type;
-        private DeviceConnectionStatusEnum status;
+        private OnOffStatusEnum status;
         private String description;
 
         public String getId() {
@@ -155,11 +155,11 @@ public class DeviceEntity extends BaseEntity {
             this.type = type;
         }
 
-        public DeviceConnectionStatusEnum getStatus() {
+        public OnOffStatusEnum getStatus() {
             return status;
         }
 
-        public void setStatus(DeviceConnectionStatusEnum status) {
+        public void setStatus(OnOffStatusEnum status) {
             this.status = status;
         }
 

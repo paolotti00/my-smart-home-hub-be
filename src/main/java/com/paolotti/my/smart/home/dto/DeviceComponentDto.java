@@ -8,6 +8,7 @@ import com.paolotti.my.smart.home.dto.rest.DeviceComponentSensorTemperatureDto;
 import com.paolotti.my.smart.home.enums.DeviceComponentTypeEnum;
 import com.paolotti.my.smart.home.enums.DeviceConnectionStatusEnum;
 import com.paolotti.my.smart.home.dto.rest.view.JsonViewConfig;
+import com.paolotti.my.smart.home.enums.OnOffStatusEnum;
 import lombok.ToString;
 
 @ToString
@@ -22,7 +23,7 @@ public class DeviceComponentDto {
     @JsonView(JsonViewConfig.LowDetail.class)
     private DeviceComponentTypeEnum type;
     @JsonView(JsonViewConfig.LowDetail.class)
-    private DeviceConnectionStatusEnum connectionStatus;
+    private OnOffStatusEnum status;
     @JsonView(JsonViewConfig.LowDetail.class)
     private String description;
 
@@ -42,12 +43,12 @@ public class DeviceComponentDto {
         this.type = type;
     }
 
-    public DeviceConnectionStatusEnum getConnectionStatus() {
-        return connectionStatus;
+    public OnOffStatusEnum getStatus() {
+        return status;
     }
 
-    public void setConnectionStatus(DeviceConnectionStatusEnum connectionStatus) {
-        this.connectionStatus = connectionStatus;
+    public void setStatus(OnOffStatusEnum status) {
+        this.status = status;
     }
 
     public String getDescription() {

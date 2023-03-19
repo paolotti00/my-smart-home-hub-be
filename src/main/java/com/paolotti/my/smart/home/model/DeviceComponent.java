@@ -2,13 +2,14 @@ package com.paolotti.my.smart.home.model;
 
 import com.paolotti.my.smart.home.enums.DeviceComponentTypeEnum;
 import com.paolotti.my.smart.home.enums.DeviceConnectionStatusEnum;
+import com.paolotti.my.smart.home.enums.OnOffStatusEnum;
 import lombok.ToString;
 
 @ToString
 public class DeviceComponent{
     private String id;
     private DeviceComponentTypeEnum type;
-    private DeviceConnectionStatusEnum connectionStatus;
+    private OnOffStatusEnum status;
     private String description;
 
     public String getId() {
@@ -27,12 +28,12 @@ public class DeviceComponent{
         this.type = type;
     }
 
-    public DeviceConnectionStatusEnum getConnectionStatus() {
-        return connectionStatus;
+    public OnOffStatusEnum getStatus() {
+        return status;
     }
 
-    public void setConnectionStatus(DeviceConnectionStatusEnum connectionStatus) {
-        this.connectionStatus = connectionStatus;
+    public void setStatus(OnOffStatusEnum status) {
+        this.status = status;
     }
 
     public String getDescription() {
