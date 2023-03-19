@@ -2,6 +2,7 @@ package com.paolotti.my.smart.home.rest;
 
 import com.paolotti.my.smart.home.dto.rest.BaseResponseDto;
 import com.paolotti.my.smart.home.dto.rest.DeviceDto;
+import com.paolotti.my.smart.home.exception.RoomNotExistsException;
 import com.paolotti.my.smart.home.exception.ValidationException;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,6 @@ import java.util.List;
 public interface IRoomRestController {
     @Tag(name = "user")
     @GetMapping("{roomId}/devices")
-    ResponseEntity<BaseResponseDto<List<DeviceDto>>> getDevices(@PathVariable String roomId) throws ValidationException;
+    ResponseEntity<BaseResponseDto<List<DeviceDto>>> getDevices(@PathVariable String roomId) throws ValidationException, RoomNotExistsException;
 
 }
