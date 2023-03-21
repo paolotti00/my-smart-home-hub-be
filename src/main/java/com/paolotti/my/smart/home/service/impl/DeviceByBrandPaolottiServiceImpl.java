@@ -25,7 +25,8 @@ public class DeviceByBrandPaolottiServiceImpl implements IDeviceByBrandService {
     IDeviceService deviceService;
 
     private static final Logger logger = LoggerFactory.getLogger(DeviceByBrandPaolottiServiceImpl.class);
-    private static final String EFFECT_TOPIC = "light_effect"; // todo add deviceId to topic
+    private static final String TOPIC_LIGHT = "light"; // todo add deviceId to topic
+    private static final String TOPIC_LIGHT_EFFECT_BASE = "light_effect"; // todo add deviceId to topic
     private static final String SET_COLOR_EFFECT_NAME = "simple_color";
 
     /**
@@ -64,7 +65,7 @@ public class DeviceByBrandPaolottiServiceImpl implements IDeviceByBrandService {
                 add(rgbColor);
             }}));
             payload = objectMapper.writeValueAsString(actionDto);
-            deviceService.sendMqttCommandToDevice(EFFECT_TOPIC,payload,device);
+            deviceService.sendMqttCommandToDevice(TOPIC_LIGHT+"/"+device.getThingId()+"/"+TOPIC_LIGHT_EFFECT_BASE,payload,device);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             throw new GenericException("error occurred: " + e.getMessage());
@@ -85,7 +86,7 @@ public class DeviceByBrandPaolottiServiceImpl implements IDeviceByBrandService {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             payload = objectMapper.writeValueAsString(lightEffectMessageMapper.toDto(action));
-            deviceService.sendMqttCommandToDevice(EFFECT_TOPIC,payload,device);
+            deviceService.sendMqttCommandToDevice(TOPIC_LIGHT+"/"+device.getThingId()+"/"+TOPIC_LIGHT_EFFECT_BASE,payload,device);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             throw new GenericException("error occurred: " + e.getMessage());
