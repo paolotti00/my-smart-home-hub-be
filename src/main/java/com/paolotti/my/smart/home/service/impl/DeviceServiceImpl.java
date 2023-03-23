@@ -312,34 +312,24 @@ public class DeviceServiceImpl implements IDeviceService {
 
     // light
     @Override
-    public void switchAllLights(String userId, String deviceId, OnOffStatusEnum desiredStatus) throws BrandNotSupportedException, DeviceNotExistsException {
-        logger.info("switching device lights by device : userId {} deviceId {} desiredStatus {}", userId, deviceId, desiredStatus);
+    public void switchAllLights(String userId, String deviceId, OnOffStatusEnum onOffStatusEnum) throws GenericException {
+        logger.info("switching device lights by device : userId {} deviceId {} onOffStatusEnum {}", userId, deviceId, onOffStatusEnum);
         // todo retrieve the user
         // check if have the permission to do something
         Device device = getActiveDeviceById(deviceId);
         logger.info("device retrieved {}", device);
         IDeviceByBrandService deviceLightByBrandService = beanFactoryService.getDeviceLightByBrandServiceImpl(device.getBrand());
-        switch (desiredStatus) {
-            case ON:
-                deviceLightByBrandService.switchOn(device);
-                logger.info("device {} switched ON", device.getId());
-                break;
-            case OFF:
-                deviceLightByBrandService.switchOff(device);
-                logger.info("device {} switched OFF", device.getId());
-                break;
-        }
+        deviceLightByBrandService.switchLight(device, onOffStatusEnum);
     }
 
-    @Override
-    public void setColor(String userId, String deviceId, String rgbColor) throws BrandNotSupportedException, DeviceNotExistsException, GenericException {
+    public void setLightColor(String userId, String deviceId, String rgbColor) throws BrandNotSupportedException, DeviceNotExistsException, GenericException {
         logger.info("setting device lights color to : userId {} deviceId {} colorRgb {}", userId, deviceId, rgbColor);
         // todo retrieve the user
         // check if have the permission to do something
         Device device = getActiveDeviceById(deviceId);
         logger.info("device retrieved {}", device);
         IDeviceByBrandService deviceLightByBrandService = beanFactoryService.getDeviceLightByBrandServiceImpl(device.getBrand());
-        deviceLightByBrandService.setColor(device, rgbColor);
+        deviceLightByBrandService.setLightColor(device, rgbColor);
         logger.info("colorRgb {} correctly set", rgbColor);
     }
 
@@ -351,7 +341,7 @@ public class DeviceServiceImpl implements IDeviceService {
         Device device = getActiveDeviceById(deviceId);
         logger.info("device retrieved {}", device);
         IDeviceByBrandService deviceLightByBrandService = beanFactoryService.getDeviceLightByBrandServiceImpl(device.getBrand());
-        deviceLightByBrandService.doEffect(device, action);
+        deviceLightByBrandService.doLightEffect(device, action);
         logger.info("correctly sent action to do : userId {} deviceId {} lightEffectMessage {}", userId, deviceId, action);
     }
 }

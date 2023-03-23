@@ -1,5 +1,9 @@
 package com.paolotti.my.smart.home.service.impl;
 
+import com.paolotti.my.smart.home.enums.OnOffStatusEnum;
+import com.paolotti.my.smart.home.exception.BrandNotSupportedException;
+import com.paolotti.my.smart.home.exception.DeviceNotExistsException;
+import com.paolotti.my.smart.home.exception.RoomNotExistsException;
 import com.paolotti.my.smart.home.exception.ValidationException;
 import com.paolotti.my.smart.home.mapper.IRoomMapper;
 import com.paolotti.my.smart.home.model.Device;
@@ -7,6 +11,7 @@ import com.paolotti.my.smart.home.model.Room;
 import com.paolotti.my.smart.home.repository.RoomRepository;
 import com.paolotti.my.smart.home.repository.entity.DeviceEntity;
 import com.paolotti.my.smart.home.repository.entity.RoomEntity;
+import com.paolotti.my.smart.home.service.IDeviceService;
 import com.paolotti.my.smart.home.service.IRoomService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +30,8 @@ public class RoomServiceImpl implements IRoomService {
     RoomRepository roomRepository;
     @Autowired
     IRoomMapper roomMapper;
+    @Autowired
+    IDeviceService deviceService;
     @Override
     public List<Room> getRoomsByUserId(String userId) throws ValidationException {
 

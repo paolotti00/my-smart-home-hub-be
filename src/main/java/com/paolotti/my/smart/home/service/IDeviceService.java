@@ -33,9 +33,9 @@ public interface IDeviceService {
 
 
     // light
-    void switchAllLights(String userId, String deviceId, OnOffStatusEnum desiredStatus) throws BrandNotSupportedException, DeviceNotExistsException;
+    void switchAllLights(String userId, String deviceId, OnOffStatusEnum desiredStatus) throws GenericException;
 
-    void setColor(String userId, String deviceId, String rgbColor) throws GenericException;
+    void setLightColor(String userId, String deviceId, String rgbColor) throws GenericException;
 
     void doAction(String userId, String deviceId, Action action) throws GenericException;
 

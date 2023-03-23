@@ -77,32 +77,14 @@ public class DeviceRestControllerImpl extends InterceptorRestControllerException
     }
 
     @Override
-    public ResponseEntity<BaseResponseDto<?>> switchOnAllLightsByDevice(String deviceId) throws DeviceNotExistsException, BrandNotSupportedException {
+    public ResponseEntity<BaseResponseDto<?>> switchLights(String deviceId, OnOffStatusEnum onOffStatus) throws GenericException {
         String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         logger.info("{}: device id {}", methodName, deviceId);
         String userId = "ex"; // todo should be retrieved from spring Principal?
         ResponseEntity<BaseResponseDto<?>> responseEntity;
         BaseResponseDto<?> baseResponseDto = new BaseResponseDto<>();
         try {
-            deviceService.switchAllLights(userId, deviceId, OnOffStatusEnum.ON);
-            baseResponseDto.setMessage(String.format("device %s correctly switched %s", deviceId, OnOffStatusEnum.ON));
-            responseEntity = new ResponseEntity<>(baseResponseDto, HttpStatus.OK);
-        } catch (Exception e) {
-            logger.error("{} error", methodName);
-            throw e;
-        }
-        return responseEntity;
-    }
-
-    @Override
-    public ResponseEntity<BaseResponseDto<?>> switchOffAllLights(String deviceId) throws DeviceNotExistsException, BrandNotSupportedException {
-        String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
-        logger.info("{}: device id {}", methodName, deviceId);
-        String userId = "ex"; // todo should be retrieved from spring Principal?
-        ResponseEntity<BaseResponseDto<?>> responseEntity;
-        BaseResponseDto<?> baseResponseDto = new BaseResponseDto<>();
-        try {
-            deviceService.switchAllLights(userId, deviceId, OnOffStatusEnum.OFF);
+            deviceService.switchAllLights(userId, deviceId, onOffStatus);
             baseResponseDto.setMessage(String.format("device %s correctly switched %s", deviceId, OnOffStatusEnum.OFF));
             responseEntity = new ResponseEntity<>(baseResponseDto, HttpStatus.OK);
         } catch (Exception e) {
@@ -112,14 +94,14 @@ public class DeviceRestControllerImpl extends InterceptorRestControllerException
         return responseEntity;
     }
     @Override
-    public ResponseEntity<BaseResponseDto<?>> setColor(String deviceId, String colorRgb) throws DeviceNotExistsException, BrandNotSupportedException, GenericException {
+    public ResponseEntity<BaseResponseDto<?>> setLightColor(String deviceId, String colorRgb) throws DeviceNotExistsException, BrandNotSupportedException, GenericException {
         String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         logger.info("{}: device id {} colorRgb {}", methodName, deviceId, colorRgb);
         String userId = "ex"; // todo should be retrieved from spring Principal?
         ResponseEntity<BaseResponseDto<?>> responseEntity;
         BaseResponseDto<?> baseResponseDto = new BaseResponseDto<>();
         try {
-            deviceService.setColor(userId, deviceId,colorRgb);
+            deviceService.setLightColor(userId, deviceId,colorRgb);
             baseResponseDto.setMessage(String.format("device %s correctly set color %s", deviceId, colorRgb));
             responseEntity = new ResponseEntity<>(baseResponseDto, HttpStatus.OK);
         } catch (Exception e) {

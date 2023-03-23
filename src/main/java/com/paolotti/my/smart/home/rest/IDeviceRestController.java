@@ -1,6 +1,7 @@
 package com.paolotti.my.smart.home.rest;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.paolotti.my.smart.home.enums.OnOffStatusEnum;
 import com.paolotti.my.smart.home.exception.BrandNotSupportedException;
 import com.paolotti.my.smart.home.exception.DeviceNotExistsException;
 import com.paolotti.my.smart.home.exception.GenericException;
@@ -13,8 +14,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @RequestMapping("devices")
@@ -27,15 +26,12 @@ public interface IDeviceRestController {
     @GetMapping("{deviceId}")
     @Tag(name = "device")
     ResponseEntity<BaseResponseDto<DeviceDto>>getDevice(@PathVariable String deviceId);
-    @PostMapping("{deviceId}/light/switch/on")
+    @PutMapping("{deviceId}/light/switch/{onOffStatus}")
     @Tag(name = "device")
-    ResponseEntity<BaseResponseDto<?>> switchOnAllLightsByDevice(@PathVariable String deviceId) throws DeviceNotExistsException, BrandNotSupportedException;
-    @PostMapping("{deviceId}/light/switch/off")
-    @Tag(name = "device")
-    ResponseEntity<BaseResponseDto<?>> switchOffAllLights(@PathVariable String deviceId) throws DeviceNotExistsException, BrandNotSupportedException;
+    ResponseEntity<BaseResponseDto<?>> switchLights(@PathVariable String deviceId, @PathVariable OnOffStatusEnum onOffStatus) throws GenericException;
     @PutMapping("{deviceId}/set/color")
     @Tag(name = "device")
-    ResponseEntity<BaseResponseDto<?>> setColor(@PathVariable String deviceId, @RequestBody String rgbColor) throws DeviceNotExistsException, BrandNotSupportedException, GenericException;
+    ResponseEntity<BaseResponseDto<?>> setLightColor(@PathVariable String deviceId, @RequestBody String rgbColor) throws DeviceNotExistsException, BrandNotSupportedException, GenericException;
 
     @GetMapping("{deviceId}/actions")
     @Tag(name = "device")

@@ -18,8 +18,8 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
-public class IDeviceComponentServiceImpl implements IDeviceComponentService {
-    private static final Logger logger = LoggerFactory.getLogger(IDeviceComponentServiceImpl.class);
+public class DeviceComponentServiceImpl implements IDeviceComponentService {
+    private static final Logger logger = LoggerFactory.getLogger(DeviceComponentServiceImpl.class);
     @Autowired
     DeviceRepository deviceRepository;
     @Autowired
@@ -77,6 +77,8 @@ public class IDeviceComponentServiceImpl implements IDeviceComponentService {
         deviceComponentLight.setAction(deviceComponentEntityLightUpdated.getAction());
         // leds
         deviceComponentLight.setLeds(deviceComponentEntityLightUpdated.getLeds());
+        // status
+        deviceComponentLight.setStatus(deviceComponentEntityLightUpdated.getStatus());
         // saving
         if (!componentAlreadyExist){
             deviceEntity.getComponents().add(deviceComponentLight);
