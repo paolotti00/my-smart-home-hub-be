@@ -1,56 +1,31 @@
 package com.paolotti.my.smart.home.dto.rest;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import com.paolotti.my.smart.home.dto.ActionDto;
-import com.paolotti.my.smart.home.dto.DeviceComponentDto;
 import com.paolotti.my.smart.home.enums.*;
-import com.paolotti.my.smart.home.dto.rest.view.JsonViewConfig;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @ToString
 public class DeviceDto {
-    @JsonView(JsonViewConfig.HighDetail.class)
-    private String id;
-    @JsonView(JsonViewConfig.HighDetail.class)
-    private String thingId;;
-    @JsonView(JsonViewConfig.LowDetail.class)
+    private String thingId;
     private List<String> usersOwnersIds;
-    @JsonView(JsonViewConfig.LowDetail.class)
     private String roomId;
-    @JsonView(JsonViewConfig.LowDetail.class)
     private NetworkDataDto networkData;
-    @JsonView(JsonViewConfig.LowDetail.class)
     private String name;
-    @JsonView(JsonViewConfig.LowDetail.class)
-    private ArrayList<DeviceComponentDto> components;
-    @JsonView(JsonViewConfig.HighDetail.class)
-    private DeviceConnectionStatusEnum status;
-    @JsonView(JsonViewConfig.HighDetail.class)
+    private List<SensorDto> sensors;
+    private ConnectionStatusEnum connectionStatusEnum;
     private DeviceInstallationStatusEnum installationStatus;
-    @JsonView(JsonViewConfig.HighDetail.class)
     private LocalDateTime registrationDate;
-    @JsonView(JsonViewConfig.HighDetail.class)
-    private LocalDateTime creationDate;
-    @JsonView(JsonViewConfig.HighDetail.class)
     private LocalDateTime activationDate;
-    @JsonView(JsonViewConfig.LowDetail.class)
     private DeviceBrandEnum brand;
-    @JsonView(JsonViewConfig.MediumDetail.class)
     private String firmwareVersion;
-    @JsonView(JsonViewConfig.HighDetail.class)
+    private List<Map<Integer, int[]>> leds;
     private List<ActionDto> supportedActions;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
+    private List<ConnectionModeEnum> connectionMode;
+    private List<ProtocolEnum> supportedProtocols;
 
     public String getThingId() {
         return thingId;
@@ -92,20 +67,20 @@ public class DeviceDto {
         this.name = name;
     }
 
-    public ArrayList<DeviceComponentDto> getComponents() {
-        return components;
+    public List<SensorDto> getSensors() {
+        return sensors;
     }
 
-    public void setComponents(ArrayList<DeviceComponentDto> components) {
-        this.components = components;
+    public void setSensors(List<SensorDto> sensors) {
+        this.sensors = sensors;
     }
 
-    public DeviceConnectionStatusEnum getStatus() {
-        return status;
+    public ConnectionStatusEnum getConnectionStatusEnum() {
+        return connectionStatusEnum;
     }
 
-    public void setStatus(DeviceConnectionStatusEnum status) {
-        this.status = status;
+    public void setConnectionStatusEnum(ConnectionStatusEnum connectionStatusEnum) {
+        this.connectionStatusEnum = connectionStatusEnum;
     }
 
     public DeviceInstallationStatusEnum getInstallationStatus() {
@@ -122,14 +97,6 @@ public class DeviceDto {
 
     public void setRegistrationDate(LocalDateTime registrationDate) {
         this.registrationDate = registrationDate;
-    }
-
-    public LocalDateTime getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(LocalDateTime creationDate) {
-        this.creationDate = creationDate;
     }
 
     public LocalDateTime getActivationDate() {
@@ -156,11 +123,35 @@ public class DeviceDto {
         this.firmwareVersion = firmwareVersion;
     }
 
+    public List<Map<Integer, int[]>> getLeds() {
+        return leds;
+    }
+
+    public void setLeds(List<Map<Integer, int[]>> leds) {
+        this.leds = leds;
+    }
+
     public List<ActionDto> getSupportedActions() {
         return supportedActions;
     }
 
     public void setSupportedActions(List<ActionDto> supportedActions) {
         this.supportedActions = supportedActions;
+    }
+
+    public List<ConnectionModeEnum> getConnectionMode() {
+        return connectionMode;
+    }
+
+    public void setConnectionMode(List<ConnectionModeEnum> connectionMode) {
+        this.connectionMode = connectionMode;
+    }
+
+    public List<ProtocolEnum> getSupportedProtocols() {
+        return supportedProtocols;
+    }
+
+    public void setSupportedProtocols(List<ProtocolEnum> supportedProtocols) {
+        this.supportedProtocols = supportedProtocols;
     }
 }

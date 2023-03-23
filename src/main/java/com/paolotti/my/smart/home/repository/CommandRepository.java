@@ -1,6 +1,6 @@
 package com.paolotti.my.smart.home.repository;
 
-import com.paolotti.my.smart.home.repository.entity.CommandEntity;
+import com.paolotti.my.smart.home.repository.entity.deprecated.CommandEntity;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;

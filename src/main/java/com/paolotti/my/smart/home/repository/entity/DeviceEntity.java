@@ -1,13 +1,10 @@
 package com.paolotti.my.smart.home.repository.entity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.paolotti.my.smart.home.enums.*;
-import com.paolotti.my.smart.home.model.EffectData;
 import lombok.ToString;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -19,125 +16,25 @@ public class DeviceEntity extends BaseEntity {
     private String roomId;
     private NetworkData networkData;
     private String name;
-    private ArrayList<DeviceComponentEntity> components;
-    private DeviceConnectionStatusEnum status;
+    private List<Sensor> sensors;
+    private List<Map<Integer, int[]>> leds;
+    private ConnectionStatusEnum connectionStatusEnum;
     private DeviceInstallationStatusEnum installationStatus;
     private LocalDateTime registrationDate;
     private LocalDateTime activationDate;
     private DeviceBrandEnum brand;
     private String firmwareVersion;
-    private List<ActionEntity> supportedActions;
-
-    public String getThingId() {
-        return thingId;
-    }
-
-    public void setThingId(String thingId) {
-        this.thingId = thingId;
-    }
-
-    public List<String> getUsersOwnersIds() {
-        return usersOwnersIds;
-    }
-
-    public void setUsersOwnersIds(List<String> usersOwnersIds) {
-        this.usersOwnersIds = usersOwnersIds;
-    }
-
-    public String getRoomId() {
-        return roomId;
-    }
-
-    public void setRoomId(String roomId) {
-        this.roomId = roomId;
-    }
-
-    public NetworkData getNetworkData() {
-        return networkData;
-    }
-
-    public void setNetworkData(NetworkData networkData) {
-        this.networkData = networkData;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public ArrayList<DeviceComponentEntity> getComponents() {
-        return components;
-    }
-
-    public void setComponents(ArrayList<DeviceComponentEntity> components) {
-        this.components = components;
-    }
-
-    public DeviceConnectionStatusEnum getStatus() {
-        return status;
-    }
-
-    public void setStatus(DeviceConnectionStatusEnum status) {
-        this.status = status;
-    }
-
-    public DeviceInstallationStatusEnum getInstallationStatus() {
-        return installationStatus;
-    }
-
-    public void setInstallationStatus(DeviceInstallationStatusEnum installationStatus) {
-        this.installationStatus = installationStatus;
-    }
-
-    public LocalDateTime getRegistrationDate() {
-        return registrationDate;
-    }
-
-    public void setRegistrationDate(LocalDateTime registrationDate) {
-        this.registrationDate = registrationDate;
-    }
-
-    public LocalDateTime getActivationDate() {
-        return activationDate;
-    }
-
-    public void setActivationDate(LocalDateTime activationDate) {
-        this.activationDate = activationDate;
-    }
-
-    public DeviceBrandEnum getBrand() {
-        return brand;
-    }
-
-    public void setBrand(DeviceBrandEnum brand) {
-        this.brand = brand;
-    }
-
-    public String getFirmwareVersion() {
-        return firmwareVersion;
-    }
-
-    public void setFirmwareVersion(String firmwareVersion) {
-        this.firmwareVersion = firmwareVersion;
-    }
-
-    public List<ActionEntity> getSupportedActions() {
-        return supportedActions;
-    }
-
-    public void setSupportedActions(List<ActionEntity> supportedActions) {
-        this.supportedActions = supportedActions;
-    }
+    private List<Action> supportedActions;
+    private List<ConnectionModeEnum> connectionMode;
+    private List<ProtocolEnum> supportedProtocols;
 
     @ToString
-    public abstract static class DeviceComponentEntity {
+    public static class Sensor {
         private String id;
-        private DeviceComponentTypeEnum type;
-        private OnOffStatusEnum status;
-        private String description;
+        private SensorTypeEnum type;
+        private double value;
+        private String unit;
+        private LocalDateTime timestamp;
 
         public String getId() {
             return id;
@@ -147,33 +44,42 @@ public class DeviceEntity extends BaseEntity {
             this.id = id;
         }
 
-        public DeviceComponentTypeEnum getType() {
+        public SensorTypeEnum getType() {
             return type;
         }
 
-        public void setType(DeviceComponentTypeEnum type) {
+        public void setType(SensorTypeEnum type) {
             this.type = type;
         }
 
-        public OnOffStatusEnum getStatus() {
-            return status;
+        public double getValue() {
+            return value;
         }
 
-        public void setStatus(OnOffStatusEnum status) {
-            this.status = status;
+        public void setValue(double value) {
+            this.value = value;
         }
 
-        public String getDescription() {
-            return description;
+        public String getUnit() {
+            return unit;
         }
 
-        public void setDescription(String description) {
-            this.description = description;
+        public void setUnit(String unit) {
+            this.unit = unit;
+        }
+
+        public LocalDateTime getTimestamp() {
+            return timestamp;
+        }
+
+        public void setTimestamp(LocalDateTime timestamp) {
+            this.timestamp = timestamp;
         }
     }
-    public static class ActionEntity {
+
+    public static class Action {
         private String name;
-        private EffectDataEntity effectData;
+        private List<Field> fields;
 
         public String getName() {
             return name;
@@ -183,70 +89,45 @@ public class DeviceEntity extends BaseEntity {
             this.name = name;
         }
 
-        public EffectDataEntity getEffectData() {
-            return effectData;
+        public List<Field> getFields() {
+            return fields;
         }
 
-        public void setEffectData(EffectDataEntity effectData) {
-            this.effectData = effectData;
+        public void setFields(List<Field> fields) {
+            this.fields = fields;
         }
 
-        public static class EffectDataEntity{
-            private String wait;
-            private ArrayList<String> rgbColors;
+        @ToString
+        public static class Field {
+            private String name;
+            private FieldTypeEnum type;
+            private boolean mandatory;
 
-            public String getWait() {
-                return wait;
+            public String getName() {
+                return name;
             }
 
-            public void setWait(String wait) {
-                this.wait = wait;
+            public void setName(String name) {
+                this.name = name;
             }
 
-            public ArrayList<String> getRgbColors() {
-                return rgbColors;
+            public FieldTypeEnum getType() {
+                return type;
             }
 
-            public void setRgbColors(ArrayList<String> rgbColors) {
-                this.rgbColors = rgbColors;
+            public void setType(FieldTypeEnum type) {
+                this.type = type;
+            }
+
+            public boolean isMandatory() {
+                return mandatory;
+            }
+
+            public void setMandatory(boolean mandatory) {
+                this.mandatory = mandatory;
             }
         }
-    }
 
-    @ToString
-    @Document(collection = "devices")
-    public static class DeviceComponentEntityLight extends DeviceComponentEntity {
-        private Map<Integer, LedEntity> leds;
-        private ActionEntity action;
-
-        public Map<Integer, LedEntity> getLeds() {
-            return leds;
-        }
-        public void setLeds(Map<Integer, LedEntity> leds) {
-            this.leds = leds;
-        }
-
-        public ActionEntity getAction() {
-            return action;
-        }
-
-        public void setAction(ActionEntity action) {
-            this.action = action;
-        }
-    }
-
-    @ToString
-    @Document(collection = "devices")
-    public static class DeviceComponentEntitySensorTemperature extends DeviceComponentEntity {
-        private Double temp;
-
-        public Double getTemp() {
-            return temp;
-        }
-
-        public void setTemp(Double temp) {
-            this.temp = temp;
-        }
     }
 
     @ToString
@@ -280,16 +161,4 @@ public class DeviceEntity extends BaseEntity {
         }
     }
 
-    @ToString
-    public static class LedEntity {
-        String rgbColor;
-
-        public String getRgbColor() {
-            return rgbColor;
-        }
-
-        public void setRgbColor(String rgbColor) {
-            this.rgbColor = rgbColor;
-        }
-    }
 }

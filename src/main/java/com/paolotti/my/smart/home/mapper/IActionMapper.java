@@ -1,6 +1,7 @@
 package com.paolotti.my.smart.home.mapper;
 
 import com.paolotti.my.smart.home.dto.ActionDto;
+import com.paolotti.my.smart.home.mapper.IBaseMapper;
 import com.paolotti.my.smart.home.model.Action;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
@@ -15,5 +16,5 @@ public interface IActionMapper {
 
     ActionDto toDto(Action action);
 
-    Action toModel(ActionDto actionDto);
+    Action toModel(ActionDto action);
 }

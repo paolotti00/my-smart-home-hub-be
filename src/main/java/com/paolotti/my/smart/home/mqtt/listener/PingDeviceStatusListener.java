@@ -1,10 +1,10 @@
 package com.paolotti.my.smart.home.mqtt.listener;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.paolotti.my.smart.home.dto.mqtt.PingDeviceStatusDto;
-import com.paolotti.my.smart.home.mapper.IPingDeviceStatusMapper;
-import com.paolotti.my.smart.home.model.PingDeviceStatus;
-import com.paolotti.my.smart.home.service.IDeviceService;
+import com.paolotti.my.smart.home.dto.deprecated.mqtt.PingDeviceStatusDto;
+import com.paolotti.my.smart.home.mapper.deprecated.IPingDeviceStatusMapper;
+import com.paolotti.my.smart.home.model.deprecated.PingDeviceStatus;
+import com.paolotti.my.smart.home.service.deprecated.IDeviceService;
 import org.eclipse.paho.client.mqttv3.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

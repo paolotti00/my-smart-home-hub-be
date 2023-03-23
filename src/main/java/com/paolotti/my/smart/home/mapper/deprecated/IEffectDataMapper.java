@@ -1,10 +1,9 @@
 package com.paolotti.my.smart.home.mapper.deprecated;
 
-import com.paolotti.my.smart.home.model.EffectData;
-import com.paolotti.my.smart.home.dto.EffectDataDto;
+import com.paolotti.my.smart.home.model.deprecated.EffectData;
+import com.paolotti.my.smart.home.dto.deprecated.EffectDataDto;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 @Mapper( componentModel = "spring",
         injectionStrategy = InjectionStrategy.CONSTRUCTOR)

@@ -1,10 +1,10 @@
 package com.paolotti.my.smart.home.mqtt.listener;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.paolotti.my.smart.home.dto.mqtt.AckCommandDto;
-import com.paolotti.my.smart.home.mapper.IAckCommandMapper;
-import com.paolotti.my.smart.home.model.AckCommand;
-import com.paolotti.my.smart.home.service.IDeviceService;
+import com.paolotti.my.smart.home.dto.deprecated.mqtt.AckCommandDto;
+import com.paolotti.my.smart.home.mapper.deprecated.IAckCommandMapper;
+import com.paolotti.my.smart.home.model.deprecated.AckCommand;
+import com.paolotti.my.smart.home.service.deprecated.IDeviceService;
 import org.eclipse.paho.client.mqttv3.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

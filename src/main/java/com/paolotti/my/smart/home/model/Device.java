@@ -1,28 +1,34 @@
 package com.paolotti.my.smart.home.model;
 
-import com.paolotti.my.smart.home.enums.*;
+import com.paolotti.my.smart.home.enums.ConnectionModeEnum;
+import com.paolotti.my.smart.home.enums.DeviceBrandEnum;
+import com.paolotti.my.smart.home.enums.ProtocolEnum;
+import com.paolotti.my.smart.home.enums.ConnectionStatusEnum;
+import com.paolotti.my.smart.home.enums.DeviceInstallationStatusEnum;
 import lombok.ToString;
-
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @ToString
-public class Device extends BaseModel{
+public class Device extends BaseModel {
 
     private String thingId;
     private List<String> usersOwnersIds;
     private String roomId;
     private NetworkData networkData;
     private String name;
-    private ArrayList<DeviceComponent> components;
-    private DeviceConnectionStatusEnum status;
+    private List<Sensor> sensors;
+    private ConnectionStatusEnum connectionStatusEnum;
     private DeviceInstallationStatusEnum installationStatus;
     private LocalDateTime registrationDate;
     private LocalDateTime activationDate;
     private DeviceBrandEnum brand;
     private String firmwareVersion;
+    private List<Map<Integer, int[]>> leds;
     private List<Action> supportedActions;
+    private List<ConnectionModeEnum> connectionMode;
+    private List<ProtocolEnum> supportedProtocols;
 
     public String getThingId() {
         return thingId;
@@ -64,20 +70,20 @@ public class Device extends BaseModel{
         this.name = name;
     }
 
-    public ArrayList<DeviceComponent> getComponents() {
-        return components;
+    public List<Sensor> getSensors() {
+        return sensors;
     }
 
-    public void setComponents(ArrayList<DeviceComponent> components) {
-        this.components = components;
+    public void setSensors(List<Sensor> sensors) {
+        this.sensors = sensors;
     }
 
-    public DeviceConnectionStatusEnum getStatus() {
-        return status;
+    public ConnectionStatusEnum getConnectionStatusEnum() {
+        return connectionStatusEnum;
     }
 
-    public void setStatus(DeviceConnectionStatusEnum status) {
-        this.status = status;
+    public void setConnectionStatusEnum(ConnectionStatusEnum connectionStatusEnum) {
+        this.connectionStatusEnum = connectionStatusEnum;
     }
 
     public DeviceInstallationStatusEnum getInstallationStatus() {
@@ -120,11 +126,35 @@ public class Device extends BaseModel{
         this.firmwareVersion = firmwareVersion;
     }
 
+    public List<Map<Integer, int[]>> getLeds() {
+        return leds;
+    }
+
+    public void setLeds(List<Map<Integer, int[]>> leds) {
+        this.leds = leds;
+    }
+
     public List<Action> getSupportedActions() {
         return supportedActions;
     }
 
     public void setSupportedActions(List<Action> supportedActions) {
         this.supportedActions = supportedActions;
+    }
+
+    public List<ConnectionModeEnum> getConnectionMode() {
+        return connectionMode;
+    }
+
+    public void setConnectionMode(List<ConnectionModeEnum> connectionMode) {
+        this.connectionMode = connectionMode;
+    }
+
+    public List<ProtocolEnum> getSupportedProtocols() {
+        return supportedProtocols;
+    }
+
+    public void setSupportedProtocols(List<ProtocolEnum> supportedProtocols) {
+        this.supportedProtocols = supportedProtocols;
     }
 }

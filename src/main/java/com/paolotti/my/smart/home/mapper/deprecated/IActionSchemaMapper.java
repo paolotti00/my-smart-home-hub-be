@@ -1,8 +1,8 @@
 package com.paolotti.my.smart.home.mapper.deprecated;
 
 import com.paolotti.my.smart.home.mapper.IBaseMapper;
-import com.paolotti.my.smart.home.model.DeviceActionsSchema;
-import com.paolotti.my.smart.home.repository.entity.DeviceActionSchemaEntity;
+import com.paolotti.my.smart.home.model.deprecated.DeviceActionsSchema;
+import com.paolotti.my.smart.home.repository.entity.deprecated.DeviceActionSchemaEntity;
 import org.mapstruct.Mapping;
 
 import java.util.ArrayList;
