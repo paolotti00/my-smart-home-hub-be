@@ -6,18 +6,23 @@ import com.paolotti.my.smart.home.enums.OnOffStatusEnum;
 import com.paolotti.my.smart.home.exception.*;
 import com.paolotti.my.smart.home.factory.IBeanFactoryService;
 import com.paolotti.my.smart.home.mapper.ICommandMapper;
+import com.paolotti.my.smart.home.mapper.IDeviceMapper;
 import com.paolotti.my.smart.home.model.Command;
 import com.paolotti.my.smart.home.model.ExtraActionCommandData;
 import com.paolotti.my.smart.home.model.Device;
 import com.paolotti.my.smart.home.repository.CommandRepository;
+import com.paolotti.my.smart.home.repository.DeviceRepository;
 import com.paolotti.my.smart.home.repository.entity.CommandEntity;
+import com.paolotti.my.smart.home.repository.entity.DeviceEntity;
 import com.paolotti.my.smart.home.service.IDeviceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public abstract class DeviceAbstractServiceImpl implements IDeviceService {
     private static final Logger logger = LoggerFactory.getLogger(DeviceAbstractServiceImpl.class);
@@ -28,6 +33,10 @@ public abstract class DeviceAbstractServiceImpl implements IDeviceService {
     ICommandMapper commandMapper;
     @Autowired
     CommandRepository commandRepository;
+    @Autowired
+    DeviceRepository deviceRepository;
+    @Autowired
+    IDeviceMapper deviceMapper;
 
 
 
@@ -38,7 +47,20 @@ public abstract class DeviceAbstractServiceImpl implements IDeviceService {
 
     @Override
     public Device getDevice(String deviceId) throws DeviceNotExistsException, ValidationException {
-        return null;
+        logger.info("retrieving device with id {}", deviceId);
+        if (StringUtils.isEmpty(deviceId)) {
+            throw new ValidationException("deviceId cannot be null or empty");
+        }
+        Optional<DeviceEntity> deviceEntityOpt = deviceRepository.findById(deviceId);
+        if (!deviceEntityOpt.isPresent()) {
+            logger.warn("no active device found with {} id", deviceId);
+            throw new DeviceNotExistsException(deviceId);
+        }
+        DeviceEntity deviceEntity = deviceEntityOpt.get();
+        logger.info("device {} retrieved, converting to model", deviceId);
+        Device device = deviceMapper.toModel(deviceEntity);
+        logger.info("device converted to {}", device);
+        return device;
     }
 
     @Override
