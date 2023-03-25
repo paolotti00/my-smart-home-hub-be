@@ -24,7 +24,7 @@ public class DeviceEntity extends BaseEntity {
     private LocalDateTime activationDate;
     private DeviceBrandEnum brand;
     private String firmwareVersion;
-    private List<ExtraActionCommandData> supportedExtraExtraActionCommandData;
+    private List<ExtraActionCommandData> supportedExtraActions;
     private List<ConnectionModeEnum> connectionMode;
     private List<ProtocolEnum> supportedProtocols;
 
@@ -132,12 +132,12 @@ public class DeviceEntity extends BaseEntity {
         this.firmwareVersion = firmwareVersion;
     }
 
-    public List<ExtraActionCommandData> getSupportedExtraExtraActionCommandData() {
-        return supportedExtraExtraActionCommandData;
+    public List<ExtraActionCommandData> getSupportedExtraActions() {
+        return supportedExtraActions;
     }
 
-    public void setSupportedExtraExtraActionCommandData(List<ExtraActionCommandData> supportedExtraExtraActionCommandData) {
-        this.supportedExtraExtraActionCommandData = supportedExtraExtraActionCommandData;
+    public void setSupportedExtraActions(List<ExtraActionCommandData> supportedExtraActions) {
+        this.supportedExtraActions = supportedExtraActions;
     }
 
     public List<ConnectionModeEnum> getConnectionMode() {

@@ -37,7 +37,7 @@ public interface IDeviceRestController {
     @Tag(name = "device")
     ResponseEntity<BaseResponseDto<List<ExtraActionCommandDataDto>>> getSupportedActions(@PathVariable  String deviceId) throws DeviceNotExistsException,GenericException;
 
-    @PutMapping("{deviceId}/do/action")
+    @PostMapping("{deviceId}/action")
     @Tag(name = "device")
     ResponseEntity<BaseResponseDto<?>> doAction(@PathVariable String deviceId, @RequestBody ExtraActionCommandDataDto extraActionCommandDataDto) throws DeviceNotExistsException, BrandNotSupportedException, GenericException;
 }

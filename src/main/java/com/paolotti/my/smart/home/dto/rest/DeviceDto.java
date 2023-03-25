@@ -23,7 +23,7 @@ public class DeviceDto {
     private DeviceBrandEnum brand;
     private String firmwareVersion;
     private List<Map<Integer, int[]>> leds;
-    private List<ExtraActionCommandDataDto> supportedActions;
+    private List<ExtraActionCommandDataDto> supportedExtraActions;
     private List<ConnectionModeEnum> connectionMode;
     private List<ProtocolEnum> supportedProtocols;
 
@@ -131,12 +131,12 @@ public class DeviceDto {
         this.leds = leds;
     }
 
-    public List<ExtraActionCommandDataDto> getSupportedActions() {
-        return supportedActions;
+    public List<ExtraActionCommandDataDto> getSupportedExtraActions() {
+        return supportedExtraActions;
     }
 
-    public void setSupportedActions(List<ExtraActionCommandDataDto> supportedActions) {
-        this.supportedActions = supportedActions;
+    public void setSupportedExtraActions(List<ExtraActionCommandDataDto> supportedExtraActions) {
+        this.supportedExtraActions = supportedExtraActions;
     }
 
     public List<ConnectionModeEnum> getConnectionMode() {
