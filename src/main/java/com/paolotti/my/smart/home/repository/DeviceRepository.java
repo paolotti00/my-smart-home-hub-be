@@ -1,5 +1,6 @@
 package com.paolotti.my.smart.home.repository;
 
+import com.paolotti.my.smart.home.enums.DeviceBrandEnum;
 import com.paolotti.my.smart.home.repository.entity.DeviceEntity;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;

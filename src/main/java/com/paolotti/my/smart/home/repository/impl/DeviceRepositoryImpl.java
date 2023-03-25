@@ -1,6 +1,8 @@
 package com.paolotti.my.smart.home.repository.impl;
 
+import com.paolotti.my.smart.home.enums.DeviceBrandEnum;
 import com.paolotti.my.smart.home.enums.DeviceInstallationStatusEnum;
+import com.paolotti.my.smart.home.exception.DeviceNotExistsException;
 import com.paolotti.my.smart.home.repository.DeviceRepositoryCustom;
 import com.paolotti.my.smart.home.repository.entity.DeviceEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 
 public class DeviceRepositoryImpl implements DeviceRepositoryCustom {
@@ -35,6 +38,21 @@ public class DeviceRepositoryImpl implements DeviceRepositoryCustom {
         Criteria criteria = Criteria.where("id").is(deviceId).and("installationStatus").is(DeviceInstallationStatusEnum.ACTIVE);
         query.addCriteria(criteria);
         return (DeviceEntity) mongoTemplate.findOne(query, DeviceEntity.class);
+    }
+
+    @Override
+    public Optional<DeviceBrandEnum> findBrandByDeviceId(String deviceId) throws DeviceNotExistsException {
+        Query query = new Query();
+        Criteria criteria = Criteria.where("id").is(deviceId);
+        query.fields().include("brand");
+        DeviceEntity device = mongoTemplate.findOne(query, DeviceEntity.class);
+        DeviceBrandEnum deviceBrandEnum = null;
+        if(device!=null){
+            deviceBrandEnum = device.getBrand();
+        } else{
+            throw new DeviceNotExistsException(deviceId);
+        }
+        return Optional.ofNullable(deviceBrandEnum);
     }
 
 //    @Override

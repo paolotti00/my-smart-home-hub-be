@@ -1,8 +1,8 @@
 package com.paolotti.my.smart.home.interceptor;
 
-import com.paolotti.my.smart.home.enums.deprecated.ResultStatusEnum;
+import com.paolotti.my.smart.home.enums.ResultStatusEnum;
 import com.paolotti.my.smart.home.exception.*;
-import com.paolotti.my.smart.home.dto.deprecated.rest.BaseResponseDto;
+import com.paolotti.my.smart.home.dto.rest.BaseResponseDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;

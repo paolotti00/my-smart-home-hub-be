@@ -12,17 +12,17 @@ import java.util.List;
         injectionStrategy = InjectionStrategy.CONSTRUCTOR,
         uses = {IBaseMapper.class})
 public interface ISensorMapper {
-    SensorDto toDto(Sensor sensor);
+    SensorDto toDto(Sensor model);
 
-    Sensor toModel(SensorDto sensor);
+    Sensor toModel(SensorDto dto);
 
-    Sensor toModel(DeviceEntity.Sensor sensor);
+    Sensor toModel(DeviceEntity.Sensor entity);
 
-    DeviceEntity.Sensor toEntity(Sensor sensor);
+    DeviceEntity.Sensor toEntity(Sensor model);
 
-    List<SensorDto> toDtoList(List<Sensor> sensors);
+    List<SensorDto> toDtoList(List<Sensor> modelList);
 
-    List<Sensor> toModelList(List<SensorDto> sensors);
+    List<Sensor> toModelList(List<SensorDto> dtoList);
 
-    List<DeviceEntity.Sensor> toEntityList(List<Sensor> sensors);
+    List<DeviceEntity.Sensor> toEntityList(List<Sensor> modelList);
 }

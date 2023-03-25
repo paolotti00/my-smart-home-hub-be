@@ -1,6 +1,6 @@
 package com.paolotti.my.smart.home.dto.rest;
 
-import com.paolotti.my.smart.home.dto.ActionDto;
+import com.paolotti.my.smart.home.dto.ExtraActionCommandDataDto;
 import com.paolotti.my.smart.home.enums.*;
 import lombok.ToString;
 
@@ -23,7 +23,7 @@ public class DeviceDto {
     private DeviceBrandEnum brand;
     private String firmwareVersion;
     private List<Map<Integer, int[]>> leds;
-    private List<ActionDto> supportedActions;
+    private List<ExtraActionCommandDataDto> supportedActions;
     private List<ConnectionModeEnum> connectionMode;
     private List<ProtocolEnum> supportedProtocols;
 
@@ -131,11 +131,11 @@ public class DeviceDto {
         this.leds = leds;
     }
 
-    public List<ActionDto> getSupportedActions() {
+    public List<ExtraActionCommandDataDto> getSupportedActions() {
         return supportedActions;
     }
 
-    public void setSupportedActions(List<ActionDto> supportedActions) {
+    public void setSupportedActions(List<ExtraActionCommandDataDto> supportedActions) {
         this.supportedActions = supportedActions;
     }
 

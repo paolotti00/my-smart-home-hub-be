@@ -26,7 +26,7 @@ public class Device extends BaseModel {
     private DeviceBrandEnum brand;
     private String firmwareVersion;
     private List<Map<Integer, int[]>> leds;
-    private List<Action> supportedActions;
+    private List<ExtraActionCommandData> supportedExtraActions;
     private List<ConnectionModeEnum> connectionMode;
     private List<ProtocolEnum> supportedProtocols;
 
@@ -134,12 +134,12 @@ public class Device extends BaseModel {
         this.leds = leds;
     }
 
-    public List<Action> getSupportedActions() {
-        return supportedActions;
+    public List<ExtraActionCommandData> getSupportedExtraActions() {
+        return supportedExtraActions;
     }
 
-    public void setSupportedActions(List<Action> supportedActions) {
-        this.supportedActions = supportedActions;
+    public void setSupportedExtraActions(List<ExtraActionCommandData> supportedExtraActions) {
+        this.supportedExtraActions = supportedExtraActions;
     }
 
     public List<ConnectionModeEnum> getConnectionMode() {

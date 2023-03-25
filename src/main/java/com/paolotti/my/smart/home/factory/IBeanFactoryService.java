@@ -1,9 +1,10 @@
 package com.paolotti.my.smart.home.factory;
 
 import com.paolotti.my.smart.home.enums.DeviceBrandEnum;
-import com.paolotti.my.smart.home.exception.BrandNotSupportedException;
-import com.paolotti.my.smart.home.service.deprecated.IDeviceByBrandService;
+import com.paolotti.my.smart.home.exception.GenericException;
+import com.paolotti.my.smart.home.service.IDeviceService;
 
 public interface IBeanFactoryService {
-    IDeviceByBrandService getDeviceLightByBrandServiceImpl(DeviceBrandEnum deviceBrandEnum) throws BrandNotSupportedException;
+    IDeviceService getDeviceServiceById(String deviceId) throws GenericException;
+    IDeviceService getDeviceByBrand(DeviceBrandEnum deviceBrandEnum) throws GenericException;
 }
