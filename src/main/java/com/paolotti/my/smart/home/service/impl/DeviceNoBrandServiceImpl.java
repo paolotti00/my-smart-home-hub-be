@@ -6,9 +6,11 @@ import com.paolotti.my.smart.home.enums.OnOffStatusEnum;
 import com.paolotti.my.smart.home.exception.BrandNotSupportedException;
 import com.paolotti.my.smart.home.exception.GenericException;
 import com.paolotti.my.smart.home.model.ExtraActionCommandData;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class DeviceNoBrandServiceImpl extends DeviceAbstractServiceImpl{
     @Override
     public void switchAllLights(String userId, String deviceId, String roomId, OnOffStatusEnum desiredStatus, CommandDestinationTypeEnum commandDestinationTypeEnum) throws GenericException {

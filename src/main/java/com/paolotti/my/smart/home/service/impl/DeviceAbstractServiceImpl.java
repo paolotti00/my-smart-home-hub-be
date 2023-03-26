@@ -11,8 +11,10 @@ import com.paolotti.my.smart.home.model.ExtraActionCommandData;
 import com.paolotti.my.smart.home.model.Device;
 import com.paolotti.my.smart.home.repository.CommandRepository;
 import com.paolotti.my.smart.home.repository.DeviceRepository;
+import com.paolotti.my.smart.home.repository.RoomRepository;
 import com.paolotti.my.smart.home.repository.entity.CommandEntity;
 import com.paolotti.my.smart.home.repository.entity.DeviceEntity;
+import com.paolotti.my.smart.home.repository.entity.RoomEntity;
 import com.paolotti.my.smart.home.service.IDeviceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,6 +37,8 @@ public abstract class DeviceAbstractServiceImpl implements IDeviceService {
     CommandRepository commandRepository;
     @Autowired
     DeviceRepository deviceRepository;
+    @Autowired
+    RoomRepository roomRepository;
     @Autowired
     IDeviceMapper deviceMapper;
 
@@ -64,12 +69,42 @@ public abstract class DeviceAbstractServiceImpl implements IDeviceService {
 
     @Override
     public List<Device> getDevicesByUserId(String userId) throws ValidationException {
-        return null;
+        logger.info("retrieving device for user with id {}", userId);
+        List<Device> devices = new ArrayList<>();
+        if (StringUtils.isEmpty(userId)) {
+            throw new ValidationException("userId cannot be null or empty");
+        }
+        Optional<List<DeviceEntity>> devicesOpt = deviceRepository.findByUsersOwnersIdsContaining(userId);
+        if (devicesOpt.isPresent()) {
+            List<DeviceEntity> deviceEntities = devicesOpt.get();
+            devices = deviceMapper.toModelList(deviceEntities);
+        } else {
+            logger.warn("no devices found for user with id {}", userId);
+        }
+
+        logger.info("retrieved {} devices for user with id {}", devices.size(), userId);
+        return devices;
     }
 
     @Override
     public List<Device> getDevicesByRoomId(String roomId) throws ValidationException, RoomNotExistsException {
-        return null;
+        // todo pt check if this user is the owner of this room or if can be read it
+        logger.info("retrieving devices of the room with id {}", roomId);
+        List<Device> devices = new ArrayList<>();
+        logger.info("checking if room with id {} exists", roomId);
+        Optional<RoomEntity> roomEntityOpt = roomRepository.findById(roomId);
+        if (!roomEntityOpt.isPresent()) {
+            throw new RoomNotExistsException(roomId);
+        }
+        Optional<List<DeviceEntity>> deviceEntityListOpt = deviceRepository.findByRoomId(roomId);
+        if (!deviceEntityListOpt.isPresent()) {
+            logger.warn("no device in room id {} found", roomId);
+        } else {
+            logger.debug("converting deviceEntity to device model");
+            devices = deviceMapper.toModelList(deviceEntityListOpt.get());
+        }
+        logger.info("retrieved {} devices in the room with id {} and name", devices.size(), roomId);
+        return devices;
     }
 
     // action
