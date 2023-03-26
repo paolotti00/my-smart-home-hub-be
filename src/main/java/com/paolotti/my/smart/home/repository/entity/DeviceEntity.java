@@ -17,8 +17,8 @@ public class DeviceEntity extends BaseEntity {
     private NetworkData networkData;
     private String name;
     private List<Sensor> sensors;
-    private List<Map<Integer, int[]>> leds;
-    private ConnectionStatusEnum connectionStatusEnum;
+    private Map<Integer, int[]> leds;
+    private ConnectionStatusEnum connectionStatus;
     private DeviceInstallationStatusEnum installationStatus;
     private LocalDateTime registrationDate;
     private LocalDateTime activationDate;
@@ -76,20 +76,20 @@ public class DeviceEntity extends BaseEntity {
         this.sensors = sensors;
     }
 
-    public List<Map<Integer, int[]>> getLeds() {
+    public Map<Integer, int[]> getLeds() {
         return leds;
     }
 
-    public void setLeds(List<Map<Integer, int[]>> leds) {
+    public void setLeds(Map<Integer, int[]> leds) {
         this.leds = leds;
     }
 
-    public ConnectionStatusEnum getConnectionStatusEnum() {
-        return connectionStatusEnum;
+    public ConnectionStatusEnum getConnectionStatus() {
+        return connectionStatus;
     }
 
-    public void setConnectionStatusEnum(ConnectionStatusEnum connectionStatusEnum) {
-        this.connectionStatusEnum = connectionStatusEnum;
+    public void setConnectionStatus(ConnectionStatusEnum connectionStatus) {
+        this.connectionStatus = connectionStatus;
     }
 
     public DeviceInstallationStatusEnum getInstallationStatus() {

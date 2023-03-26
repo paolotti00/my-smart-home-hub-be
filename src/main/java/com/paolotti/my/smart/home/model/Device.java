@@ -19,13 +19,13 @@ public class Device extends BaseModel {
     private NetworkData networkData;
     private String name;
     private List<Sensor> sensors;
-    private ConnectionStatusEnum connectionStatusEnum;
+    private ConnectionStatusEnum connectionStatus;
     private DeviceInstallationStatusEnum installationStatus;
     private LocalDateTime registrationDate;
     private LocalDateTime activationDate;
     private DeviceBrandEnum brand;
     private String firmwareVersion;
-    private List<Map<Integer, int[]>> leds;
+    private Map<Integer, int[]> leds;
     private List<ExtraActionCommandData> supportedExtraActions;
     private List<ConnectionModeEnum> connectionMode;
     private List<ProtocolEnum> supportedProtocols;
@@ -78,12 +78,12 @@ public class Device extends BaseModel {
         this.sensors = sensors;
     }
 
-    public ConnectionStatusEnum getConnectionStatusEnum() {
-        return connectionStatusEnum;
+    public ConnectionStatusEnum getConnectionStatus() {
+        return connectionStatus;
     }
 
-    public void setConnectionStatusEnum(ConnectionStatusEnum connectionStatusEnum) {
-        this.connectionStatusEnum = connectionStatusEnum;
+    public void setConnectionStatus(ConnectionStatusEnum connectionStatus) {
+        this.connectionStatus = connectionStatus;
     }
 
     public DeviceInstallationStatusEnum getInstallationStatus() {
@@ -126,11 +126,11 @@ public class Device extends BaseModel {
         this.firmwareVersion = firmwareVersion;
     }
 
-    public List<Map<Integer, int[]>> getLeds() {
+    public Map<Integer, int[]> getLeds() {
         return leds;
     }
 
-    public void setLeds(List<Map<Integer, int[]>> leds) {
+    public void setLeds(Map<Integer, int[]> leds) {
         this.leds = leds;
     }
 

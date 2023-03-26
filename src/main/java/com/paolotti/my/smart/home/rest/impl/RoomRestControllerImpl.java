@@ -7,7 +7,7 @@ import com.paolotti.my.smart.home.enums.ResultStatusEnum;
 import com.paolotti.my.smart.home.exception.GenericException;
 import com.paolotti.my.smart.home.exception.RoomNotExistsException;
 import com.paolotti.my.smart.home.exception.ValidationException;
-import com.paolotti.my.smart.home.factory.IBeanFactoryService;
+import com.paolotti.my.smart.home.factory.IBeanFactoryDeviceService;
 import com.paolotti.my.smart.home.interceptor.InterceptorRestControllerExceptionHandler;
 import com.paolotti.my.smart.home.mapper.IDeviceMapper;
 import com.paolotti.my.smart.home.model.Device;
@@ -28,14 +28,14 @@ public class RoomRestControllerImpl extends InterceptorRestControllerExceptionHa
     @Autowired
     IDeviceMapper deviceMapper;
     @Autowired
-    IBeanFactoryService beanFactoryService;
+    IBeanFactoryDeviceService beanFactoryService;
     @Override
     public ResponseEntity<BaseResponseDto<List<DeviceDto>>> getDevices(String roomId) throws GenericException {
         List<DeviceDto> deviceDtoList = null;
         ResponseEntity<BaseResponseDto<List<DeviceDto>>> dtoResponseEntity = null;
         BaseResponseDto<List<DeviceDto>> deviceDtoBaseResponseDto = new BaseResponseDto<>();
         try {
-            IDeviceService deviceService = beanFactoryService.getDeviceByBrand(DeviceBrandEnum.NO_BRAND);
+            IDeviceService deviceService = beanFactoryService.getDeviceServiceByBrand(DeviceBrandEnum.NO_BRAND);
             List<Device> deviceList = deviceService.getDevicesByRoomId(roomId);
             deviceDtoList = deviceMapper.toDtoList(deviceList);
             deviceDtoBaseResponseDto.setData(deviceDtoList);

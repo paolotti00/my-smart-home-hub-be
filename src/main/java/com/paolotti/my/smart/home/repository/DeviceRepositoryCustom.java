@@ -15,4 +15,5 @@ public interface DeviceRepositoryCustom {
     DeviceEntity findActiveById(String deviceId);
 
     Optional<DeviceBrandEnum> findBrandByDeviceId(String deviceId) throws DeviceNotExistsException;
+    Optional<DeviceBrandEnum> findBrandByThingId(String deviceId) throws DeviceNotExistsException;
 }

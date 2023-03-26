@@ -9,7 +9,7 @@ import com.paolotti.my.smart.home.enums.ResultStatusEnum;
 import com.paolotti.my.smart.home.exception.BrandNotSupportedException;
 import com.paolotti.my.smart.home.exception.DeviceNotExistsException;
 import com.paolotti.my.smart.home.exception.GenericException;
-import com.paolotti.my.smart.home.factory.IBeanFactoryService;
+import com.paolotti.my.smart.home.factory.IBeanFactoryDeviceService;
 import com.paolotti.my.smart.home.interceptor.InterceptorRestControllerExceptionHandler;
 import com.paolotti.my.smart.home.mapper.IDeviceMapper;
 import com.paolotti.my.smart.home.mapper.IExtraActionCommandDataMapper;
@@ -32,7 +32,7 @@ public class DeviceRestControllerImpl extends InterceptorRestControllerException
     @Autowired
     IDeviceMapper deviceMapper;
     @Autowired
-    IBeanFactoryService beanFactoryService;
+    IBeanFactoryDeviceService beanFactoryService;
     @Autowired
     IExtraActionCommandDataMapper extraActionCommandDataMapper;
 
@@ -45,7 +45,7 @@ public class DeviceRestControllerImpl extends InterceptorRestControllerException
         ResponseEntity<DeviceDto> deviceDtoResponseEntity;
         try {
             Device device = deviceMapper.toModel(deviceDto);
-            IDeviceService deviceService = beanFactoryService.getDeviceByBrand(device.getBrand());
+            IDeviceService deviceService = beanFactoryService.getDeviceServiceByBrand(device.getBrand());
             device = deviceService.create(device);
             deviceDto = deviceMapper.toDto(device);
         } catch (Exception e) {

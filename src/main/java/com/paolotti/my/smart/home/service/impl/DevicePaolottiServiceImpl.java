@@ -3,22 +3,25 @@ package com.paolotti.my.smart.home.service.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.paolotti.my.smart.home.enums.CommandDestinationTypeEnum;
+import com.paolotti.my.smart.home.enums.ConnectionStatusEnum;
 import com.paolotti.my.smart.home.enums.DeviceBrandEnum;
 import com.paolotti.my.smart.home.enums.OnOffStatusEnum;
 import com.paolotti.my.smart.home.exception.*;
-import com.paolotti.my.smart.home.model.Command;
-import com.paolotti.my.smart.home.model.Device;
-import com.paolotti.my.smart.home.model.ExtraActionCommandData;
+import com.paolotti.my.smart.home.model.*;
+import com.paolotti.my.smart.home.repository.entity.DeviceEntity;
 import com.paolotti.my.smart.home.service.IMqttMessagingService;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DevicePaolottiServiceImpl extends DeviceAbstractServiceImpl {
@@ -117,6 +120,32 @@ public class DevicePaolottiServiceImpl extends DeviceAbstractServiceImpl {
         }
         logger.info("set commandData {} to device with id {} and brand {}", extraActionCommandData.getName(), deviceId, DeviceBrandEnum.PAOLOTTI);
 
+    }
+
+    @Override
+    public void updateDeviceStatusFromAckReceived(AckCommand ackCommand) throws ValidationException, DeviceNotExistsException {
+        logger.info("updating status of device id {} by ack received {}", ackCommand.getThingId(), ackCommand);
+        // validation
+        logger.info("validation started");
+        if (ackCommand.getCommandId() == null || !StringUtils.hasText(ackCommand.getCommandId())) {
+            throw new ValidationException("commandId is null or empty. commandId =" + ackCommand.getCommandId());
+        }
+        if (ackCommand.getThingId() == null || !StringUtils.hasText(ackCommand.getThingId())) {
+            throw new ValidationException("deviceId is null or empty. thinkId =" + ackCommand.getThingId());
+        }
+        if (ackCommand.getAck() == null) {
+            throw new ValidationException("command ack is null");
+        }
+        if (ackCommand.getDeviceStatus() == null) {
+            throw new ValidationException("deviceStatus is null");
+        }
+        logger.info("validation finished. all is ok.");
+        // execution
+        // update command status on db
+        updateCommandStatusOnDb(ackCommand);
+        // update device status on db
+        updateDeviceStatus(ackCommand.getThingId(), ackCommand.getDeviceStatus());
+        logger.info("status of device id {} correctly updated", ackCommand.getThingId());
     }
 
     private <T> void sendMqttCommand(String topic, T rawData, String deviceId, String deviceThingId, String roomId, CommandDestinationTypeEnum commandDestinationTypeEnum) throws GenericException {

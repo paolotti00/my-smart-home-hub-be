@@ -3,6 +3,7 @@ package com.paolotti.my.smart.home.service;
 import com.paolotti.my.smart.home.enums.CommandDestinationTypeEnum;
 import com.paolotti.my.smart.home.enums.OnOffStatusEnum;
 import com.paolotti.my.smart.home.exception.*;
+import com.paolotti.my.smart.home.model.AckCommand;
 import com.paolotti.my.smart.home.model.ExtraActionCommandData;
 import com.paolotti.my.smart.home.model.Device;
 
@@ -21,6 +22,9 @@ public interface IDeviceService {
     // action
     List<ExtraActionCommandData> getSupportedExtraActions(String deviceId) throws BrandNotSupportedException, ValidationException, DeviceNotExistsException;
     void doExtraAction(String userId, String deviceId, String roomId, ExtraActionCommandData action, CommandDestinationTypeEnum commandDestinationTypeEnum) throws GenericException;
+
+    // status
+    void updateDeviceStatusFromAckReceived(AckCommand ackCommand) throws ValidationException, DeviceNotExistsException, BrandNotSupportedException;
 
 
     // command
@@ -41,7 +45,7 @@ public interface IDeviceService {
 //    void sendMqttCommandToDeviceGroup(String topic, String payloadToEncapsulate, DeviceGroup deviceGroup) throws GenericException;
 //
 //    // status
-//    void updateDeviceStatusFromAckReceived(AckCommand ackCommand) throws ValidationException, DeviceNotExistsException;
+//
 //    void handleDeviceStatusFromPingReceived(PingDeviceStatus pingDeviceStatus) throws ValidationException, DeviceNotExistsException;
 //
 //

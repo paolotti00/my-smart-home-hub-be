@@ -8,7 +8,7 @@ import com.paolotti.my.smart.home.enums.DeviceBrandEnum;
 import com.paolotti.my.smart.home.enums.ResultStatusEnum;
 import com.paolotti.my.smart.home.exception.GenericException;
 import com.paolotti.my.smart.home.exception.ValidationException;
-import com.paolotti.my.smart.home.factory.IBeanFactoryService;
+import com.paolotti.my.smart.home.factory.IBeanFactoryDeviceService;
 import com.paolotti.my.smart.home.interceptor.InterceptorRestControllerExceptionHandler;
 import com.paolotti.my.smart.home.mapper.IDeviceMapper;
 import com.paolotti.my.smart.home.mapper.IRoomMapper;
@@ -31,7 +31,7 @@ public class UserRestControllerImpl extends InterceptorRestControllerExceptionHa
     @Autowired
     IRoomService roomService;
     @Autowired
-    IBeanFactoryService beanFactoryService;
+    IBeanFactoryDeviceService beanFactoryService;
     @Autowired
     IDeviceMapper deviceMapper;
     @Autowired
@@ -66,7 +66,7 @@ public class UserRestControllerImpl extends InterceptorRestControllerExceptionHa
         ResponseEntity<BaseResponseDto<List<DeviceDto>>> dtoResponseEntity = null;
         BaseResponseDto<List<DeviceDto>> deviceDtoBaseResponseDto = new BaseResponseDto<>();
         try {
-            IDeviceService deviceService = beanFactoryService.getDeviceByBrand(DeviceBrandEnum.NO_BRAND);
+            IDeviceService deviceService = beanFactoryService.getDeviceServiceByBrand(DeviceBrandEnum.NO_BRAND);
             List<Device> deviceList = deviceService.getDevicesByUserId(userId);
             deviceDtoList = deviceMapper.toDtoList(deviceList);
             deviceDtoBaseResponseDto.setData(deviceDtoList);

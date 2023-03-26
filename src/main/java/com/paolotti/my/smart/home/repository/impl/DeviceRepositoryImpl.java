@@ -42,15 +42,39 @@ public class DeviceRepositoryImpl implements DeviceRepositoryCustom {
 
     @Override
     public Optional<DeviceBrandEnum> findBrandByDeviceId(String deviceId) throws DeviceNotExistsException {
-        Query query = new Query();
         Criteria criteria = Criteria.where("id").is(deviceId);
+        Optional<DeviceBrandEnum> deviceBrandEnumOptional;
+        try {
+            deviceBrandEnumOptional = findBrand(criteria);
+        } catch (DeviceNotExistsException e) {
+            throw  new DeviceNotExistsException(deviceId);
+        }
+        return deviceBrandEnumOptional;
+    }
+
+    @Override
+    public Optional<DeviceBrandEnum> findBrandByThingId(String thingId) throws DeviceNotExistsException {
+
+        Criteria criteria = Criteria.where("thingId").is(thingId);
+        Optional<DeviceBrandEnum> deviceBrandEnumOptional;
+        try {
+            deviceBrandEnumOptional = findBrand(criteria);
+        } catch (DeviceNotExistsException e) {
+            throw  new DeviceNotExistsException("thingId " + thingId);
+        }
+        return deviceBrandEnumOptional;
+    }
+
+    private Optional<DeviceBrandEnum> findBrand(Criteria criteria) throws DeviceNotExistsException {
+        Query query = new Query();
+        query.addCriteria(criteria);
         query.fields().include("brand");
         DeviceEntity device = mongoTemplate.findOne(query, DeviceEntity.class);
         DeviceBrandEnum deviceBrandEnum = null;
         if(device!=null){
             deviceBrandEnum = device.getBrand();
         } else{
-            throw new DeviceNotExistsException(deviceId);
+            throw new DeviceNotExistsException(null);
         }
         return Optional.ofNullable(deviceBrandEnum);
     }

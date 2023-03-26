@@ -4,7 +4,10 @@ import com.paolotti.my.smart.home.enums.CommandDestinationTypeEnum;
 import com.paolotti.my.smart.home.enums.DeviceBrandEnum;
 import com.paolotti.my.smart.home.enums.OnOffStatusEnum;
 import com.paolotti.my.smart.home.exception.BrandNotSupportedException;
+import com.paolotti.my.smart.home.exception.DeviceNotExistsException;
 import com.paolotti.my.smart.home.exception.GenericException;
+import com.paolotti.my.smart.home.exception.ValidationException;
+import com.paolotti.my.smart.home.model.AckCommand;
 import com.paolotti.my.smart.home.model.ExtraActionCommandData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +39,11 @@ public class DeviceYeelightServiceImpl extends DeviceAbstractServiceImpl {
 
     @Override
     public void doExtraAction(String userId, String deviceId, String roomId, ExtraActionCommandData action, CommandDestinationTypeEnum commandDestinationTypeEnum) throws GenericException,BrandNotSupportedException {
+        throw new BrandNotSupportedException(String.format("%s is not yet supported by brand %s", Thread.currentThread().getStackTrace()[1].getMethodName(), DeviceBrandEnum.YEELIGHT));
+    }
+
+    @Override
+    public void updateDeviceStatusFromAckReceived(AckCommand ackCommand) throws ValidationException, DeviceNotExistsException, BrandNotSupportedException {
         throw new BrandNotSupportedException(String.format("%s is not yet supported by brand %s", Thread.currentThread().getStackTrace()[1].getMethodName(), DeviceBrandEnum.YEELIGHT));
     }
 }

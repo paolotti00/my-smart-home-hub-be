@@ -4,7 +4,8 @@ import com.paolotti.my.smart.home.enums.DeviceBrandEnum;
 import com.paolotti.my.smart.home.exception.GenericException;
 import com.paolotti.my.smart.home.service.IDeviceService;
 
-public interface IBeanFactoryService {
+public interface IBeanFactoryDeviceService {
     IDeviceService getDeviceServiceById(String deviceId) throws GenericException;
-    IDeviceService getDeviceByBrand(DeviceBrandEnum deviceBrandEnum) throws GenericException;
+    IDeviceService getDeviceServiceByThingId(String thingId) throws GenericException;
+    IDeviceService getDeviceServiceByBrand(DeviceBrandEnum deviceBrandEnum) throws GenericException;
 }

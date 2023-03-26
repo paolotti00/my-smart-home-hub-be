@@ -4,7 +4,7 @@ import com.paolotti.my.smart.home.enums.DeviceBrandEnum;
 import com.paolotti.my.smart.home.exception.BrandNotSupportedException;
 import com.paolotti.my.smart.home.exception.GenericException;
 import com.paolotti.my.smart.home.exception.ValidationException;
-import com.paolotti.my.smart.home.factory.IBeanFactoryService;
+import com.paolotti.my.smart.home.factory.IBeanFactoryDeviceService;
 import com.paolotti.my.smart.home.repository.DeviceRepository;
 import com.paolotti.my.smart.home.service.IDeviceService;
 import com.paolotti.my.smart.home.service.impl.DeviceNoBrandServiceImpl;
@@ -19,12 +19,12 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class BeanFactoryServiceImpl implements IBeanFactoryService {
+public class BeanFactoryDeviceServiceImpl implements IBeanFactoryDeviceService {
     @Autowired
     private ApplicationContext appContext;
     @Autowired
     DeviceRepository deviceRepository;
-    private static final Logger logger = LoggerFactory.getLogger(BeanFactoryServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(BeanFactoryDeviceServiceImpl.class);
     private static final String LOG_CASE_BEAN_RETRIEVED ="case {} bean retrieved {}";
     @Override
     public IDeviceService getDeviceServiceById(String deviceId) throws GenericException {
@@ -36,7 +36,7 @@ public class BeanFactoryServiceImpl implements IBeanFactoryService {
         Optional<DeviceBrandEnum> deviceBrandEnumOpt = deviceRepository.findBrandByDeviceId(deviceId);
         if(deviceBrandEnumOpt.isPresent()){
             DeviceBrandEnum deviceBrandEnum = deviceBrandEnumOpt.get();
-            deviceService = getDeviceByBrand(deviceBrandEnumOpt.get());
+            deviceService = this.getDeviceServiceByBrand(deviceBrandEnumOpt.get());
         }
         else {
             throw new GenericException("no brand defined for deviceId " + deviceId);
@@ -46,7 +46,26 @@ public class BeanFactoryServiceImpl implements IBeanFactoryService {
     }
 
     @Override
-    public IDeviceService getDeviceByBrand(DeviceBrandEnum deviceBrandEnum) throws GenericException {
+    public IDeviceService getDeviceServiceByThingId(String deviceThingId) throws GenericException {
+        String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
+        IDeviceService deviceService;
+        if(deviceThingId==null){
+            throw new ValidationException("deviceThingId cannot be null");
+        }
+        Optional<DeviceBrandEnum> deviceBrandEnumOpt = deviceRepository.findBrandByThingId(deviceThingId);
+        if(deviceBrandEnumOpt.isPresent()){
+            DeviceBrandEnum deviceBrandEnum = deviceBrandEnumOpt.get();
+            deviceService = this.getDeviceServiceByBrand(deviceBrandEnumOpt.get());
+        }
+        else {
+            throw new GenericException("no brand defined for deviceThingId " + deviceThingId);
+        }
+        logger.debug("{} :the device service impl for device {} was correctly retrieved",methodName,deviceThingId);
+        return deviceService;
+    }
+
+    @Override
+    public IDeviceService getDeviceServiceByBrand(DeviceBrandEnum deviceBrandEnum) throws GenericException {
         String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         IDeviceService deviceService;
         switch (deviceBrandEnum){
