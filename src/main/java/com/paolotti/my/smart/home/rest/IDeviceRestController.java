@@ -27,12 +27,14 @@ public interface IDeviceRestController {
     @Tag(name = "device")
     ResponseEntity<BaseResponseDto<DeviceDto>>getDevice(@PathVariable String deviceId);
     @PutMapping("{deviceId}/light/switch/{onOffStatus}")
+
+    // light
     @Tag(name = "device")
     ResponseEntity<BaseResponseDto<?>> switchLights(@PathVariable String deviceId, @PathVariable OnOffStatusEnum onOffStatus) throws GenericException;
-    @PutMapping("{deviceId}/set/color")
-    @Tag(name = "device")
-    ResponseEntity<BaseResponseDto<?>> setLightColor(@PathVariable String deviceId, @RequestBody String rgbColor) throws DeviceNotExistsException, BrandNotSupportedException, GenericException;
+    @PostMapping("{deviceId}/color")
+    @Tag(name = "device")    ResponseEntity<BaseResponseDto<?>> setLightColor(@PathVariable String deviceId, @RequestBody List<Integer> colorRgbAndIntensity) throws DeviceNotExistsException, BrandNotSupportedException, GenericException;
 
+    // action
     @GetMapping("{deviceId}/actions")
     @Tag(name = "device")
     ResponseEntity<BaseResponseDto<List<ExtraActionCommandDataDto>>> getSupportedActions(@PathVariable  String deviceId) throws DeviceNotExistsException,GenericException;

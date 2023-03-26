@@ -11,17 +11,19 @@ import java.util.List;
 
 public class DeviceNoBrandServiceImpl extends DeviceAbstractServiceImpl{
     @Override
-    public void switchAllLights(String userId, String deviceId, OnOffStatusEnum desiredStatus) throws GenericException, BrandNotSupportedException {
+    public void switchAllLights(String userId, String deviceId, String roomId, OnOffStatusEnum desiredStatus, CommandDestinationTypeEnum commandDestinationTypeEnum) throws GenericException {
         throw new BrandNotSupportedException(String.format("%s is not yet supported by brand %s", Thread.currentThread().getStackTrace()[1].getMethodName(), DeviceBrandEnum.YEELIGHT));
     }
 
-    @Override
-    public void setLightColor(String userId, String deviceId, String rgbColor) throws GenericException,BrandNotSupportedException {
-        throw new BrandNotSupportedException(String.format("%s is not yet supported by brand %s", Thread.currentThread().getStackTrace()[1].getMethodName(), DeviceBrandEnum.YEELIGHT));
-    }
+
 
     @Override
     public List<ExtraActionCommandData> getSupportedExtraActions(String deviceId) throws BrandNotSupportedException {
+        throw new BrandNotSupportedException(String.format("%s is not yet supported by brand %s", Thread.currentThread().getStackTrace()[1].getMethodName(), DeviceBrandEnum.YEELIGHT));
+    }
+
+    @Override
+    public void setLightColor(String userId, String deviceId,String roomId, List<Integer> colorRgbAndIntensity, CommandDestinationTypeEnum toDevice) throws GenericException {
         throw new BrandNotSupportedException(String.format("%s is not yet supported by brand %s", Thread.currentThread().getStackTrace()[1].getMethodName(), DeviceBrandEnum.YEELIGHT));
     }
 

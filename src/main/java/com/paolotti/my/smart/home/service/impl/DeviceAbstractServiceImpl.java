@@ -2,7 +2,6 @@ package com.paolotti.my.smart.home.service.impl;
 
 import com.paolotti.my.smart.home.enums.CommandDestinationTypeEnum;
 import com.paolotti.my.smart.home.enums.CommandStatusEnum;
-import com.paolotti.my.smart.home.enums.OnOffStatusEnum;
 import com.paolotti.my.smart.home.exception.*;
 import com.paolotti.my.smart.home.factory.IBeanFactoryService;
 import com.paolotti.my.smart.home.mapper.ICommandMapper;
@@ -102,12 +101,5 @@ public abstract class DeviceAbstractServiceImpl implements IDeviceService {
         CommandEntity commandEntity = commandRepository.save(commandMapper.toEntity(command));
         logger.info("saved in db commandId {}, deviceId{} , groupId {} with id {}", command.getCommandId(), deviceId, roomId,commandEntity.getId());
     }
-
-    // light
-    @Override
-    abstract public void switchAllLights(String userId, String deviceId, OnOffStatusEnum desiredStatus) throws GenericException;
-
-    @Override
-    abstract public void setLightColor(String userId, String deviceId, String rgbColor) throws GenericException ;
 
 }

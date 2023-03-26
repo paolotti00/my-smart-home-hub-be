@@ -9,7 +9,6 @@ import com.paolotti.my.smart.home.enums.ResultStatusEnum;
 import com.paolotti.my.smart.home.exception.BrandNotSupportedException;
 import com.paolotti.my.smart.home.exception.DeviceNotExistsException;
 import com.paolotti.my.smart.home.exception.GenericException;
-import com.paolotti.my.smart.home.exception.MissingFieldException;
 import com.paolotti.my.smart.home.factory.IBeanFactoryService;
 import com.paolotti.my.smart.home.interceptor.InterceptorRestControllerExceptionHandler;
 import com.paolotti.my.smart.home.mapper.IDeviceMapper;
@@ -36,8 +35,7 @@ public class DeviceRestControllerImpl extends InterceptorRestControllerException
     IBeanFactoryService beanFactoryService;
     @Autowired
     IExtraActionCommandDataMapper extraActionCommandDataMapper;
-//    @Autowired
-//    ILightEffectMessageMapper lightEffectMessageMapper;
+
     private static final Logger logger = LoggerFactory.getLogger(DeviceRestControllerImpl.class);
 
     @Override
@@ -88,7 +86,7 @@ public class DeviceRestControllerImpl extends InterceptorRestControllerException
         BaseResponseDto<?> baseResponseDto = new BaseResponseDto<>();
         try {
             IDeviceService deviceService = beanFactoryService.getDeviceServiceById(deviceId);
-            deviceService.switchAllLights(userId, deviceId, onOffStatus);
+            deviceService.switchAllLights(userId, deviceId, null, onOffStatus, CommandDestinationTypeEnum.TO_DEVICE);
             baseResponseDto.setMessage(String.format("device %s correctly switched %s", deviceId, OnOffStatusEnum.OFF));
             responseEntity = new ResponseEntity<>(baseResponseDto, HttpStatus.OK);
         } catch (Exception e) {
@@ -98,16 +96,16 @@ public class DeviceRestControllerImpl extends InterceptorRestControllerException
         return responseEntity;
     }
     @Override
-    public ResponseEntity<BaseResponseDto<?>> setLightColor(String deviceId, String colorRgb) throws DeviceNotExistsException, BrandNotSupportedException, GenericException {
+    public ResponseEntity<BaseResponseDto<?>> setLightColor(String deviceId, List<Integer> colorRgbAndIntensity) throws DeviceNotExistsException, BrandNotSupportedException, GenericException {
         String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
-        logger.info("{}: device id {} colorRgb {}", methodName, deviceId, colorRgb);
+        logger.info("{}: device id {}", methodName, deviceId);
         String userId = "ex"; // todo should be retrieved from spring Principal?
         ResponseEntity<BaseResponseDto<?>> responseEntity;
         BaseResponseDto<?> baseResponseDto = new BaseResponseDto<>();
         try {
             IDeviceService deviceService = beanFactoryService.getDeviceServiceById(deviceId);
-            deviceService.setLightColor(userId, deviceId,colorRgb);
-            baseResponseDto.setMessage(String.format("device %s correctly set color %s", deviceId, colorRgb));
+            deviceService.setLightColor(userId, deviceId,null, colorRgbAndIntensity, CommandDestinationTypeEnum.TO_DEVICE);
+            baseResponseDto.setMessage(String.format("device %s correctly switched %s", deviceId, OnOffStatusEnum.OFF));
             responseEntity = new ResponseEntity<>(baseResponseDto, HttpStatus.OK);
         } catch (Exception e) {
             logger.error("{} error", methodName);

@@ -15,12 +15,13 @@ public interface IDeviceService {
     List<Device> getDevicesByRoomId(String roomId) throws ValidationException, RoomNotExistsException;
 
     // light
-    void switchAllLights(String userId, String deviceId, OnOffStatusEnum desiredStatus) throws GenericException;
-    void setLightColor(String userId, String deviceId, String rgbColor) throws GenericException;
+    void switchAllLights(String userId, String deviceId, String roomId, OnOffStatusEnum desiredStatus, CommandDestinationTypeEnum commandDestinationTypeEnum) throws GenericException;
+    void setLightColor(String userId, String deviceId, String roomId, List<Integer> colorRgbAndIntensity, CommandDestinationTypeEnum toDevice) throws GenericException;;
 
     // action
     List<ExtraActionCommandData> getSupportedExtraActions(String deviceId) throws BrandNotSupportedException, ValidationException, DeviceNotExistsException;
     void doExtraAction(String userId, String deviceId, String roomId, ExtraActionCommandData action, CommandDestinationTypeEnum commandDestinationTypeEnum) throws GenericException;
+
 
     // command
 
