@@ -9,6 +9,7 @@ import com.paolotti.my.smart.home.exception.GenericException;
 import com.paolotti.my.smart.home.exception.ValidationException;
 import com.paolotti.my.smart.home.model.AckCommand;
 import com.paolotti.my.smart.home.model.ExtraActionCommandData;
+import com.paolotti.my.smart.home.model.PingDeviceStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -38,6 +39,11 @@ public class DeviceNoBrandServiceImpl extends DeviceAbstractServiceImpl{
 
     @Override
     public void updateDeviceStatusFromAckReceived(AckCommand ackCommand) throws ValidationException, DeviceNotExistsException, BrandNotSupportedException {
+        throw new BrandNotSupportedException(String.format("%s is not yet supported by brand %s", Thread.currentThread().getStackTrace()[1].getMethodName(), DeviceBrandEnum.NO_BRAND));
+    }
+
+    @Override
+    public void handleDeviceStatusFromPingReceived(PingDeviceStatus pingDeviceStatus) throws ValidationException, DeviceNotExistsException, BrandNotSupportedException {
         throw new BrandNotSupportedException(String.format("%s is not yet supported by brand %s", Thread.currentThread().getStackTrace()[1].getMethodName(), DeviceBrandEnum.NO_BRAND));
     }
 }

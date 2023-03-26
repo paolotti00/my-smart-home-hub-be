@@ -27,6 +27,7 @@ import java.util.Optional;
 public class DevicePaolottiServiceImpl extends DeviceAbstractServiceImpl {
     @Autowired()
     IMqttMessagingService mqttMessagingService;
+
     private static final Logger logger = LoggerFactory.getLogger(DevicePaolottiServiceImpl.class);
     private static final String MQTT_TOPIC_COMMAND_BASE = "command";
     private static final String MQTT_SUB_TOPIC_DEVICE = "/device/{thingId}";
@@ -146,6 +147,17 @@ public class DevicePaolottiServiceImpl extends DeviceAbstractServiceImpl {
         // update device status on db
         updateDeviceStatus(ackCommand.getThingId(), ackCommand.getDeviceStatus());
         logger.info("status of device id {} correctly updated", ackCommand.getThingId());
+    }
+
+    @Override
+    public void handleDeviceStatusFromPingReceived(PingDeviceStatus pingDeviceStatus) throws ValidationException, DeviceNotExistsException {
+        logger.info("handling update status of device id {} by ping received {}", pingDeviceStatus.getThingId(), pingDeviceStatus);
+
+        // update device status on db
+        updateDeviceStatus(pingDeviceStatus.getThingId(), pingDeviceStatus.getDeviceStatus());
+        // sending websocket update
+        sendUpdatedDeviceStatusByWebsocket(pingDeviceStatus.getThingId(), pingDeviceStatus.getDeviceStatus());
+        logger.info("update status of device id {} by ping correctly handled", pingDeviceStatus.getThingId());
     }
 
     private <T> void sendMqttCommand(String topic, T rawData, String deviceId, String deviceThingId, String roomId, CommandDestinationTypeEnum commandDestinationTypeEnum) throws GenericException {

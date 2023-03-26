@@ -1,5 +1,6 @@
 package com.paolotti.my.smart.home.service.impl;
 
+import com.paolotti.my.smart.home.dto.mqtt.DeviceStatusDto;
 import com.paolotti.my.smart.home.enums.CommandDestinationTypeEnum;
 import com.paolotti.my.smart.home.enums.CommandStatusEnum;
 import com.paolotti.my.smart.home.enums.ConnectionStatusEnum;
@@ -8,6 +9,7 @@ import com.paolotti.my.smart.home.exception.*;
 import com.paolotti.my.smart.home.factory.IBeanFactoryDeviceService;
 import com.paolotti.my.smart.home.mapper.ICommandMapper;
 import com.paolotti.my.smart.home.mapper.IDeviceMapper;
+import com.paolotti.my.smart.home.mapper.IDeviceStatusMapper;
 import com.paolotti.my.smart.home.mapper.ISensorMapper;
 import com.paolotti.my.smart.home.model.*;
 import com.paolotti.my.smart.home.repository.CommandRepository;
@@ -20,6 +22,7 @@ import com.paolotti.my.smart.home.service.IDeviceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
@@ -30,11 +33,14 @@ import java.util.Optional;
 
 public abstract class DeviceAbstractServiceImpl implements IDeviceService {
     private static final Logger logger = LoggerFactory.getLogger(DeviceAbstractServiceImpl.class);
+    private static final String DEVICE_STATUS_UPDATED_WEBSOCKET_TOPIC = "/topic/device/{deviceId}/status"; // todo move in properties file
 
     @Autowired
     IBeanFactoryDeviceService beanFactoryService;
     @Autowired
     ICommandMapper commandMapper;
+    @Autowired
+    IDeviceStatusMapper deviceStatusMapper;
     @Autowired
     ISensorMapper sensorMapper;
     @Autowired
@@ -45,6 +51,8 @@ public abstract class DeviceAbstractServiceImpl implements IDeviceService {
     RoomRepository roomRepository;
     @Autowired
     IDeviceMapper deviceMapper;
+    @Autowired
+    SimpMessagingTemplate simpMessagingTemplate;
 
 
     @Override
@@ -138,6 +146,20 @@ public abstract class DeviceAbstractServiceImpl implements IDeviceService {
         }
         CommandEntity commandEntity = commandRepository.save(commandMapper.toEntity(command));
         logger.info("saved in db commandId {}, deviceId{} , groupId {} with id {}", command.getCommandId(), deviceId, roomId, commandEntity.getId());
+    }
+
+    void sendUpdatedDeviceStatusByWebsocket(String thingId, DeviceStatus deviceStatus) throws DeviceNotExistsException {
+        logger.info("sending, by websocket, for thingId {} updateStatus {}", thingId, deviceStatus);
+        Optional<DeviceEntity> deviceEntityOpt = deviceRepository.findByThingId(thingId);
+        if (!deviceEntityOpt.isPresent()) {
+            logger.error("device with thingId : {} not exists. can't update component status", thingId);
+            throw new DeviceNotExistsException("thingId: " + thingId);
+        }
+        DeviceEntity deviceEntity = deviceEntityOpt.get();
+        DeviceStatusDto deviceStatusDto = deviceStatusMapper.toDto(deviceStatus);
+        simpMessagingTemplate.convertAndSend(DEVICE_STATUS_UPDATED_WEBSOCKET_TOPIC.replace("{deviceId}", deviceEntity.getId().toHexString()), deviceStatusDto);
+        // logger.info("updateStatus {} by websocket for thingId {} was sent correctly", deviceStatusDto, thingId); // todo understand why in the log just DeviceComponentDto is logged and not DeviceComponentLightDto
+        logger.info("updateStatus by websocket for thingId {} was sent correctly", thingId);
     }
 
     void updateCommandStatusOnDb(AckCommand ackCommand) {

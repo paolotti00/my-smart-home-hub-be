@@ -1,9 +1,11 @@
 package com.paolotti.my.smart.home.model;
 
 import com.paolotti.my.smart.home.enums.SensorTypeEnum;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 
+@ToString
 public class Sensor {
     private String id;
     private SensorTypeEnum type;

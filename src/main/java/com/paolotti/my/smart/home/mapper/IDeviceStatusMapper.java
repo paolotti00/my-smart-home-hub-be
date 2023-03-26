@@ -6,6 +6,7 @@ import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 
 @Mapper( componentModel = "spring" , injectionStrategy = InjectionStrategy.CONSTRUCTOR,uses = {IBaseMapper.class, ISensorMapper.class})
-public interface IAckCommandDeviceStatusMapper {
+public interface IDeviceStatusMapper {
     DeviceStatus toModel(DeviceStatusDto deviceStatusDto);
+    DeviceStatusDto toDto (DeviceStatus deviceStatus);
 }

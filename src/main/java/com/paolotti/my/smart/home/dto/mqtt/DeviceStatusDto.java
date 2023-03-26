@@ -1,10 +1,12 @@
 package com.paolotti.my.smart.home.dto.mqtt;
 
 import com.paolotti.my.smart.home.dto.rest.SensorDto;
+import lombok.ToString;
 
 import java.util.List;
 import java.util.Map;
 
+@ToString
 public class DeviceStatusDto {
     private List<SensorDto> sensors;
     private Map<Integer, int[]> leds;

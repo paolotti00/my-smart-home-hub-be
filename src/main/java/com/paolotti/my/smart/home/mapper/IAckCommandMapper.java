@@ -5,7 +5,7 @@ import com.paolotti.my.smart.home.model.AckCommand;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 
-@Mapper( componentModel = "spring" , injectionStrategy = InjectionStrategy.CONSTRUCTOR,uses = {IBaseMapper.class, IAckCommandDeviceStatusMapper.class})
+@Mapper( componentModel = "spring" , injectionStrategy = InjectionStrategy.CONSTRUCTOR,uses = {IBaseMapper.class, IDeviceStatusMapper.class})
 public interface IAckCommandMapper {
 
     AckCommand toModel(AckCommandDto ackCommandDto);

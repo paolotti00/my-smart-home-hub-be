@@ -6,6 +6,7 @@ import com.paolotti.my.smart.home.exception.*;
 import com.paolotti.my.smart.home.model.AckCommand;
 import com.paolotti.my.smart.home.model.ExtraActionCommandData;
 import com.paolotti.my.smart.home.model.Device;
+import com.paolotti.my.smart.home.model.PingDeviceStatus;
 
 import java.util.List;
 
@@ -25,36 +26,6 @@ public interface IDeviceService {
 
     // status
     void updateDeviceStatusFromAckReceived(AckCommand ackCommand) throws ValidationException, DeviceNotExistsException, BrandNotSupportedException;
-
-
-    // command
-
-//    void doFwActionsSchema(String deviceId, DeviceActionsSchema deviceActionsSchema);
-//
-//    List<ExtraActionCommandData> getSupportedActionsSchemas(String deviceId);
-//
-//    void doCustomActionSchema(String deviceId, DeviceActionsSchema deviceActionsSchema);
-//
-//    Device getActiveDeviceById(String deviceId) throws DeviceNotExistsException;
-//
-//    // command
-//    void sendMqttCommandToAll(String topic, String payloadToEncapsulate) throws GenericException;
-//
-//    void sendMqttCommandToDevice(String topic, String payloadToEncapsulate, Device device) throws GenericException;
-//
-//    void sendMqttCommandToDeviceGroup(String topic, String payloadToEncapsulate, DeviceGroup deviceGroup) throws GenericException;
-//
-//    // status
-//
-//    void handleDeviceStatusFromPingReceived(PingDeviceStatus pingDeviceStatus) throws ValidationException, DeviceNotExistsException;
-//
-//
-//    // light
-//    void switchAllLights(String userId, String deviceId, OnOffStatusEnum desiredStatus) throws GenericException;
-//
-//    void setLightColor(String userId, String deviceId, String rgbColor) throws GenericException;
-//
-//    void doAction(String userId, String deviceId, ExtraActionCommandData action) throws GenericException;
-
+    void handleDeviceStatusFromPingReceived(PingDeviceStatus pingDeviceStatus) throws ValidationException, DeviceNotExistsException, BrandNotSupportedException;
 
 }

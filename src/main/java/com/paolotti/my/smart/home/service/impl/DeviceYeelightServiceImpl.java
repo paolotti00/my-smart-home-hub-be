@@ -9,6 +9,7 @@ import com.paolotti.my.smart.home.exception.GenericException;
 import com.paolotti.my.smart.home.exception.ValidationException;
 import com.paolotti.my.smart.home.model.AckCommand;
 import com.paolotti.my.smart.home.model.ExtraActionCommandData;
+import com.paolotti.my.smart.home.model.PingDeviceStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,6 @@ public class DeviceYeelightServiceImpl extends DeviceAbstractServiceImpl {
     public void switchAllLights(String userId, String deviceId, String roomId, OnOffStatusEnum desiredStatus, CommandDestinationTypeEnum commandDestinationTypeEnum) throws GenericException {
         throw new BrandNotSupportedException(String.format("%s is not yet supported by brand %s", Thread.currentThread().getStackTrace()[1].getMethodName(), DeviceBrandEnum.YEELIGHT));
     }
-
 
 
     @Override
@@ -44,6 +44,11 @@ public class DeviceYeelightServiceImpl extends DeviceAbstractServiceImpl {
 
     @Override
     public void updateDeviceStatusFromAckReceived(AckCommand ackCommand) throws ValidationException, DeviceNotExistsException, BrandNotSupportedException {
+        throw new BrandNotSupportedException(String.format("%s is not yet supported by brand %s", Thread.currentThread().getStackTrace()[1].getMethodName(), DeviceBrandEnum.YEELIGHT));
+    }
+
+    @Override
+    public void handleDeviceStatusFromPingReceived(PingDeviceStatus pingDeviceStatus) throws ValidationException, DeviceNotExistsException, BrandNotSupportedException {
         throw new BrandNotSupportedException(String.format("%s is not yet supported by brand %s", Thread.currentThread().getStackTrace()[1].getMethodName(), DeviceBrandEnum.YEELIGHT));
     }
 }
