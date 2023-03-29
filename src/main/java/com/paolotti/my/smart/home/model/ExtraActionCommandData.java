@@ -1,6 +1,7 @@
 package com.paolotti.my.smart.home.model;
 
 import com.paolotti.my.smart.home.enums.FieldTypeEnum;
+import com.paolotti.my.smart.home.enums.SensorTypeEnum;
 import lombok.ToString;
 
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.List;
 public class ExtraActionCommandData {
     private String name;
     private List<Field> fields;
+    private List<SensorTypeEnum> categories;
 
     public String getName() {
         return name;
@@ -22,9 +24,18 @@ public class ExtraActionCommandData {
         return fields;
     }
 
+    public List<SensorTypeEnum> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<SensorTypeEnum> categories) {
+        this.categories = categories;
+    }
+
     public void setFields(List<Field> fields) {
         this.fields = fields;
     }
+
 
     @ToString
     public static class Field{
@@ -64,6 +75,7 @@ public class ExtraActionCommandData {
         public void setValue(String value) {
             this.value = value;
         }
+
     }
 
 }

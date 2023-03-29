@@ -205,9 +205,11 @@ public class DeviceEntity extends BaseEntity {
         }
     }
 
+    @ToString
     public static class ExtraActionCommandData {
         private String name;
         private List<Field> fields;
+        private List<SensorTypeEnum> categories;
 
         public String getName() {
             return name;
@@ -223,6 +225,14 @@ public class DeviceEntity extends BaseEntity {
 
         public void setFields(List<Field> fields) {
             this.fields = fields;
+        }
+
+        public List<SensorTypeEnum> getCategories() {
+            return categories;
+        }
+
+        public void setCategories(List<SensorTypeEnum> categories) {
+            this.categories = categories;
         }
 
         @ToString
