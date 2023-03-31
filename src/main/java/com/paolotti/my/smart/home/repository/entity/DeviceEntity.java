@@ -239,6 +239,8 @@ public class DeviceEntity extends BaseEntity {
         public static class Field {
             private String name;
             private FieldTypeEnum type;
+            private double min;
+            private double max;
             private boolean mandatory;
 
             public String getName() {
@@ -255,6 +257,22 @@ public class DeviceEntity extends BaseEntity {
 
             public void setType(FieldTypeEnum type) {
                 this.type = type;
+            }
+
+            public double getMin() {
+                return min;
+            }
+
+            public void setMin(double min) {
+                this.min = min;
+            }
+
+            public double getMax() {
+                return max;
+            }
+
+            public void setMax(double max) {
+                this.max = max;
             }
 
             public boolean isMandatory() {
