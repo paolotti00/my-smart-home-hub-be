@@ -10,6 +10,7 @@ import java.util.Map;
 
 @ToString
 public class DeviceDto {
+    private String id;
     private String thingId;
     private List<String> usersOwnersIds;
     private String roomId;
@@ -26,6 +27,14 @@ public class DeviceDto {
     private List<ExtraActionCommandDataDto> supportedExtraActions;
     private List<ConnectionModeEnum> connectionMode;
     private List<ProtocolEnum> supportedProtocols;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getThingId() {
         return thingId;
