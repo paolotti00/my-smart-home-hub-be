@@ -43,7 +43,7 @@ public class ExtraActionCommandDataDto {
         private double min;
         private double max;
         private boolean mandatory;
-        private String value;
+        private Object value;
 
         public String getName() {
             return name;
@@ -85,11 +85,11 @@ public class ExtraActionCommandDataDto {
             this.max = max;
         }
 
-        public String getValue() {
+        public Object getValue() {
             return value;
         }
 
-        public void setValue(String value) {
+        public void setValue(Object value) {
             this.value = value;
         }
     }
