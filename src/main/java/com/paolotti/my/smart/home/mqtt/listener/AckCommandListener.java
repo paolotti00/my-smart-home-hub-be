@@ -24,7 +24,7 @@ public class AckCommandListener {
     @Autowired
     private IAckCommandMapper commandAckMapper;
     private static final Logger logger = LoggerFactory.getLogger(AckCommandListener.class);
-    @Value("${mqtt.topic.ack.command}"+"test")
+    @Value("${mqtt.topic.ack.command}")
     private String ackTopic;
 
     @EventListener(ApplicationReadyEvent.class)

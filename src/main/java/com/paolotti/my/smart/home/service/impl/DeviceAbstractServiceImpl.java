@@ -201,13 +201,13 @@ public abstract class DeviceAbstractServiceImpl implements IDeviceService {
 
     private void updateComponentsStatus(DeviceEntity deviceEntity, List<Sensor> updatedSensors, Map<Integer, int[]> updatedLeds) {
         // sensors
-        if (updatedSensors.isEmpty()) {
+        if (updatedSensors == null || updatedSensors.isEmpty()) {
             logger.debug("no sensors to update");
         } else {
             updateSensorsStatus(deviceEntity,updatedSensors);
         }
         // leds
-        if (updatedLeds.isEmpty()) {
+        if (updatedLeds == null || updatedLeds.isEmpty()) {
             logger.debug("no leds to update");
         } else {
             updateLedStatus(deviceEntity,updatedLeds);
