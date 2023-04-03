@@ -32,7 +32,7 @@ public class DeviceRestControllerImpl extends InterceptorRestControllerException
     @Autowired
     IDeviceMapper deviceMapper;
     @Autowired
-    IBeanFactoryDeviceService beanFactoryService;
+    IBeanFactoryDeviceService beanFactoryDeviceService;
     @Autowired
     IExtraActionCommandDataMapper extraActionCommandDataMapper;
 
@@ -45,7 +45,7 @@ public class DeviceRestControllerImpl extends InterceptorRestControllerException
         ResponseEntity<DeviceDto> deviceDtoResponseEntity;
         try {
             Device device = deviceMapper.toModel(deviceDto);
-            IDeviceService deviceService = beanFactoryService.getDeviceServiceByBrand(device.getBrand());
+            IDeviceService deviceService = beanFactoryDeviceService.getDeviceServiceByBrand(device.getBrand());
             device = deviceService.create(device);
             deviceDto = deviceMapper.toDto(device);
         } catch (Exception e) {
@@ -65,7 +65,7 @@ public class DeviceRestControllerImpl extends InterceptorRestControllerException
         DeviceDto deviceDto = null;
         try {
             deviceDtoBaseResponseDto.setResultStatus(ResultStatusEnum.OK);
-            IDeviceService deviceService = beanFactoryService.getDeviceServiceById(deviceId);
+            IDeviceService deviceService = beanFactoryDeviceService.getDeviceServiceById(deviceId);
             Device device = deviceService.getDevice(deviceId);
             deviceDto = deviceMapper.toDto(device);
             deviceDtoBaseResponseDto.setData(deviceDto);
@@ -85,7 +85,7 @@ public class DeviceRestControllerImpl extends InterceptorRestControllerException
         ResponseEntity<BaseResponseDto<?>> responseEntity;
         BaseResponseDto<?> baseResponseDto = new BaseResponseDto<>();
         try {
-            IDeviceService deviceService = beanFactoryService.getDeviceServiceById(deviceId);
+            IDeviceService deviceService = beanFactoryDeviceService.getDeviceServiceById(deviceId);
             deviceService.switchAllLights(userId, deviceId, null, onOffStatus, CommandDestinationTypeEnum.TO_DEVICE);
             baseResponseDto.setMessage(String.format("device %s correctly switched %s", deviceId, OnOffStatusEnum.OFF));
             responseEntity = new ResponseEntity<>(baseResponseDto, HttpStatus.OK);
@@ -103,7 +103,7 @@ public class DeviceRestControllerImpl extends InterceptorRestControllerException
         ResponseEntity<BaseResponseDto<?>> responseEntity;
         BaseResponseDto<?> baseResponseDto = new BaseResponseDto<>();
         try {
-            IDeviceService deviceService = beanFactoryService.getDeviceServiceById(deviceId);
+            IDeviceService deviceService = beanFactoryDeviceService.getDeviceServiceById(deviceId);
             deviceService.setLightColor(userId, deviceId,null, colorRgbAndIntensity, CommandDestinationTypeEnum.TO_DEVICE);
             baseResponseDto.setMessage(String.format("device %s correctly switched %s", deviceId, OnOffStatusEnum.OFF));
             responseEntity = new ResponseEntity<>(baseResponseDto, HttpStatus.OK);
@@ -123,7 +123,7 @@ public class DeviceRestControllerImpl extends InterceptorRestControllerException
         List<ExtraActionCommandDataDto> extraActionCommandDataDtoList;
         try {
             baseResponseDto.setResultStatus(ResultStatusEnum.OK);
-            IDeviceService deviceService = beanFactoryService.getDeviceServiceById(deviceId);
+            IDeviceService deviceService = beanFactoryDeviceService.getDeviceServiceById(deviceId);
             List<ExtraActionCommandData> extraActionCommandDataList = deviceService.getSupportedExtraActions(deviceId);
             extraActionCommandDataDtoList = extraActionCommandDataMapper.toDtoList(extraActionCommandDataList);
             baseResponseDto.setData(extraActionCommandDataDtoList);
@@ -142,7 +142,7 @@ public class DeviceRestControllerImpl extends InterceptorRestControllerException
         ResponseEntity<BaseResponseDto<?>> responseEntity;
         BaseResponseDto<?> baseResponseDto = new BaseResponseDto<>();
         try {
-            IDeviceService deviceService = beanFactoryService.getDeviceServiceById(deviceId);
+            IDeviceService deviceService = beanFactoryDeviceService.getDeviceServiceById(deviceId);
             deviceService.doExtraAction(userId, deviceId,null, extraActionCommandDataMapper.toModel(extraActionCommandDataDto), CommandDestinationTypeEnum.TO_DEVICE);
             baseResponseDto.setMessage(String.format("device %s correctly sent %s", deviceId, extraActionCommandDataDto));
             responseEntity = new ResponseEntity<>(baseResponseDto, HttpStatus.OK);

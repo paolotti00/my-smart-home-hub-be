@@ -28,14 +28,14 @@ public class RoomRestControllerImpl extends InterceptorRestControllerExceptionHa
     @Autowired
     IDeviceMapper deviceMapper;
     @Autowired
-    IBeanFactoryDeviceService beanFactoryService;
+    IBeanFactoryDeviceService beanFactoryDeviceService;
     @Override
     public ResponseEntity<BaseResponseDto<List<DeviceDto>>> getDevices(String roomId) throws GenericException {
         List<DeviceDto> deviceDtoList = null;
         ResponseEntity<BaseResponseDto<List<DeviceDto>>> dtoResponseEntity = null;
         BaseResponseDto<List<DeviceDto>> deviceDtoBaseResponseDto = new BaseResponseDto<>();
         try {
-            IDeviceService deviceService = beanFactoryService.getDeviceServiceByBrand(DeviceBrandEnum.NO_BRAND);
+            IDeviceService deviceService = beanFactoryDeviceService.getDeviceServiceByBrand(DeviceBrandEnum.NO_BRAND);
             List<Device> deviceList = deviceService.getDevicesByRoomId(roomId);
             deviceDtoList = deviceMapper.toDtoList(deviceList);
             deviceDtoBaseResponseDto.setData(deviceDtoList);

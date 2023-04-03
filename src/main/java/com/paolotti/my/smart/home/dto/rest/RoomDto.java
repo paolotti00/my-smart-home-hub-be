@@ -10,6 +10,7 @@ public class RoomDto {
     private String name;
     private double humidity;
     private double temp;
+    private boolean haveLights;
 
     public String getId() {
         return id;
@@ -49,5 +50,13 @@ public class RoomDto {
 
     public void setTemp(double temp) {
         this.temp = temp;
+    }
+
+    public boolean isHaveLights() {
+        return haveLights;
+    }
+
+    public void setHaveLights(boolean haveLights) {
+        this.haveLights = haveLights;
     }
 }

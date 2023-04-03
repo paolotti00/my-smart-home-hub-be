@@ -10,6 +10,7 @@ public class Room extends BaseModel {
     private String name;
     private double humidity;
     private double temp;
+    private boolean haveLights;
 
     public List<String> getUsersOwnersIds() {
         return usersOwnersIds;
@@ -41,5 +42,13 @@ public class Room extends BaseModel {
 
     public void setTemp(double temp) {
         this.temp = temp;
+    }
+
+    public boolean isHaveLights() {
+        return haveLights;
+    }
+
+    public void setHaveLights(boolean haveLights) {
+        this.haveLights = haveLights;
     }
 }

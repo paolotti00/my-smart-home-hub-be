@@ -31,7 +31,7 @@ public class UserRestControllerImpl extends InterceptorRestControllerExceptionHa
     @Autowired
     IRoomService roomService;
     @Autowired
-    IBeanFactoryDeviceService beanFactoryService;
+    IBeanFactoryDeviceService beanFactoryDeviceService;
     @Autowired
     IDeviceMapper deviceMapper;
     @Autowired
@@ -42,7 +42,7 @@ public class UserRestControllerImpl extends InterceptorRestControllerExceptionHa
     }
 
     @Override
-    public ResponseEntity<BaseResponseDto<List<RoomDto>>> getRooms(String userId) throws ValidationException  {
+    public ResponseEntity<BaseResponseDto<List<RoomDto>>> getRooms(String userId) throws GenericException {
         List<RoomDto> roomDtoList = null;
         ResponseEntity<BaseResponseDto<List<RoomDto>>> dtoResponseEntity = null;
         BaseResponseDto<List<RoomDto>> baseResponseDto = new BaseResponseDto<>();
@@ -52,7 +52,7 @@ public class UserRestControllerImpl extends InterceptorRestControllerExceptionHa
             baseResponseDto.setData(roomDtoList);
             baseResponseDto.setResultStatus(ResultStatusEnum.OK);
             dtoResponseEntity = new ResponseEntity<BaseResponseDto<List<RoomDto>>>(baseResponseDto, HttpStatus.OK);
-        } catch (ValidationException e) {
+        } catch (GenericException e) {
             throw e;
         }
         return dtoResponseEntity;
@@ -66,7 +66,7 @@ public class UserRestControllerImpl extends InterceptorRestControllerExceptionHa
         ResponseEntity<BaseResponseDto<List<DeviceDto>>> dtoResponseEntity = null;
         BaseResponseDto<List<DeviceDto>> deviceDtoBaseResponseDto = new BaseResponseDto<>();
         try {
-            IDeviceService deviceService = beanFactoryService.getDeviceServiceByBrand(DeviceBrandEnum.NO_BRAND);
+            IDeviceService deviceService = beanFactoryDeviceService.getDeviceServiceByBrand(DeviceBrandEnum.NO_BRAND);
             List<Device> deviceList = deviceService.getDevicesByUserId(userId);
             deviceDtoList = deviceMapper.toDtoList(deviceList);
             deviceDtoBaseResponseDto.setData(deviceDtoList);

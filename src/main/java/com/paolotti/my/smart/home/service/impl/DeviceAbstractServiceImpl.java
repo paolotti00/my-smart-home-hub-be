@@ -36,7 +36,7 @@ public abstract class DeviceAbstractServiceImpl implements IDeviceService {
     private static final String DEVICE_STATUS_UPDATED_WEBSOCKET_TOPIC = "/topic/device/{deviceId}/status"; // todo move in properties file
 
     @Autowired
-    IBeanFactoryDeviceService beanFactoryService;
+    IBeanFactoryDeviceService beanFactoryDeviceService;
     @Autowired
     ICommandMapper commandMapper;
     @Autowired

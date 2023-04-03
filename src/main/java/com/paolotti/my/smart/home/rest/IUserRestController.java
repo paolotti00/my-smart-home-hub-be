@@ -21,7 +21,7 @@ public interface IUserRestController {
     UserDto create (UserDto userDto);
     @Tag(name = "user")
     @GetMapping("{userId}/rooms")
-    ResponseEntity<BaseResponseDto<List<RoomDto>>> getRooms(@PathVariable String userId) throws ValidationException;
+    ResponseEntity<BaseResponseDto<List<RoomDto>>> getRooms(@PathVariable String userId) throws GenericException;
     @Tag(name = "user")
     @GetMapping("{userId}/devices")
     ResponseEntity<BaseResponseDto<List<DeviceDto>>> getDevices(@PathVariable String userId) throws GenericException;
