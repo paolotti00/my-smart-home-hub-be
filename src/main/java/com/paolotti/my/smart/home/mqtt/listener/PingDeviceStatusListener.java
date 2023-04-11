@@ -13,6 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Recover;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -29,6 +32,7 @@ public class PingDeviceStatusListener {
     private String pingTopic;
 
     @EventListener(ApplicationReadyEvent.class)
+    @Retryable(include = { MqttException.class }, maxAttempts = 3, backoff = @Backoff(delay = 5000L))
     public void listener() throws MqttException {
         mqttAsyncClient.subscribe(pingTopic, 1, null, new IMqttActionListener() {
             @Override
@@ -59,5 +63,10 @@ public class PingDeviceStatusListener {
             // todo
             e.printStackTrace();
         }
+    }
+
+    @Recover
+    public void recover(MqttException e) {
+        logger.error("failed to connect to mqtt client: {}",e.getMessage());
     }
 }
