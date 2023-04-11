@@ -35,7 +35,7 @@ public class RoomServiceImpl implements IRoomService {
     IBeanFactoryDeviceService beanFactoryDeviceService;
     @Override
     public List<Room> getRoomsByUserId(String userId) throws GenericException {
-        logger.info("retrieving device for user with id {}", userId);
+        logger.info("retrieving rooms for user with id {}", userId);
         List<Room> roomList = new ArrayList<>();
         IDeviceService deviceService = beanFactoryDeviceService.getDeviceServiceByBrand(DeviceBrandEnum.NO_BRAND);
         if (StringUtils.isEmpty(userId)) {
