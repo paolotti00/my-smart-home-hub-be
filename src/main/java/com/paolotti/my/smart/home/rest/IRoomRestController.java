@@ -23,7 +23,7 @@ public interface IRoomRestController {
     ResponseEntity<BaseResponseDto<List<DeviceDto>>> getDevices(@PathVariable String roomId) throws GenericException;
 
     @Tag(name = "room")
-    @GetMapping("{roomId}/measurement")
+    @GetMapping("{roomId}/measurements")
     ResponseEntity<BaseResponseDto<List<MeasurementDto>>> getMeasurementByRoomId(@PathVariable String roomId,
                                                                                  @RequestParam(required = false) MeasurementTypeEnum type,
                                                                                  @RequestParam(required = false) LocalDateTime from,

@@ -35,11 +35,11 @@ public class MeasurementServiceImpl implements IMeasurementService {
         }
         Optional<List<MeasurementEntity>> measurementEntityListOpt = measurementRepository.findByRoomIdAndDeviceIdAndTypeAndFromAndTo(roomId,deviceId,measurementTypeEnum,from,to);
         if(measurementEntityListOpt.isPresent()){
-            measurementMapper.toModelList(measurementEntityListOpt.get());
+            measurementsList = measurementMapper.toModelList(measurementEntityListOpt.get());
         } else {
             logger.warn("no measurements found for room with id {}", roomId);
         }
         logger.info("retrieved measurements {} for room with id {}",measurementsList,roomId);
-        return null;
+        return measurementsList;
     }
 }
