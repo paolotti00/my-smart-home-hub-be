@@ -13,12 +13,13 @@ import java.util.List;
 public interface IDeviceService {
     Device create(Device device) throws MissingFieldException;
     Device getDevice(String deviceId) throws DeviceNotExistsException, ValidationException;
+    Device getDeviceByThingId(String thingId) throws DeviceNotExistsException, ValidationException;
     List<Device> getDevicesByUserId(String userId) throws ValidationException;
     List<Device> getDevicesByRoomId(String roomId) throws ValidationException, RoomNotExistsException;
 
     // light
     void switchAllLights(String userId, String deviceId, String roomId, OnOffStatusEnum desiredStatus, CommandDestinationTypeEnum commandDestinationTypeEnum) throws GenericException;
-    void setLightColor(String userId, String deviceId, String roomId, List<Integer> colorRgbAndIntensity, CommandDestinationTypeEnum toDevice) throws GenericException;;
+    void setLightColor(String userId, String deviceId, String roomId, List<Integer> colorRgbAndIntensity, CommandDestinationTypeEnum toDevice) throws GenericException;
 
     // action
     List<ExtraActionCommandData> getSupportedExtraActions(String deviceId) throws BrandNotSupportedException, ValidationException, DeviceNotExistsException;

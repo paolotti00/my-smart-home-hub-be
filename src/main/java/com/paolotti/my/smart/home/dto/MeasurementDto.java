@@ -1,4 +1,4 @@
-package com.paolotti.my.smart.home.dto.rest;
+package com.paolotti.my.smart.home.dto;
 
 import com.paolotti.my.smart.home.enums.MeasurementTypeEnum;
 import lombok.ToString;
@@ -11,6 +11,11 @@ public class MeasurementDto {
     private double value;
     private String unit;
     private MeasurementTypeEnum type;
+
+    private String deviceId;
+
+    // used for receive measurement by device on mqtt
+    private String thingId;
 
     public LocalDateTime getDate() {
         return date;
@@ -42,5 +47,21 @@ public class MeasurementDto {
 
     public void setType(MeasurementTypeEnum type) {
         this.type = type;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
+
+    public String getThingId() {
+        return thingId;
+    }
+
+    public void setThingId(String thingId) {
+        this.thingId = thingId;
     }
 }

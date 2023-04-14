@@ -2,7 +2,7 @@ package com.paolotti.my.smart.home.rest;
 
 import com.paolotti.my.smart.home.dto.rest.BaseResponseDto;
 import com.paolotti.my.smart.home.dto.rest.DeviceDto;
-import com.paolotti.my.smart.home.dto.rest.MeasurementDto;
+import com.paolotti.my.smart.home.dto.MeasurementDto;
 import com.paolotti.my.smart.home.enums.MeasurementTypeEnum;
 import com.paolotti.my.smart.home.exception.GenericException;
 import io.swagger.v3.oas.annotations.tags.Tag;

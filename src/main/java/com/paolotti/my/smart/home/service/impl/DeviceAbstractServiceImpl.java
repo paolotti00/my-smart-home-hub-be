@@ -33,7 +33,6 @@ import java.util.Optional;
 
 public abstract class DeviceAbstractServiceImpl implements IDeviceService {
     private static final Logger logger = LoggerFactory.getLogger(DeviceAbstractServiceImpl.class);
-    private static final String DEVICE_STATUS_UPDATED_WEBSOCKET_TOPIC = "/topic/device/{deviceId}/status"; // todo move in properties file
 
     @Autowired
     IBeanFactoryDeviceService beanFactoryDeviceService;
@@ -51,8 +50,6 @@ public abstract class DeviceAbstractServiceImpl implements IDeviceService {
     RoomRepository roomRepository;
     @Autowired
     IDeviceMapper deviceMapper;
-    @Autowired
-    SimpMessagingTemplate simpMessagingTemplate;
 
 
     @Override
@@ -73,6 +70,24 @@ public abstract class DeviceAbstractServiceImpl implements IDeviceService {
         }
         DeviceEntity deviceEntity = deviceEntityOpt.get();
         logger.info("device {} retrieved, converting to model", deviceId);
+        Device device = deviceMapper.toModel(deviceEntity);
+        logger.info("device converted to {}", device);
+        return device;
+    }
+
+    @Override
+    public Device getDeviceByThingId(String thingId) throws DeviceNotExistsException, ValidationException {
+        logger.info("retrieving device with thingId {}", thingId);
+        if (StringUtils.isEmpty(thingId)) {
+            throw new ValidationException("thingId cannot be null or empty");
+        }
+        Optional<DeviceEntity> deviceEntityOpt = deviceRepository.findByThingId(thingId);
+        if (!deviceEntityOpt.isPresent()) {
+            logger.warn("no active device found with {} thingId", thingId);
+            throw new DeviceNotExistsException("thingId: " + thingId);
+        }
+        DeviceEntity deviceEntity = deviceEntityOpt.get();
+        logger.info("device {} retrieved, converting to model", thingId);
         Device device = deviceMapper.toModel(deviceEntity);
         logger.info("device converted to {}", device);
         return device;
@@ -148,20 +163,6 @@ public abstract class DeviceAbstractServiceImpl implements IDeviceService {
         logger.info("saved in db commandId {}, deviceId{} , groupId {} with id {}", command.getCommandId(), deviceId, roomId, commandEntity.getId());
     }
 
-    void sendUpdatedDeviceStatusByWebsocket(String thingId, DeviceStatus deviceStatus) throws DeviceNotExistsException {
-        logger.info("sending, by websocket, for thingId {} updateStatus {}", thingId, deviceStatus);
-        Optional<DeviceEntity> deviceEntityOpt = deviceRepository.findByThingId(thingId);
-        if (!deviceEntityOpt.isPresent()) {
-            logger.error("device with thingId : {} not exists. can't update component status", thingId);
-            throw new DeviceNotExistsException("thingId: " + thingId);
-        }
-        DeviceEntity deviceEntity = deviceEntityOpt.get();
-        DeviceStatusDto deviceStatusDto = deviceStatusMapper.toDto(deviceStatus);
-        simpMessagingTemplate.convertAndSend(DEVICE_STATUS_UPDATED_WEBSOCKET_TOPIC.replace("{deviceId}", deviceEntity.getId().toHexString()), deviceStatusDto);
-        // logger.info("updateStatus {} by websocket for thingId {} was sent correctly", deviceStatusDto, thingId); // todo understand why in the log just DeviceComponentDto is logged and not DeviceComponentLightDto
-        logger.info("updateStatus by websocket for thingId {} was sent correctly", thingId);
-    }
-
     void updateCommandStatusOnDb(AckCommand ackCommand) {
         // getting command saved on db and update it
         Optional<CommandEntity> commandEntityOpt = commandRepository.findByCommandId(ackCommand.getCommandId());
@@ -182,20 +183,26 @@ public abstract class DeviceAbstractServiceImpl implements IDeviceService {
     }
 
     void updateDeviceStatus(String thingId, DeviceStatus deviceStatus) throws DeviceNotExistsException {
-        logger.info("updating status of device id {} by status received {}", thingId, deviceStatus);
+        logger.info("updating status of thingId {} by status received {}", thingId, deviceStatus);
         // getting device from db
+        logger.info("retrieving device with thing id {} from db",thingId);
         Optional<DeviceEntity> deviceEntityOpt = deviceRepository.findByThingId(thingId);
         if (!deviceEntityOpt.isPresent()) {
             logger.error("device with thingId : {} not exists. can't update component status", thingId);
             throw new DeviceNotExistsException("thingId: " + thingId);
         }
         DeviceEntity deviceEntity = deviceEntityOpt.get();
+        updateDeviceStatus(deviceEntity,deviceStatus);
+        deviceRepository.save(deviceEntity);
+    }
+    void updateDeviceStatus(DeviceEntity deviceEntity, DeviceStatus deviceStatus) {
+        logger.info("updating status of device {} by status received {}", deviceEntity, deviceStatus);
         // updating components status
         updateComponentsStatus(deviceEntity, deviceStatus.getSensors(), deviceStatus.getLeds());
         deviceEntity.setUpdateDate(LocalDateTime.now());
         deviceEntity.setConnectionStatus(ConnectionStatusEnum.ONLINE);
         logger.info("device id {} set update time and connection status {}", deviceEntity.getId(), ConnectionStatusEnum.ONLINE);
-        logger.info("status of device id {} correctly updated", thingId);
+        logger.info("status of device id {} correctly updated", deviceEntity.getId());
         deviceRepository.save(deviceEntity);
     }
 

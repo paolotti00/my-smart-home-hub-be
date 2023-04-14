@@ -2,13 +2,11 @@ package com.paolotti.my.smart.home.rest.impl;
 
 import com.paolotti.my.smart.home.dto.rest.BaseResponseDto;
 import com.paolotti.my.smart.home.dto.rest.DeviceDto;
-import com.paolotti.my.smart.home.dto.rest.MeasurementDto;
+import com.paolotti.my.smart.home.dto.MeasurementDto;
 import com.paolotti.my.smart.home.enums.DeviceBrandEnum;
 import com.paolotti.my.smart.home.enums.MeasurementTypeEnum;
 import com.paolotti.my.smart.home.enums.ResultStatusEnum;
 import com.paolotti.my.smart.home.exception.GenericException;
-import com.paolotti.my.smart.home.exception.RoomNotExistsException;
-import com.paolotti.my.smart.home.exception.ValidationException;
 import com.paolotti.my.smart.home.factory.IBeanFactoryDeviceService;
 import com.paolotti.my.smart.home.interceptor.InterceptorRestControllerExceptionHandler;
 import com.paolotti.my.smart.home.mapper.IDeviceMapper;

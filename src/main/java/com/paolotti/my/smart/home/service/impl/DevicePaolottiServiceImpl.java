@@ -10,6 +10,7 @@ import com.paolotti.my.smart.home.exception.*;
 import com.paolotti.my.smart.home.model.*;
 import com.paolotti.my.smart.home.repository.entity.DeviceEntity;
 import com.paolotti.my.smart.home.service.IMqttMessagingService;
+import com.paolotti.my.smart.home.service.IWebSocketProducer;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +28,8 @@ import java.util.Optional;
 public class DevicePaolottiServiceImpl extends DeviceAbstractServiceImpl {
     @Autowired()
     IMqttMessagingService mqttMessagingService;
+    @Autowired()
+    IWebSocketProducer webSocketProducer;
 
     private static final Logger logger = LoggerFactory.getLogger(DevicePaolottiServiceImpl.class);
     private static final String MQTT_TOPIC_COMMAND_BASE = "command";
@@ -152,11 +155,14 @@ public class DevicePaolottiServiceImpl extends DeviceAbstractServiceImpl {
     @Override
     public void handleDeviceStatusFromPingReceived(PingDeviceStatus pingDeviceStatus) throws ValidationException, DeviceNotExistsException {
         logger.info("handling update status of device id {} by ping received {}", pingDeviceStatus.getThingId(), pingDeviceStatus);
-
+        Optional<DeviceEntity> deviceOpt = deviceRepository.findByThingId(pingDeviceStatus.getThingId());
+        if(!deviceOpt.isPresent()){
+            throw new DeviceNotExistsException("thingId: " + pingDeviceStatus.getThingId());
+        }
         // update device status on db
         updateDeviceStatus(pingDeviceStatus.getThingId(), pingDeviceStatus.getDeviceStatus());
         // sending websocket update
-        sendUpdatedDeviceStatusByWebsocket(pingDeviceStatus.getThingId(), pingDeviceStatus.getDeviceStatus());
+        webSocketProducer.sendUpdatedDeviceStatus(deviceOpt.get().getId().toHexString(), pingDeviceStatus.getDeviceStatus());
         logger.info("update status of device id {} by ping correctly handled", pingDeviceStatus.getThingId());
     }
 

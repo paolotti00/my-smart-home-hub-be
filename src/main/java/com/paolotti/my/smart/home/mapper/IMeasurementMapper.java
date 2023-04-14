@@ -1,6 +1,6 @@
 package com.paolotti.my.smart.home.mapper;
 
-import com.paolotti.my.smart.home.dto.rest.MeasurementDto;
+import com.paolotti.my.smart.home.dto.MeasurementDto;
 import com.paolotti.my.smart.home.model.Measurement;
 import com.paolotti.my.smart.home.repository.entity.MeasurementEntity;
 import org.mapstruct.InjectionStrategy;
